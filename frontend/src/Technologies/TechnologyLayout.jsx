@@ -1,0 +1,293 @@
+import { motion } from "framer-motion";
+import Breadcrumb from "../Component/Breadcrumb";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.45, ease: "easeOut" },
+  }),
+};
+
+const TechnologyLayout = ({
+  title,
+  herotitle,
+  herosub,
+  paragraph1,
+  paragraph2,
+  img,
+  keysubheading,
+  features,
+}) => {
+  return (
+    <div className="bg-background min-h-screen text-text">
+      {/* BREADCRUMB */}
+      <div className="bg-white border-b border-gray-100 shadow-sm">
+        <Breadcrumb />
+      </div>
+
+      {/* HERO SECTION */}
+      <section className="py-8 md:py-12 bg-gradient-to-b from-background to-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-16">
+          {/* Meta row */}
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-gray-400 mb-1">
+                Technology
+              </p>
+              {title && (
+                <p className="text-sm font-semibold text-gray-600">
+                  {title}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500">
+                <span className="uppercase tracking-[0.22em] font-semibold">
+                  Status
+                </span>
+                <span className="w-16 h-px bg-gray-200" />
+              </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-600">
+                  Industry Proven
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* IMAGE SIDE */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              className="order-2 lg:order-1"
+            >
+              <div className="relative">
+                {/* “Technical frame” behind image */}
+                <div className="absolute -bottom-6 -right-6 w-full h-full border border-gray-200 rounded-xl bg-gradient-to-br from-gray-100 to-transparent" />
+                <div className="absolute -top-4 -left-4 w-20 h-20 border-2 border-secondary rounded-xl bg-white" />
+
+                <div className="relative z-10 rounded-xl overflow-hidden border border-gray-200 bg-gray-100 h-[360px] md:h-[430px] lg:h-[460px] shadow-md">
+                  <img
+                    src={img}
+                    alt={herotitle}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Subtle top overlay for text readability if needed later */}
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
+                </div>
+
+                {/* Small “spec label” badge */}
+                <div className="absolute bottom-5 left-5 z-20 px-4 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex items-center gap-3">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400">
+                      Category
+                    </span>
+                    <span className="text-xs font-semibold text-primary">
+                      Process Technology
+                    </span>
+                  </div>
+                  <span className="hidden sm:inline-block w-px h-8 bg-gray-200" />
+                  <div className="hidden sm:flex flex-col">
+                    <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400">
+                      Application
+                    </span>
+                    <span className="text-xs font-semibold text-gray-700">
+                      Refinery · Petrochem · Waste
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* CONTENT SIDE */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              className="order-1 lg:order-2"
+            >
+              {/* Sub badge */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-[2px] bg-secondary" />
+                <span className="text-secondary text-xs font-semibold uppercase tracking-[0.28em]">
+                  {herosub}
+                </span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary leading-tight mb-4">
+                {herotitle}
+              </h1>
+
+              {/* Thin underline bar */}
+              <div className="flex items-center gap-2 mb-6">
+                <div className="h-[2px] w-16 bg-secondary" />
+                <div className="h-[2px] w-6 bg-secondary/40" />
+              </div>
+
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+                {paragraph1}
+              </p>
+
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-7">
+                {paragraph2}
+              </p>
+
+              {/* Highlight strip – turned into “spec row” */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 bg-gray-100 border border-gray-200 rounded-lg">
+                <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center flex-shrink-0">
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-primary">
+                    Field‑validated performance
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Successfully implemented across multiple brownfield and greenfield units with
+                    measurable efficiency gains.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES SECTION */}
+      <section className="py-8 md:py-12 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 lg:px-16">
+          {/* Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mx-auto text-center mb-14"
+          >
+            <div className="inline-flex items-center gap-3 mb-4 px-4 py-1.5 bg-gray-100 border border-gray-200 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-secondary" />
+              <span className="text-secondary text-[11px] font-semibold uppercase tracking-[0.3em]">
+                Key Benefits
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-primary mb-4">
+              Key Features & Advantages
+            </h2>
+            <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+              {keysubheading}
+            </p>
+          </motion.div>
+
+          {/* Features grid */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                custom={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className="group relative rounded-xl border border-gray-200 bg-background hover:bg-white hover:border-secondary/60 transition-all duration-300 overflow-hidden"
+              >
+                {/* top border accent */}
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="relative z-10 p-5 flex gap-4 items-start">
+                  {/* Number badge – now more technical */}
+                  <div className="flex-shrink-0">
+                    <div className="w-11 h-11 rounded-md border border-gray-300 bg-white flex items-center justify-center group-hover:border-secondary group-hover:bg-secondary/10 transition-colors">
+                      <span className="text-xs font-black text-primary">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold text-primary mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* bottom line accent */}
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-secondary group-hover:w-full transition-all duration-400" />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA BANNER */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mt-16 relative rounded-2xl border border-primary/20 bg-primary text-white overflow-hidden"
+          >
+            {/* subtle pattern */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px)",
+                backgroundSize: "32px 32px",
+              }}
+            />
+            {/* glow */}
+            <div className="absolute -top-12 -right-12 w-40 h-40 bg-secondary rounded-full blur-3xl opacity-50" />
+
+            <div className="relative z-10 px-6 md:px-10 py-8 md:py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="text-center md:text-left">
+                <h3 className="text-xl md:text-2xl font-black mb-1">
+                  Interested in this technology?
+                </h3>
+                <p className="text-sm text-gray-100/90">
+                  Connect with our process engineers to evaluate fit, scope, and implementation options for your plant.
+                </p>
+              </div>
+
+              <div className="flex gap-3 flex-shrink-0">
+                <a
+                  href="/contact"
+                  className="px-6 py-3 bg-secondary hover:bg-yellow-400 text-text font-bold text-sm rounded-lg transition-colors duration-200 shadow-md whitespace-nowrap"
+                >
+                  Get In Touch →
+                </a>
+                <a
+                  href="/about"
+                  className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm rounded-lg border border-white/25 transition-colors duration-200 whitespace-nowrap"
+                >
+                  Learn More
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default TechnologyLayout;
