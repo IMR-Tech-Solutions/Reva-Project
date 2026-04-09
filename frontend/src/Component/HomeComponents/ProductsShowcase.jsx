@@ -21,7 +21,7 @@ const ProcessEngineeringProducts = () => {
               if (p.img.startsWith("http")) {
                 imageUrl = p.img;
               } else if (p.img.startsWith("/api/uploads")) {
-                imageUrl = `http://localhost:8000${p.img}`;
+                imageUrl = `${import.meta.env.VITE_API_URL}${p.img}`;
               } else {
                 imageUrl = p.img; // Public folder images like /productimages/...
               }

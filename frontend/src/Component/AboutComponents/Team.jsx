@@ -101,7 +101,7 @@ const TeamCard = ({ name, role, bio, image, linkedin, email, delay }) => {
   const getMemberImageUrl = (img) => {
     if (!img) return "/team-placeholder.jpg";
     if (img.startsWith("http")) return img;
-    if (img.startsWith("/")) return `http://localhost:8000${img}`;
+    if (img.startsWith("/")) return `${import.meta.env.VITE_API_URL}${img}`;
     return img; // Fallback for seeds like ./team-1.jpg
   };
 

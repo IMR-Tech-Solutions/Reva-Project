@@ -48,9 +48,9 @@ const AboutHero = ({ content }) => {
     if (!path) return defaultImg;
     if (path.startsWith("http")) return path;
     if (path.startsWith("/api/uploads")) {
-      return `http://localhost:8000${path}`;
+      return `${import.meta.env.VITE_API_URL}${path}`;
     }
-    if (path.startsWith("/")) return `http://localhost:8000${path}`;
+    if (path.startsWith("/")) return `${import.meta.env.VITE_API_URL}${path}`;
     return path; // Assume local path like ./hero1.png
   };
 

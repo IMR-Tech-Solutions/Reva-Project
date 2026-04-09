@@ -1,6 +1,6 @@
 import authService from "../api/authService";
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const getAllProducts = async (skip = 0, limit = 100) => {
   const response = await fetch(`${API_BASE_URL}/products?skip=${skip}&limit=${limit}`, {
