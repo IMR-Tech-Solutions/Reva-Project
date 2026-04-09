@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Use SQLite for development
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:root@localhost:5432/reva_db"
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Create the SQLAlchemy engine
 # connect_args={"check_same_thread": False} is required only for SQLite
