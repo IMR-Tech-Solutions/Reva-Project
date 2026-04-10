@@ -30,23 +30,29 @@ const GlobalPresenceSection = () => {
         </div>
 
         {/* Map Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="relative w-full h-[260px] sm:h-[360px] md:h-[460px] lg:h-[560px] rounded-xl overflow-hidden shadow-lg border border-gray-100"
-        >
-          <img
-            src="/global-map.png"
-            alt="REVA Global Operations Map"
-            className="w-full h-full object-cover"
-          />
+  <motion.div
+  initial={{ opacity: 0, scale: 0.96 }}
+  whileInView={{ opacity: 1, scale: 1 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.3, duration: 0.7 }}
+  className="relative w-full 
+             h-[220px] sm:h-[300px] md:h-[380px] lg:h-[450px]
+             overflow-hidden rounded-xl"
+>
+  {/* Map Image */}
+  <img
+    src="/wm.png"
+    alt="REVA Global Operations Map"
+    className="w-full h-full object-cover"
+  />
 
-          {/* Subtle animated indicator for main hub */}
-          <div className="absolute top-[54%] left-[68%] w-4 h-4 bg-secondary rounded-full animate-ping opacity-75" />
-          <div className="absolute top-[54%] left-[68%] w-3 h-3 bg-secondary rounded-full" />
-        </motion.div>
+  {/* Soft overlay (makes crop look intentional) */}
+  <div className="absolute inset-0 bg-black/10" />
+
+  {/* Animated indicator */}
+  <div className="absolute top-[54%] left-[68%] w-3 h-3 bg-secondary rounded-full animate-ping opacity-70" />
+  <div className="absolute top-[54%] left-[68%] w-2.5 h-2.5 bg-secondary rounded-full" />
+</motion.div>
 
       </div>
     </section>

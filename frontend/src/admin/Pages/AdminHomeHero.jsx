@@ -112,8 +112,8 @@ const AdminHomeHero = () => {
                 <button onClick={() => handleOpenModal(slide)} className="flex-1 md:w-32 bg-primary/5 text-primary py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary/10 transition-all border border-primary/5">
                   <Pencil size={14} /> Edit
                 </button>
-                <button onClick={() => handleDelete(slide.id)} className="px-3 bg-red-50 text-red-600 py-2.5 rounded-xl hover:bg-red-100 transition-colors border border-red-50">
-                  <Trash2 size={16} />
+                <button onClick={() => handleDelete(slide.id)} className="flex-1 md:w-32 bg-red-50 text-red-600 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-red-100 transition-colors border border-red-50">
+                  <Trash2 size={16} /> Delete
                 </button>
               </div>
             </div>
