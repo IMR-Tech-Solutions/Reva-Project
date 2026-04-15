@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import api, { API_BASE_URL } from '../../api/api';
 
 const JoinTeamSection = () => {
@@ -172,21 +173,21 @@ const JoinTeamSection = () => {
 
             {/* CTA Buttons */}
             <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-              <a
-                href="/career"
+              <Link
+                to="/career"
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base md:text-lg font-bold rounded-full hover:bg-gray-500/90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 Explore careers
                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="#"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-white/30 text-white text-base md:text-lg font-bold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300"
               >
                 Our culture
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 

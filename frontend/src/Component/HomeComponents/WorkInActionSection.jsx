@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const projectRefs = [
   "Biomass to CBG",
@@ -116,8 +117,8 @@ const WorkInActionSection = () => {
 
             {/* CTA */}
             <motion.div variants={itemVariants}>
-              <a
-                href="/about"
+              <Link
+                to="/about"
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 View Our Projects
@@ -130,7 +131,7 @@ const WorkInActionSection = () => {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Breadcrumb from "../Component/Breadcrumb";
+import { Link } from "react-router-dom";
 import {
   FiCheckCircle,
   FiUsers,
@@ -169,7 +170,7 @@ const ProjectManagement = () => {
                   alt="Project Management"
                   className="w-full h-full object-cover"
                 />
-            
+
               </div>
 
               {/* Floating card */}
@@ -366,80 +367,80 @@ const ProjectManagement = () => {
       </section>
 
       {/* ── INDUSTRIES ── */}
-    <section className="py-10 md:py-12 bg-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-12"
-    >
-      <span className="inline-flex items-center gap-2 px-4 py-1.5
+      <section className="py-10 md:py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-1.5
                        bg-secondary/10 text-secondary border border-secondary/30
                        text-xs font-bold uppercase tracking-widest rounded-full mb-4">
-        Sectors
-      </span>
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary">
-        Industries We Serve
-      </h2>
-    </motion.div>
+              Sectors
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary">
+              Industries We Serve
+            </h2>
+          </motion.div>
 
-    <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto mb-16">
-      {industries.map((industry, index) => (
-        <motion.span
-          key={index}
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, delay: index * 0.04 }}
-          className="px-4 py-2 bg-gray-50 border border-gray-200
+          <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto mb-16">
+            {industries.map((industry, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: index * 0.04 }}
+                className="px-4 py-2 bg-gray-50 border border-gray-200
                      text-primary text-xs sm:text-sm font-semibold rounded-full
                      hover:bg-primary hover:border-primary hover:text-white
                      transition-all duration-300 cursor-default"
-        >
-          {industry}
-        </motion.span>
-      ))}
-    </div>
+              >
+                {industry}
+              </motion.span>
+            ))}
+          </div>
 
-    {/* CTA */}
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className="max-w-3xl mx-auto text-center border-t border-gray-100 pt-14"
-    >
-      <h3 className="text-2xl sm:text-3xl font-black text-primary mb-4">
-        Ready to Start Your Project?
-      </h3>
-      <p className="text-gray-500 text-sm sm:text-base mb-8 max-w-xl mx-auto">
-        Partner with REVA Process Technologies for professional project management
-        services that deliver real results.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/contact"
-          className="inline-flex items-center justify-center gap-2
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="max-w-3xl mx-auto text-center border-t border-gray-100 pt-14"
+          >
+            <h3 className="text-2xl sm:text-3xl font-black text-primary mb-4">
+              Ready to Start Your Project?
+            </h3>
+            <p className="text-gray-500 text-sm sm:text-base mb-8 max-w-xl mx-auto">
+              Partner with REVA Process Technologies for professional project management
+              services that deliver real results.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2
                      px-8 py-3.5 bg-secondary text-white font-bold rounded-xl
                      hover:bg-secondary/90 transition-all duration-300"
-        >
-          Contact Us <FiArrowRight />
-        </a>
-        <a
-          href="/about"
-          className="inline-flex items-center justify-center gap-2
+              >
+                Contact Us <FiArrowRight />
+              </Link>
+              <Link
+                to="/about"
+                className="inline-flex items-center justify-center gap-2
                      px-8 py-3.5 bg-primary/10 border border-primary/20
                      text-primary font-bold rounded-xl
                      hover:bg-primary hover:text-white transition-all duration-300"
-        >
-          Learn More
-        </a>
-      </div>
-    </motion.div>
-  </div>
-</section>
+              >
+                Learn More
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiCheckCircle, FiShield, FiZap, FiUsers, FiAward, FiInfo } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const iconMap = {
   FiShield: <FiShield className="w-5 h-5" />,
@@ -166,8 +167,8 @@ const WhyChooseUs = ({ content, differentiators }) => {
 
             {/* CTA */}
             <motion.div variants={itemVariants}>
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 className="group inline-flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-secondary text-white font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 Start Your Project
@@ -179,7 +180,7 @@ const WhyChooseUs = ({ content, differentiators }) => {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 

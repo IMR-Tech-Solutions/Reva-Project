@@ -14,6 +14,8 @@ const ProductLayout = ({
   keysubheading,
   features,
   applications = [],
+  reactor_types = [],
+  stats = [],
 }) => {
   return (
     <div className="bg-background">
@@ -28,7 +30,7 @@ const ProductLayout = ({
                         -translate-x-1/2 translate-y-1/2" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12
-                        py-12 sm:py-16 md:py-20 relative z-10">
+                        py-10 sm:py-12 md:py-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* Content */}
@@ -44,13 +46,7 @@ const ProductLayout = ({
                                  text-xs font-bold uppercase tracking-widest rounded-full">
                   {herosub}
                 </span>
-                {title && (
-                  <span className="inline-flex items-center gap-2 px-4 py-1.5
-                                   bg-white/10 text-white/60 border border-white/15
-                                   text-xs font-semibold rounded-full">
-                    {title}
-                  </span>
-                )}
+                
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white
@@ -91,7 +87,7 @@ const ProductLayout = ({
 
             </motion.div>
 
-            {/* Image */}
+            {/* Image & Stats Row */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -100,23 +96,35 @@ const ProductLayout = ({
             >
               <div className="rounded-2xl sm:rounded-3xl overflow-hidden
                               h-[280px] sm:h-[360px] lg:h-[440px]
-                              border border-white/10 shadow-2xl">
+                              border border-white/10 shadow-2xl mb-8">
                 <img src={img} alt={herotitle}
-                  className="w-full h-full object-cover" />
+                   className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-primary/20" />
               </div>
-              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl
-                              px-4 py-3 shadow-xl">
-                <p className="text-primary font-black text-base">REVA</p>
-                <p className="text-gray-400 text-[11px]">Certified Product</p>
-              </div>
+
+              {/* Dynamic Stats Row below image */}
+              {stats && stats.length > 0 && (
+                <div className="flex flex-wrap gap-8 justify-center lg:justify-start px-4">
+                  {stats.map((s, idx) => (
+                    <div key={idx} className="text-center lg:text-left">
+                      <p className="text-2xl sm:text-3xl font-black text-secondary leading-none">
+                        {s.value}
+                      </p>
+                      <p className="text-white/50 text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1.5">
+                        {s.label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── FEATURES — Row list, no cards ── */}
-      <section className="py-14 sm:py-8 md:py-12 bg-background">
+      <section className="py-10 sm:py-12 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
 
           <motion.div
@@ -203,7 +211,7 @@ const ProductLayout = ({
 
       {/* ── APPLICATIONS / INDUSTRIES ── */}
       {applications && applications.length > 0 && (
-        <section className="py-14 sm:py-8 md:py-12 bg-white">
+        <section className="py-10 sm:py-12 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
 
             <motion.div
@@ -257,9 +265,85 @@ const ProductLayout = ({
         </section>
       )}
 
+      {/* ── TYPES OF REACTORS ── */}
+      {reactor_types && reactor_types.length > 0 && (
+        <section className="py-10 sm:py-12 bg-gray-50/50">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
+            
+            {/* Header section matched to theme */}
+            <div className="mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5
+                               bg-secondary/10 text-secondary border border-secondary/30
+                               text-xs font-bold uppercase tracking-widest rounded-full mb-4">
+                Equipment Overview
+              </span>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary mb-5">
+                Types of Reactors
+              </h2>
+              <div className="w-20 h-1.5 bg-secondary rounded-full" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-14 mt-12">
+              {reactor_types.map((rtype, index) => {
+                // We'll alternate the offset shadow subtly using theme colors
+                const isSecondary = index % 2 === 0;
+                const shadowColor = isSecondary ? 'bg-secondary/10' : 'bg-primary/5';
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="flex flex-col group"
+                  >
+                    {/* Image Container with Theme Offset */}
+                    <div className="relative pt-4 px-4">
+                      {/* Theme offset shadow */}
+                      <div className={`absolute top-0 right-0 w-[calc(100%-16px)] h-[calc(100%-16px)] rounded-3xl translate-x-3 -translate-y-3 ${shadowColor} z-0 transition-transform duration-500 group-hover:translate-x-4 group-hover:-translate-y-4`} />
+                      
+                      {/* Main bordered box */}
+                      <div className="relative z-10 bg-white border border-gray-100 shadow-sm rounded-2xl aspect-square overflow-hidden flex items-center justify-center group-hover:shadow-xl group-hover:border-primary/10 transition-all duration-500">
+                        {rtype.is_important && (
+                          <div className="absolute top-4 right-4 bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full z-20 shadow-md">
+                            Featured
+                          </div>
+                        )}
+                        {rtype.image ? (
+                          <img 
+                            src={rtype.image} 
+                            alt={rtype.title} 
+                            className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="text-gray-300 text-sm font-semibold relative z-10 flex flex-col items-center gap-2">
+                            No Image Found
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Content Container */}
+                    <div className="mt-8 px-2">
+                      <h3 className="text-xl font-bold text-primary mb-3 leading-tight group-hover:text-secondary transition-colors duration-300">
+                        {rtype.title}
+                      </h3>
+                      
+                      <p className="text-sm text-gray-500 leading-relaxed">
+                        {rtype.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── CTA SECTION ── */}
-      <section className="py-14 sm:py-8 md:py-12 bg-gray-50">
+      <section className="py-10 sm:py-12 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -54,6 +54,12 @@ CAREER_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 HERO_UPLOADS_DIR = Path(__file__).parent / "uploads" / "hero"
 HERO_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
+SERVICES_UPLOADS_DIR = Path(__file__).parent / "uploads" / "services"
+SERVICES_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
+TECHNOLOGIES_UPLOADS_DIR = Path(__file__).parent / "uploads" / "technologies"
+TECHNOLOGIES_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
 # Static files serving for uploaded images
 from fastapi.staticfiles import StaticFiles
 app.mount("/api/uploads", StaticFiles(directory=Path(__file__).parent / "uploads"), name="uploads")
@@ -1068,6 +1074,135 @@ def update_site_settings(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     return crud.update_site_settings(db, data)
+
+# =====================================================================
+# SERVICES MODULE API
+# =====================================================================
+
+# --- Public Endpoints ---
+@app.get("/services", response_model=List[schemas.ServiceCard])
+def get_active_services(db: Session = Depends(get_db)):
+    """Public: Get all active services for the All Services page"""
+    return crud.get_active_services(db)
+
+@app.get("/services/{slug}", response_model=schemas.ServiceFull)
+def get_service_by_slug(slug: str, db: Session = Depends(get_db)):
+    """Public: Get a single service with all sections and items"""
+    service = crud.get_service_by_slug(db, slug)
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return service
+
+# --- Admin Service Endpoints ---
+@app.get("/admin/services", response_model=List[schemas.ServiceAdmin])
+def admin_get_all_services(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    """Admin: Get all services including inactive"""
+    return crud.get_all_services(db)
+
+@app.get("/admin/services/{service_id}", response_model=schemas.ServiceFull)
+def admin_get_service(service_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    """Admin: Get single service with sections and items"""
+    service = crud.get_service_by_id(db, service_id)
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return service
+
+@app.post("/admin/services", response_model=schemas.ServiceAdmin)
+def admin_create_service(service: schemas.ServiceCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    return crud.create_service(db, service.model_dump())
+
+@app.put("/admin/services/{service_id}", response_model=schemas.ServiceAdmin)
+def admin_update_service(service_id: int, service: schemas.ServiceUpdate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.update_service(db, service_id, service.model_dump(exclude_unset=True))
+    if not result:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return result
+
+@app.delete("/admin/services/{service_id}")
+def admin_delete_service(service_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.delete_service(db, service_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return {"message": "Service deleted successfully"}
+
+@app.put("/admin/services/reorder")
+def admin_reorder_services(ordered_ids: List[int], db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    crud.reorder_services(db, ordered_ids)
+    return {"message": "Services reordered successfully"}
+
+# --- Admin Section Endpoints ---
+@app.post("/admin/services/{service_id}/sections", response_model=schemas.ServiceSection)
+def admin_create_section(service_id: int, section: schemas.ServiceSectionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    return crud.create_section(db, service_id, section.model_dump())
+
+@app.put("/admin/sections/{section_id}", response_model=schemas.ServiceSection)
+def admin_update_section(section_id: int, section: schemas.ServiceSectionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.update_section(db, section_id, section.model_dump(exclude_unset=True))
+    if not result:
+        raise HTTPException(status_code=404, detail="Section not found")
+    return result
+
+@app.delete("/admin/sections/{section_id}")
+def admin_delete_section(section_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.delete_section(db, section_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Section not found")
+    return {"message": "Section deleted successfully"}
+
+@app.put("/admin/services/{service_id}/sections/reorder")
+def admin_reorder_sections(service_id: int, ordered_ids: List[int], db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    crud.reorder_sections(db, service_id, ordered_ids)
+    return {"message": "Sections reordered successfully"}
+
+# --- Admin Item Endpoints ---
+@app.post("/admin/sections/{section_id}/items", response_model=schemas.SectionItem)
+def admin_create_item(section_id: int, item: schemas.SectionItemCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    return crud.create_item(db, section_id, item.model_dump())
+
+@app.put("/admin/items/{item_id}", response_model=schemas.SectionItem)
+def admin_update_item(item_id: int, item: schemas.SectionItemCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.update_item(db, item_id, item.model_dump(exclude_unset=True))
+    if not result:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return result
+
+@app.delete("/admin/items/{item_id}")
+def admin_delete_item(item_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    result = crud.delete_item(db, item_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"message": "Item deleted successfully"}
+
+# --- Service Image Upload ---
+@app.post("/admin/services/upload-image")
+async def upload_service_image(
+    image: UploadFile = File(...),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Upload an image for use in services (hero, section, etc.)"""
+    import time
+    ext = os.path.splitext(image.filename)[1]
+    filename = f"service_{int(time.time())}{ext}"
+    file_path = SERVICES_UPLOADS_DIR / filename
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+    url = f"/api/uploads/services/{filename}"
+    return {"url": url, "filename": filename}
+
+@app.post("/admin/technologies/upload-image")
+async def upload_technology_image(
+    image: UploadFile = File(...),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Upload an image for use in technologies"""
+    import time
+    ext = os.path.splitext(image.filename)[1]
+    filename = f"tech_{int(time.time())}{ext}"
+    file_path = TECHNOLOGIES_UPLOADS_DIR / filename
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+    url = f"/api/uploads/technologies/{filename}"
+    return {"url": url, "filename": filename}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

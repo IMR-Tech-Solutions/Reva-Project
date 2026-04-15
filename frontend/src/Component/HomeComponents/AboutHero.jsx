@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import api, { API_BASE_URL } from "../../api/api";
 
 const AboutHero = () => {
@@ -195,8 +196,8 @@ const AboutHero = () => {
 
             {/* CTAs */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
-              <a
-                href="/about"
+              <Link
+                to="/about"
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 Learn More About Us
@@ -213,10 +214,10 @@ const AboutHero = () => {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </Link>
 
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 className="inline-flex items-center gap-2 text-primary font-semibold text-base hover:gap-3 transition-all duration-300"
               >
                 Get in Touch
@@ -233,7 +234,7 @@ const AboutHero = () => {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         </div>

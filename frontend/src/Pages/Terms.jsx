@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Breadcrumb from '../Component/Breadcrumb';
 import api from '../api/api';
+import { Link } from 'react-router-dom';
 
 const Terms = () => {
   const [content, setContent] = useState(null);
@@ -185,12 +186,12 @@ const Terms = () => {
                 By using Reva's website and services, you acknowledge that you have read these Terms and Conditions, understand them, and agree to be bound by them. If you do not agree, please discontinue use of our services immediately.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="/contact" 
+                <Link 
+                  to="/contact" 
                   className="inline-flex items-center justify-center bg-secondary text-white font-black uppercase tracking-widest text-xs px-8 py-4 rounded-full hover:bg-secondary/90 transition-all shadow-xl shadow-secondary/10"
                 >
                   Contact Legal Team
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>

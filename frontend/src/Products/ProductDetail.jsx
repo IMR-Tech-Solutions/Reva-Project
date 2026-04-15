@@ -64,6 +64,8 @@ const ProductDetail = () => {
       keysubheading={product.keysubheading}
       features={product.features}
       applications={product.applications}
+      reactor_types={product.reactor_types}
+      stats={product.stats}
     />
   );
 };

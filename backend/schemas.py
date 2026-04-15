@@ -6,15 +6,106 @@ class FeatureBase(BaseModel):
     title: str
     description: str
 
-# Service Schemas
+# =====================================================================
+# SERVICE MODULE SCHEMAS — 3-level nesting
+# =====================================================================
+
+# --- Section Items ---
+class SectionItemBase(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    icon_name: Optional[str] = None
+    image: Optional[str] = None
+    step_number: Optional[str] = None
+    extra_data: Optional[dict] = {}
+    display_order: int = 0
+
+class SectionItemCreate(SectionItemBase):
+    pass
+
+class SectionItem(SectionItemBase):
+    id: int
+    section_id: int
+    class Config:
+        from_attributes = True
+
+# --- Service Sections ---
+class ServiceSectionBase(BaseModel):
+    section_key: Optional[str] = None
+    section_label: Optional[str] = None
+    title: Optional[str] = None
+    title_highlight: Optional[str] = None
+    description: Optional[str] = None
+    image: Optional[str] = None
+    extra_data: Optional[dict] = {}
+    display_order: int = 0
+
+class ServiceSectionCreate(ServiceSectionBase):
+    pass
+
+class ServiceSection(ServiceSectionBase):
+    id: int
+    service_id: int
+    items: List[SectionItem] = []
+    class Config:
+        from_attributes = True
+
+# --- Services ---
 class ServiceBase(BaseModel):
     title: str
-    description: str
+    slug: str
+    tagline: Optional[str] = None
+    description: Optional[str] = None
+    icon_name: Optional[str] = None
+    number: Optional[str] = None
+    href: Optional[str] = None
+    tags: List[str] = []
+    hero_breadcrumb: Optional[str] = None
+    hero_title: Optional[str] = None
+    hero_highlight: Optional[str] = None
+    hero_description: Optional[str] = None
+    hero_pills: List[str] = []
+    hero_image: Optional[str] = None
+    hero_stat_title: Optional[str] = None
+    hero_stat_text: Optional[str] = None
+    hero_cta1_text: Optional[str] = None
+    hero_cta1_link: Optional[str] = None
+    hero_cta2_text: Optional[str] = None
+    hero_cta2_link: Optional[str] = None
+    is_active: bool = True
+    display_order: int = 0
 
 class ServiceCreate(ServiceBase):
     pass
 
-class Service(ServiceBase):
+class ServiceUpdate(ServiceBase):
+    pass
+
+# Lightweight card (All Services page)
+class ServiceCard(BaseModel):
+    id: int
+    title: str
+    slug: str
+    tagline: Optional[str] = None
+    description: Optional[str] = None
+    icon_name: Optional[str] = None
+    number: Optional[str] = None
+    href: Optional[str] = None
+    tags: List[str] = []
+    is_active: bool = True
+    display_order: int = 0
+    class Config:
+        from_attributes = True
+
+# Full service with nested sections+items (detail page)
+class ServiceFull(ServiceBase):
+    id: int
+    sections: List[ServiceSection] = []
+    class Config:
+        from_attributes = True
+
+# Admin list (all fields, no sections)
+class ServiceAdmin(ServiceBase):
     id: int
     class Config:
         from_attributes = True
@@ -31,6 +122,8 @@ class ProductBase(BaseModel):
     keysubheading: Optional[str] = None
     features: List[FeatureBase] = []
     applications: List[str] = []
+    reactor_types: Optional[List[dict]] = None
+    stats: Optional[List[dict]] = None
 
 class ProductCreate(ProductBase):
     pass
@@ -138,6 +231,7 @@ class TechnologyBase(BaseModel):
     img: Optional[str] = None
     keysubheading: Optional[str] = None
     features: List[FeatureBase] = []
+    stats: List[dict] = []
 
 class TechnologyCreate(TechnologyBase):
     pass

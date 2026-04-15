@@ -7,6 +7,7 @@ import Team from "../Component/AboutComponents/Team";
 import WhyChooseUs from "../Component/AboutComponents/WhyChooseUs";
 import TestimonialsSection from "../Component/HomeComponents/TestimonialsSection";
 import aboutApi from "../services/aboutApi";
+import GlobalPresenceSection from "../Component/HomeComponents/GlobalPresenceSection";
 
 const About = () => {
     const [data, setData] = useState(null);
@@ -44,6 +45,8 @@ const About = () => {
             <MissionValues content={content} values={values} />
             <Team content={content} team={team} />
             <WhyChooseUs content={content} differentiators={differentiators} />
+            <GlobalPresenceSection/>
+            
             <TestimonialsSection testimonials={testimonials} />
         </div>
     );

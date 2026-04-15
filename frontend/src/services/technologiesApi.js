@@ -60,3 +60,19 @@ export const deleteTechnology = async (id) => {
   if (!response.ok) throw new Error("Failed to delete technology");
   return response.json();
 };
+
+export const uploadTechnologyImage = async (file) => {
+  const formData = new FormData();
+  formData.append("image", file);
+  
+  const response = await fetch(`${API_BASE_URL}/admin/technologies/upload-image`, {
+    method: "POST",
+    headers: {
+      ...authService.getAuthHeader(),
+    },
+    body: formData,
+  });
+  
+  if (!response.ok) throw new Error("Failed to upload image");
+  return response.json();
+};

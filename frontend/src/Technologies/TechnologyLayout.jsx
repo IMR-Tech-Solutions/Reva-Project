@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Breadcrumb from "../Component/Breadcrumb";
+import { Link } from "react-router-dom";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -19,7 +20,15 @@ const TechnologyLayout = ({
   img,
   keysubheading,
   features,
+  stats = [], // Default to empty array
 }) => {
+  // Default stats if none provided
+  const displayStats = stats && stats.length > 0 ? stats : [
+    { value: "98%", label: "Operational Efficiency" },
+    { value: "500+", label: "Successful Units" },
+    { value: "100%", label: "Safety Record" }
+  ];
+
   return (
     <div className="bg-background min-h-screen text-text">
       {/* BREADCRUMB */}
@@ -45,17 +54,10 @@ const TechnologyLayout = ({
 
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500">
-                <span className="uppercase tracking-[0.22em] font-semibold">
-                  Status
-                </span>
-                <span className="w-16 h-px bg-gray-200" />
+                
+               
               </div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-                <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-gray-600">
-                  Industry Proven
-                </span>
-              </div>
+             
             </div>
           </div>
 
@@ -75,7 +77,7 @@ const TechnologyLayout = ({
 
                 <div className="relative z-10 rounded-xl overflow-hidden border border-gray-200 bg-gray-100 h-[360px] md:h-[430px] lg:h-[460px] shadow-md">
                   <img
-                    src={img}
+                    src={img?.startsWith('http') || img?.startsWith('data:') ? img : `${import.meta.env.VITE_API_URL}${img}`}
                     alt={herotitle}
                     className="w-full h-full object-cover"
                   />
@@ -140,32 +142,25 @@ const TechnologyLayout = ({
                 {paragraph2}
               </p>
 
-              {/* Highlight strip – turned into “spec row” */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 bg-gray-100 border border-gray-200 rounded-lg">
-                <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center flex-shrink-0">
-                  <svg
-                    className="w-5 h-5 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              {/* Statistics Section - 3 Compact Cards */}
+              <div className="grid grid-cols-3 gap-3">
+                {displayStats.slice(0, 3).map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 + i * 0.1, duration: 0.4 }}
+                    className="p-3 bg-gray-50 border border-gray-200 rounded-xl text-center group hover:border-secondary transition-all duration-300"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-primary">
-                    Field‑validated performance
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Successfully implemented across multiple brownfield and greenfield units with
-                    measurable efficiency gains.
-                  </p>
-                </div>
+                    <p className="text-xl sm:text-2xl font-black text-secondary mb-0.5 transform group-hover:scale-110 transition-transform">
+                      {stat.value}
+                    </p>
+                    <p className="text-[10px] sm:text-[11px] font-bold text-primary/70 uppercase tracking-wider leading-tight">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -269,18 +264,18 @@ const TechnologyLayout = ({
               </div>
 
               <div className="flex gap-3 flex-shrink-0">
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="px-6 py-3 bg-secondary hover:bg-yellow-400 text-text font-bold text-sm rounded-lg transition-colors duration-200 shadow-md whitespace-nowrap"
                 >
                   Get In Touch →
-                </a>
-                <a
-                  href="/about"
+                </Link>
+                <Link
+                  to="/about"
                   className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm rounded-lg border border-white/25 transition-colors duration-200 whitespace-nowrap"
                 >
                   Learn More
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>

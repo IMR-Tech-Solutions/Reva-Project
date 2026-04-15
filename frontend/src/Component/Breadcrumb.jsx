@@ -14,13 +14,14 @@ const Breadcrumb = ({ title: customTitle }) => {
     '/contact': 'Contact us',
     
     // Services (from Header dropdown)
-    '/services': 'Services',
-    '/Feasibility': 'Feasibility & Pilot Plant Study',
-    '/basic': 'EPC Project Management',
-    '/detailed': 'Detailed Engineering Package',
+    '/services': 'Our Services',
+    '/feasibility': 'Feasibility & Pilot Plant Study',
+    '/BasicEngineering': 'Basic Engineering',
+    '/detailed': 'Detailed Engineering',
     '/procurement': 'Procurement',
-    '/project':"Project Management",
-    '/site':"Manufacturing & site Services",
+    '/basic': 'EPC Project Management',
+    '/site': 'Manufacturing & Site Services',
+    '/project': 'Project Management',
     
     // Footer Links - Company
     '/career': 'Careers',
@@ -45,18 +46,15 @@ const Breadcrumb = ({ title: customTitle }) => {
 
     '/amine':'Amine System',
     '/biogas':'Bio-Gas Upgradation System',
-    '/environmental':'Environmental assesment studies',
-    '/permits':'Engineering assistance for project permits',
+    '/environmental':'Environmental Assessment Studies',
+    '/permits':'Engineering Assistance for Project Permits',
     '/flue-gas':'Flue Gas Scrubber, Caustic Scrubber',
-    '/fly-ash':'Fly ash disposal',
-    '/hazardous':'Hazardous chemical treatment',
+    '/fly-ash':'Fly Ash Disposal',
+    '/hazardous':'Hazardous Chemical Treatment',
     '/hydrotreatment':'Hydrotreatment',
     '/iset':'ISET Technologies',
     '/evaporate':'REVAP Technology',
     '/resin':'Resin Manufacturing Plant',
-
-
-
   };
 
   // Get title from mapping or auto-format
@@ -66,21 +64,48 @@ const Breadcrumb = ({ title: customTitle }) => {
       return routeTitleMap[path];
     }
     
-    // Auto-format if no match (fallback)
+    // Check case-insensitive match for the full path
+    const lowerPath = path.toLowerCase();
+    const exactMatch = Object.keys(routeTitleMap).find(key => key.toLowerCase() === lowerPath);
+    if (exactMatch) {
+      return routeTitleMap[exactMatch];
+    }
+
+    // Check if it's a dynamic route (e.g., /technology/amine)
     const segment = path.split('/').pop();
+    const segmentPath = `/${segment}`;
+    const segmentMatch = Object.keys(routeTitleMap).find(key => key.toLowerCase() === segmentPath.toLowerCase());
+    if (segmentMatch) {
+      return routeTitleMap[segmentMatch];
+    }
+    
+    // Auto-format if no match (fallback)
     return segment
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   };
 
-  // Split pathname and filter, removing 'technology' to skip it in breadcrumbs
-  const pathnames = location.pathname.split('/').filter(x => x && x.toLowerCase() !== 'technology' && x.toLowerCase() !== 'product');
+  // Split pathname and filter
+  const pathnames = location.pathname.split('/').filter(x => x);
   
   // Get current page title
   const currentPageTitle = customTitle || (pathnames.length > 0 
     ? getTitle(location.pathname)
     : 'Home');
+
+  // Define service detail paths or prefixes that should show "Our Services" in breadcrumb
+  const serviceDetailPaths = [
+    '/feasibility', '/BasicEngineering', '/detailed', '/procurement', '/basic', '/site', '/project'
+    
+  ];
+
+  const isTechnologyPage = location.pathname.toLowerCase().startsWith('/technology/');
+  const isProductPage = location.pathname.toLowerCase().startsWith('/product/');
+  const isNewsDetailPage = location.pathname.toLowerCase().startsWith('/news/') && location.pathname.toLowerCase() !== '/news';
+
+  const isServiceDetailPage = 
+    serviceDetailPaths.some(path => location.pathname.toLowerCase().includes(path.toLowerCase()));
 
   return (
     <section className="relative w-full h-[300px] md:h-[400px] lg:h-[450px] flex items-center justify-center overflow-hidden">
@@ -108,45 +133,69 @@ const Breadcrumb = ({ title: customTitle }) => {
         </h1>
 
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center justify-center space-x-2 text-sm md:text-base">
+        <nav className="flex items-center justify-center space-x-2 text-sm md:text-base text-white/90">
           {/* Home Link */}
           <Link
             to="/"
-            className="flex items-center text-white/90 hover:text-white transition-all duration-300 hover:scale-110"
+            className="flex items-center hover:text-white transition-all duration-300 hover:scale-110"
           >
             <FiHome className="w-5 h-5" />
           </Link>
 
-          {pathnames.length > 0 && (
-            <FiChevronRight className="w-4 h-4 text-white/60" />
+          <FiChevronRight className="w-4 h-4 text-white/60" />
+
+          {/* Inject "Our Services" if it's a detail page */}
+          {isServiceDetailPage && (
+            <>
+              <Link
+                to="/services"
+                className="hover:text-white transition-colors duration-300 hover:underline"
+              >
+                Our Services
+              </Link>
+              <FiChevronRight className="w-4 h-4 text-white/60" />
+            </>
           )}
 
-          {/* Dynamic Breadcrumb Links */}
-          {pathnames.map((segment, index) => {
-            const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
-            const isLast = index === pathnames.length - 1;
-            const title = getTitle(routeTo);
+          {/* Inject "Technologies" if it's a technology page */}
+          {isTechnologyPage && (
+            <>
+              <span className="text-white/90">
+                Technologies
+              </span>
+              <FiChevronRight className="w-4 h-4 text-white/60" />
+            </>
+          )}
 
-            return (
-              <React.Fragment key={routeTo}>
-                {isLast ? (
-                  <span className="text-white font-semibold bg-primary/30 px-4 py-1.5 rounded-full backdrop-blur-sm">
-                    {title}
-                  </span>
-                ) : (
-                  <>
-                    <Link
-                      to={routeTo}
-                      className="text-white/90 hover:text-white transition-colors duration-300 hover:underline"
-                    >
-                      {title}
-                    </Link>
-                    <FiChevronRight className="w-4 h-4 text-white/60" />
-                  </>
-                )}
-              </React.Fragment>
-            );
-          })}
+          {/* Inject "Products" if it's a product page */}
+          {isProductPage && (
+            <>
+              <span className="text-white/90">
+                Products
+              </span>
+              <FiChevronRight className="w-4 h-4 text-white/60" />
+            </>
+          )}
+
+          {/* Inject "News" if it's a news detail page */}
+          {isNewsDetailPage && (
+            <>
+              <Link
+                to="/news"
+                className="hover:text-white transition-colors duration-300 hover:underline"
+              >
+                News
+              </Link>
+              <FiChevronRight className="w-4 h-4 text-white/60" />
+            </>
+          )}
+
+          {/* Current Page Title */}
+          {pathnames.length > 0 && (
+             <span className="text-white font-semibold bg-primary/30 px-4 py-1.5 rounded-full backdrop-blur-sm">
+                {currentPageTitle}
+             </span>
+          )}
         </nav>
       </div>
     </section>

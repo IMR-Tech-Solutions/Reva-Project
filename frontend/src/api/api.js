@@ -3,19 +3,46 @@ import authService from "./authService";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const api = {
-  // Services
-  getServices: async () => {
+  // =====================================================================
+  // SERVICES MODULE API
+  // =====================================================================
+
+  // --- Public ---
+  getActiveServices: async () => {
     const response = await fetch(`${API_BASE_URL}/services`);
     if (!response.ok) throw new Error("Failed to fetch services");
     return response.json();
   },
 
+  getServiceBySlug: async (slug) => {
+    const response = await fetch(`${API_BASE_URL}/services/${slug}`);
+    if (!response.ok) throw new Error("Failed to fetch service");
+    return response.json();
+  },
+
+  // --- Admin Services ---
+  getAdminServices: async () => {
+    const response = await fetch(`${API_BASE_URL}/admin/services`, {
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to fetch services");
+    return response.json();
+  },
+
+  getAdminService: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/admin/services/${id}`, {
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to fetch service");
+    return response.json();
+  },
+
   createService: async (serviceData) => {
-    const response = await fetch(`${API_BASE_URL}/services`, {
+    const response = await fetch(`${API_BASE_URL}/admin/services`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        ...authService.getAuthHeader() 
+        ...authService.getAuthHeader(),
       },
       body: JSON.stringify(serviceData),
     });
@@ -24,11 +51,11 @@ const api = {
   },
 
   updateService: async (id, serviceData) => {
-    const response = await fetch(`${API_BASE_URL}/services/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/admin/services/${id}`, {
       method: "PUT",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        ...authService.getAuthHeader() 
+        ...authService.getAuthHeader(),
       },
       body: JSON.stringify(serviceData),
     });
@@ -37,11 +64,122 @@ const api = {
   },
 
   deleteService: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/services/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/admin/services/${id}`, {
       method: "DELETE",
       headers: { ...authService.getAuthHeader() },
     });
     if (!response.ok) throw new Error("Failed to delete service");
+    return response.json();
+  },
+
+  reorderServices: async (orderedIds) => {
+    const response = await fetch(`${API_BASE_URL}/admin/services/reorder`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(orderedIds),
+    });
+    if (!response.ok) throw new Error("Failed to reorder services");
+    return response.json();
+  },
+
+  // --- Admin Sections ---
+  createSection: async (serviceId, sectionData) => {
+    const response = await fetch(`${API_BASE_URL}/admin/services/${serviceId}/sections`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(sectionData),
+    });
+    if (!response.ok) throw new Error("Failed to create section");
+    return response.json();
+  },
+
+  updateSection: async (sectionId, sectionData) => {
+    const response = await fetch(`${API_BASE_URL}/admin/sections/${sectionId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(sectionData),
+    });
+    if (!response.ok) throw new Error("Failed to update section");
+    return response.json();
+  },
+
+  deleteSection: async (sectionId) => {
+    const response = await fetch(`${API_BASE_URL}/admin/sections/${sectionId}`, {
+      method: "DELETE",
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to delete section");
+    return response.json();
+  },
+
+  reorderSections: async (serviceId, orderedIds) => {
+    const response = await fetch(`${API_BASE_URL}/admin/services/${serviceId}/sections/reorder`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(orderedIds),
+    });
+    if (!response.ok) throw new Error("Failed to reorder sections");
+    return response.json();
+  },
+
+  // --- Admin Items ---
+  createItem: async (sectionId, itemData) => {
+    const response = await fetch(`${API_BASE_URL}/admin/sections/${sectionId}/items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(itemData),
+    });
+    if (!response.ok) throw new Error("Failed to create item");
+    return response.json();
+  },
+
+  updateItem: async (itemId, itemData) => {
+    const response = await fetch(`${API_BASE_URL}/admin/items/${itemId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(itemData),
+    });
+    if (!response.ok) throw new Error("Failed to update item");
+    return response.json();
+  },
+
+  deleteItem: async (itemId) => {
+    const response = await fetch(`${API_BASE_URL}/admin/items/${itemId}`, {
+      method: "DELETE",
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to delete item");
+    return response.json();
+  },
+
+  // --- Service Image Upload ---
+  uploadServiceImage: async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await fetch(`${API_BASE_URL}/admin/services/upload-image`, {
+      method: "POST",
+      headers: { ...authService.getAuthHeader() },
+      body: formData,
+    });
+    if (!response.ok) throw new Error("Failed to upload image");
     return response.json();
   },
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const benefits = [
   {
@@ -131,8 +132,8 @@ const MaintenanceBenefits = () => {
             </div>
 
             {/* CTA button */}
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="group mt-5 inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white text-sm font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Start Procurement Planning
@@ -144,7 +145,7 @@ const MaintenanceBenefits = () => {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </Link>
           </motion.div>
 
           {/* Right Side - Benefits List */}

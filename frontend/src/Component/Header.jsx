@@ -164,8 +164,10 @@ const Header = () => {
                 active={location.pathname === "/about"}
                 isTransparent={!isScrolled && isHomePage}
               />
-              <ServicesDropdown
-                active={location.pathname.startsWith("/services")}
+              <NavLink
+                text="Services"
+                href="/services"
+                active={location.pathname === "/services"}
                 isTransparent={!isScrolled && isHomePage}
               />
               <TechnologiesDropdown
@@ -305,26 +307,13 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(false)}
             />
 
-            {/* Services */}
             <div className="border-t border-white/20 mt-2 pt-2">
-              <button
-                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                className="w-full flex items-center justify-between py-3 text-white font-semibold"
-              >
-                Services
-                <FiChevronDown className={mobileServicesOpen ? 'rotate-180' : ''} />
-              </button>
-              {mobileServicesOpen && (
-                <div className="pl-4 mt-2 space-y-1">
-                  <MobileDropdownItem label="Basic Engineering" href="/BasicEngineering" onClick={() => setMobileMenuOpen(false)} />
-                  <MobileDropdownItem label="Feasibility & Pilot Plant Study" href="/Feasibility" onClick={() => setMobileMenuOpen(false)} />
-                  <MobileDropdownItem label="EPC Project Management" href="/basic" onClick={() => setMobileMenuOpen(false)} />
-                  <MobileDropdownItem label="Detailed Engineering" href="/detailed" onClick={() => setMobileMenuOpen(false)} />
-                  <MobileDropdownItem label="Procurement" href="/procurement" onClick={() => setMobileMenuOpen(false)} />
-                  {/* <MobileDropdownItem label="Project Management" href="/project" onClick={() => setMobileMenuOpen(false)} /> */}
-                  <MobileDropdownItem label="Manufacturing & site Services" href="/site" onClick={() => setMobileMenuOpen(false)} />
-                </div>
-              )}
+              <MobileNavLink
+                text="Services"
+                href="/services"
+                active={location.pathname === "/services"}
+                onClick={() => setMobileMenuOpen(false)}
+              />
             </div>
 
             {/* Technologies */}
@@ -430,31 +419,6 @@ const NavLink = ({ text, href, active, isTransparent }) => (
   </Link>
 );
 
-/* SERVICES DROPDOWN */
-const ServicesDropdown = ({ active, isTransparent }) => (
-  <div className="relative group">
-    <button
-      className={`font-semibold text-base pb-1 border-b-2 transition-colors flex items-center gap-1 ${isTransparent
-          ? active ? "text-secondary border-secondary" : "text-white border-transparent hover:text-secondary hover:border-secondary"
-          : active ? "text-secondary border-secondary" : "text-primary border-transparent hover:text-secondary hover:border-secondary"
-        }`}
-    >
-      Services
-      <FiChevronDown className="text-sm transition-transform duration-200 group-hover:-rotate-180" />
-    </button>
-    <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible border border-gray-200 transition-all duration-200 z-50">
-      <div className="py-2">
-        <DropdownItem label="Basic Engineering" href="/BasicEngineering" />
-        <DropdownItem label="Feasibility & Pilot Plant Study" href="/Feasibility" />
-        <DropdownItem label="EPC Project Management" href="/basic" />
-        <DropdownItem label="Detailed Engineering" href="/detailed" />
-        <DropdownItem label="Procurement" href="/procurement" />
-        {/* <DropdownItem label="Project Management" href="/project" /> */}
-        <DropdownItem label="Manufacturing & site Services" href="/site" />
-      </div>
-    </div>
-  </div>
-);
 
 /* TECHNOLOGIES DROPDOWN */
 const TechnologiesDropdown = ({ active, isTransparent, technologies = [] }) => {

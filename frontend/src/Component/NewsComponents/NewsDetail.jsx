@@ -2,29 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiClock, FiArrowRight, FiHome } from "react-icons/fi";
-import { getNewsById, getAllNews } from "../../services/newsApi";
+import { getNewsBySlug, getAllNews } from "../../services/newsApi";
 import Breadcrumb from "../Breadcrumb";
 
 const NewsDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
-
-  const normalizedId = parseInt(id?.replace("article-", ""), 10);
 
   useEffect(() => {
     const fetchArticleData = async () => {
       try {
         setLoading(true);
         // Fetch the main article
-        const data = await getNewsById(normalizedId);
+        const data = await getNewsBySlug(slug);
         setArticle(data);
 
         // Fetch related articles
         const allData = await getAllNews(0, 10);
-        setRelatedArticles(allData.filter(a => a.id !== normalizedId).slice(0, 3));
+        setRelatedArticles(allData.filter(a => a.slug !== slug).slice(0, 3));
         
         setError(null);
       } catch (err) {
@@ -35,10 +33,10 @@ const NewsDetail = () => {
       }
     };
 
-    if (normalizedId) {
+    if (slug) {
       fetchArticleData();
     }
-  }, [normalizedId]);
+  }, [slug]);
 
   // ── LOADING STATE ──
   if (loading) {
@@ -180,7 +178,7 @@ const NewsDetail = () => {
                   {relatedArticles.map((related) => (
                       <Link
                         key={related.id}
-                        to={`/news/${related.id}`}
+                        to={`/news/${related.slug}`}
                         className="group flex items-start gap-3"
                       >
                         <img

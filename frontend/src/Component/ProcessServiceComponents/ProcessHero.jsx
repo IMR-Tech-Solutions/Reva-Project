@@ -1,7 +1,25 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
-const ProcessHero = () => {
+const API_BASE = import.meta.env.VITE_API_URL || "";
+
+const ProcessHero = ({ service }) => {
+  if (!service) return null;
+
+  const API_BASE = import.meta.env.VITE_API_URL || "";
+  const getImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith("http")) return path;
+    if (path.startsWith("/api/")) {
+      const domain = API_BASE.replace(/\/api$/, "");
+      return `${domain}${path}`;
+    }
+    return path;
+  };
+
+  const heroImage = getImageUrl(service.hero_image) || "./process.png";
+
   return (
     <section className="relative text-white overflow-hidden min-h-screen lg:h-[90vh] flex items-center py-12 md:py-16 lg:py-8">
 
@@ -22,7 +40,7 @@ const ProcessHero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="inline-block text-xs sm:text-sm uppercase tracking-widest text-secondary"
           >
-            Services / Feasibility &amp; Pilot Plant Study
+            {service.hero_breadcrumb || `Services / ${service.title}`}
           </motion.span>
 
           {/* Heading */}
@@ -32,8 +50,10 @@ const ProcessHero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold leading-tight text-primary"
           >
-            Feasibility &amp; Pilot Plant{" "}
-            <span className="text-secondary">Studies</span>
+            {service.hero_title || service.title}{" "}
+            {service.hero_highlight && (
+              <span className="text-secondary">{service.hero_highlight}</span>
+            )}
           </motion.h1>
 
           {/* Description */}
@@ -43,36 +63,27 @@ const ProcessHero = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed"
           >
-            Reva evaluates technical feasibility, economic viability, and
-            environmental impact before you commit to full-scale investment —
-            then engineers pilot facilities that replicate real-world conditions
-            to de-risk scale-up and ensure smoother transition to commercial
-            plants.
+            {service.hero_description || service.description}
           </motion.p>
 
           {/* Feature pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-wrap gap-2"
-          >
-            {[
-              "Technical Feasibility",
-              "Economic Viability",
-              "Environmental Impact",
-              "Regulatory Compliance",
-              "Pilot Plant Design",
-              "Scale-up Support",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1.5 bg-primary/8 border border-primary/20 text-primary text-xs font-semibold rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </motion.div>
+          {service.hero_pills && service.hero_pills.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="flex flex-wrap gap-2"
+            >
+              {service.hero_pills.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1.5 bg-primary/8 border border-primary/20 text-primary text-xs font-semibold rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </motion.div>
+          )}
 
           {/* Buttons */}
           <motion.div
@@ -81,33 +92,30 @@ const ProcessHero = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2"
           >
-            <motion.a
-              href="/contact"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="group inline-flex items-center justify-center gap-3 bg-secondary text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-secondary/90 hover:shadow-lg transition-all duration-300 text-sm sm:text-base"
-            >
-              Discuss Your Study
-              <svg
-                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {service.hero_cta1_text && (
+              <motion.a
+                href={service.hero_cta1_link || "/contact"}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="group inline-flex items-center justify-center gap-3 bg-secondary text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-secondary/90 hover:shadow-lg transition-all duration-300 text-sm sm:text-base cursor-pointer"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </motion.a>
+                {service.hero_cta1_text}
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </motion.a>
+            )}
 
-            <motion.a
-              href="/services"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-sm sm:text-base"
-            >
-              View All Services
-            </motion.a>
+            {service.hero_cta2_text && (
+              <motion.a
+                href={service.hero_cta2_link || "/services"}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-sm sm:text-base cursor-pointer"
+              >
+                {service.hero_cta2_text}
+              </motion.a>
+            )}
           </motion.div>
         </motion.div>
 
@@ -124,28 +132,32 @@ const ProcessHero = () => {
             className="relative group w-full h-full"
           >
             <img
-              src="./process.png"
-              alt="Reva Feasibility and Pilot Plant Study"
+              src={heroImage}
+              alt={service.title}
               className="w-full h-full object-cover rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl"
             />
 
             {/* Hover overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl sm:rounded-3xl" />
 
-            {/* Floating stat badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl px-5 py-3 shadow-xl border-l-4 border-secondary"
-            >
-              <p className="text-lg font-bold text-primary leading-none mb-0.5">
-                De-Risk First
-              </p>
-              <p className="text-xs text-gray-500 font-medium">
-                Validate before full-scale investment
-              </p>
-            </motion.div>
+            {/* Floating stat badge - Only show if stat title exists and is not empty */}
+            {service.hero_stat_title && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl px-5 py-3 shadow-xl border-l-4 border-secondary"
+              >
+                <p className="text-lg font-bold text-primary leading-none mb-1.5">
+                  {service.hero_stat_title}
+                </p>
+                {service.hero_stat_text && (
+                  <p className="text-xs text-gray-500 font-medium">
+                    {service.hero_stat_text}
+                  </p>
+                )}
+              </motion.div>
+            )}
 
             {/* Decorative blobs */}
             <motion.div

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllTechnologies } from "../services/technologiesApi";
 import { getAllProducts } from "../services/productsApi";
+import { Link } from "react-router-dom";
 import {
   FaLinkedin,
   FaTwitter,
@@ -23,7 +24,7 @@ const Footer = () => {
       { name: "Basic Engineering", href: "/BasicEngineering" },
       { name: "Detailed Engineering", href: "/detailed" },
       { name: "Procurement", href: "/procurement" },
-      { name: "Project Management", href: "/project" },
+      { name: "EPC Project Management", href: "/basic" },
       { name: "Manufacturing & Site Services", href: "/site" },
     ],
     technologies: [
@@ -165,17 +166,17 @@ const Footer = () => {
               </h4>
             </div>
             <ul className="space-y-2">
-              {footerLinks.company.map((link, index) => (
+                {footerLinks.company.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
                   >
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -190,17 +191,17 @@ const Footer = () => {
               </h4>
             </div>
             <ul className="space-y-2">
-              {footerLinks.services.map((link, index) => (
+                {footerLinks.services.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
                   >
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -217,15 +218,15 @@ const Footer = () => {
             <ul className="space-y-2">
               {techLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
                   >
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-0.5 left-0 h-0.5 bg-secondary w-0 group-hover/link:w-full transition-all duration-300" />
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -242,15 +243,15 @@ const Footer = () => {
             <ul className="space-y-2">
               {productLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
                   >
                     <span className="relative">
                       {link.name}
                       <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -265,21 +266,21 @@ const Footer = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/70">
-            <a
-              href="/privacy"
+            <Link
+              to="/privacy"
               className="hover:text-secondary transition-colors duration-300 relative group/bottom"
             >
               Privacy Policy
               <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/bottom:w-full transition-all duration-300" />
-            </a>
+            </Link>
             <span className="text-white/30">•</span>
-            <a
-              href="/terms"
+            <Link
+              to="/terms"
               className="hover:text-secondary transition-colors duration-300 relative group/bottom"
             >
               Terms & Conditions
               <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/bottom:w-full transition-all duration-300" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -22,6 +22,8 @@ const AdminProducts = () => {
     keysubheading: "",
     features: [],
     applications: [],
+    reactor_types: [],
+    stats: [],
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -107,6 +109,54 @@ const AdminProducts = () => {
     setFormData({ ...formData, applications: newApplications });
   };
 
+  const handleReactorTypeChange = (index, field, value) => {
+    const newReactorTypes = [...(formData.reactor_types || [])];
+    newReactorTypes[index] = { ...newReactorTypes[index], [field]: value };
+    setFormData({ ...formData, reactor_types: newReactorTypes });
+  };
+
+  const addReactorType = () => {
+    setFormData({
+      ...formData,
+      reactor_types: [...(formData.reactor_types || []), { title: "", description: "", image: "", is_important: false }]
+    });
+  };
+
+  const removeReactorType = (index) => {
+    const newReactorTypes = (formData.reactor_types || []).filter((_, i) => i !== index);
+    setFormData({ ...formData, reactor_types: newReactorTypes });
+  };
+
+  const handleReactorImageChange = (index, e) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        handleReactorTypeChange(index, "image", event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleStatChange = (index, field, value) => {
+    const newStats = [...(formData.stats || [])];
+    newStats[index] = { ...newStats[index], [field]: value };
+    setFormData({ ...formData, stats: newStats });
+  };
+
+  const addStat = () => {
+    setFormData({
+      ...formData,
+      stats: [...(formData.stats || []), { value: "", label: "" }]
+    });
+  };
+
+  const removeStat = (index) => {
+    const newStats = (formData.stats || []).filter((_, i) => i !== index);
+    setFormData({ ...formData, stats: newStats });
+  };
+
   const generatePath = (text) => {
     return "/" + text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
   };
@@ -159,6 +209,8 @@ const AdminProducts = () => {
       keysubheading: item.keysubheading || "",
       features: item.features || [],
       applications: item.applications || [],
+      reactor_types: item.reactor_types || [],
+      stats: item.stats || [],
     });
     setEditingId(item.id);
     setShowForm(true);
@@ -434,6 +486,122 @@ const AdminProducts = () => {
                       ))}
                       {formData.applications.length === 0 && (
                         <p className="text-sm text-gray-500 italic text-center p-4">No applications added yet.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-full border-t border-gray-200 mt-2 pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-bold text-primary">Types of Reactors</h3>
+                      <button 
+                        onClick={addReactorType} 
+                        type="button"
+                        className="text-xs bg-secondary/10 text-secondary hover:bg-secondary hover:text-white px-2 py-1 rounded transition-colors flex items-center gap-1"
+                      >
+                        <Plus size={12} /> Add Type
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {(formData.reactor_types || []).map((rtype, idx) => (
+                        <div key={idx} className="p-3 border border-gray-200 rounded-lg bg-gray-50 relative group">
+                          <button 
+                            type="button" 
+                            onClick={() => removeReactorType(idx)}
+                            className="absolute top-2 right-2 text-gray-400 hover:text-red-500 bg-white rounded-full transition-colors p-1 shadow-sm"
+                            title="Remove reactor type"
+                          >
+                            <X size={14} />
+                          </button>
+                          <div className="space-y-2 max-w-[92%]">
+                            <input 
+                              type="text" 
+                              placeholder="Reactor Title"
+                              value={rtype.title}
+                              onChange={(e) => handleReactorTypeChange(idx, "title", e.target.value)}
+                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:border-secondary"
+                            />
+                            <textarea 
+                              placeholder="Reactor Description"
+                              rows={2}
+                              value={rtype.description}
+                              onChange={(e) => handleReactorTypeChange(idx, "description", e.target.value)}
+                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:border-secondary"
+                            />
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                              <div className="flex-1 w-full">
+                                <label className="block text-xs font-semibold text-gray-700 mb-1">Image</label>
+                                <input 
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => handleReactorImageChange(idx, e)}
+                                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:border-secondary bg-white"
+                                />
+                              </div>
+                              {rtype.image && (
+                                <img src={rtype.image} alt="Preview" className="h-12 w-auto object-contain bg-white border border-gray-200 rounded p-1 shrink-0" />
+                              )}
+                              <label className="flex items-center gap-2 cursor-pointer pt-2 sm:pt-0 shrink-0">
+                                <input 
+                                  type="checkbox"
+                                  checked={rtype.is_important || false}
+                                  onChange={(e) => handleReactorTypeChange(idx, "is_important", e.target.checked)}
+                                  className="rounded text-secondary focus:ring-secondary"
+                                />
+                                <span className="text-sm font-semibold text-gray-700">Important</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {(!formData.reactor_types || formData.reactor_types.length === 0) && (
+                        <p className="text-sm text-gray-500 italic text-center p-4">No reactor types added yet.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Custom Product Statistics */}
+                  <div className="col-span-full border-t border-gray-200 mt-2 pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-bold text-primary">Product Statistics</h3>
+                      <button 
+                        onClick={addStat} 
+                        type="button"
+                        className="text-xs bg-secondary/10 text-secondary hover:bg-secondary hover:text-white px-2 py-1 rounded transition-colors flex items-center gap-1"
+                      >
+                        <Plus size={12} /> Add Stat
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {(formData.stats || []).map((stat, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <input 
+                            type="text" 
+                            placeholder="Value (e.g. 99%)"
+                            value={stat.value}
+                            onChange={(e) => handleStatChange(idx, "value", e.target.value)}
+                            className="w-1/3 px-3 py-2 text-sm font-bold text-secondary border border-gray-300 rounded focus:outline-none focus:border-secondary placeholder:font-normal"
+                          />
+                          <input 
+                            type="text" 
+                            placeholder="Label (e.g. Efficiency Rate)"
+                            value={stat.label}
+                            onChange={(e) => handleStatChange(idx, "label", e.target.value)}
+                            className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-secondary"
+                          />
+                          <button 
+                            type="button" 
+                            onClick={() => removeStat(idx)}
+                            className="text-gray-400 hover:text-red-500 p-2 transition-colors shrink-0"
+                            title="Remove stat"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                      {(!formData.stats || formData.stats.length === 0) && (
+                        <p className="text-sm text-gray-500 italic text-center p-4">No dynamic statistics added yet.</p>
                       )}
                     </div>
                   </div>

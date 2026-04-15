@@ -79,38 +79,47 @@ const EPCServices = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              whileHover={{ y: -6 }}
+              whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-200 hover:border-secondary/30 transition-colors duration-300"
+              className="group relative bg-white border border-gray-200 rounded-xl p-6 md:p-8 hover:border-secondary hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col"
             >
-              
+              {/* Top accent bar */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-secondary to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
+
+              {/* Step number badge */}
+              <div className="absolute top-4 right-5 text-4xl font-black text-gray-50 group-hover:text-secondary/10 transition-colors duration-300 pointer-events-none select-none">
+                0{index + 1}
+              </div>
+
               {/* Icon */}
-              <div className="mb-5">
-                <div className="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center text-3xl text-secondary">
-                  <service.icon />
+              <div className="mb-6 relative">
+                <div className="w-16 h-16 bg-gray-50 group-hover:bg-secondary border border-gray-100 group-hover:border-secondary rounded-2xl flex items-center justify-center transition-all duration-300">
+                  <service.icon className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-300" />
                 </div>
               </div>
 
-              {/* Title */}
-              <h3 className="text-2xl font-bold text-primary mb-3">
-                {service.title}
-              </h3>
+              {/* Content */}
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-secondary transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-5">
+                  {service.description}
+                </p>
 
-              {/* Description */}
-              <p className="text-gray-600 leading-relaxed mb-5">
-                {service.description}
-              </p>
+                {/* Key Points */}
+                <ul className="space-y-2 mt-auto">
+                  {service.points.map((point, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-sm text-gray-500 group-hover:text-gray-700 transition-colors duration-300">
+                      <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>
+                      <span className="font-medium">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              {/* Key Points */}
-              <ul className="space-y-2">
-                {service.points.map((point, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-700">
-                    <div className="w-1.5 h-1.5 bg-secondary rounded-full"></div>
-                    <span className="font-medium">{point}</span>
-                  </li>
-                ))}
-              </ul>
-
+              {/* Bottom accent line */}
+              <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-gradient-to-r from-secondary to-primary group-hover:w-full transition-all duration-700" />
             </motion.div>
           ))}
         </motion.div>

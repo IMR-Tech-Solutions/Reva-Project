@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import api from "../../api/api";
@@ -145,8 +146,8 @@ const LatestNewsSection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-8 text-center"
         >
-          <a
-            href="/news"
+          <Link
+            to="/news"
             className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white font-bold rounded-full hover:shadow-xl transition-all duration-300"
           >
             View all news
@@ -163,7 +164,7 @@ const LatestNewsSection = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -173,8 +174,8 @@ const LatestNewsSection = () => {
 // NEWS CARD
 const NewsCard = ({ article }) => {
   return (
-    <a
-      href={`/news/${article.id}`}
+    <Link
+      to={`/news/${article.slug}`}
       className="group relative block h-[500px] rounded-2xl overflow-hidden shadow-lg border border-gray-100"
     >
       {article.image ? (
@@ -205,7 +206,7 @@ const NewsCard = ({ article }) => {
           </span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

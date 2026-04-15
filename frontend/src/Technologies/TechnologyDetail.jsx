@@ -63,6 +63,7 @@ const TechnologyDetail = () => {
       img={technology.img}
       keysubheading={technology.keysubheading}
       features={technology.features}
+      stats={technology.stats}
     />
   );
 };

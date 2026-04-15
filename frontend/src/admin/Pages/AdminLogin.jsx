@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, LogIn, AlertCircle, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import authService from "../../api/authService";
@@ -127,9 +127,9 @@ const AdminLogin = () => {
 
                 {/* Return to website link */}
                 <div className="text-center mt-8">
-                    <a href="/" className="text-white/50 hover:text-white transition-colors text-sm font-medium">
+                    <Link to="/" className="text-white/50 hover:text-white transition-colors text-sm font-medium">
                         ← Back to Main Website
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -1,18 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const industries = [
-  "Chemicals & Petrochemicals",
-  "Biogas / CBG Plants",
-  "Used Lube Oil Refining",
-  "Pyrolysis Oil Processing",
-  "Phenol-Formaldehyde Resin",
-  "Fuel Gas Desulphurization",
-  "Environmental Technologies",
-  "Wastewater Treatment",
-];
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
-const IndustriesServed = () => {
+const IndustriesServed = ({ section }) => {
+  if (!section) return null;
+
+  const items = section.items || [];
+  const extraData = section.extra_data || {};
+
+  const sectionImage = extraData.image
+    ? extraData.image.startsWith("/api/")
+      ? `${API_BASE}${extraData.image}`
+      : extraData.image
+    : "./hero1.png";
+
   return (
     <section className="py-8 md:py-12 bg-gradient-to-br from-gray-50 to-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
@@ -28,18 +30,18 @@ const IndustriesServed = () => {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
             <span className="text-secondary text-xs sm:text-sm font-bold uppercase tracking-[0.3em]">
-              Sectors Served
+              {section.section_label || "Sectors Served"}
             </span>
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
           </div>
           <h2 className="text-3xl lg:text-5xl font-black text-primary mb-5 leading-tight">
-            Industries We{" "}
-            <span className="text-secondary">Study & Serve</span>
+            {section.title || "Industries We"}{" "}
+            {section.title_highlight && (
+              <span className="text-secondary">{section.title_highlight}</span>
+            )}
           </h2>
           <p className="text-lg text-gray-500 max-w-xl leading-relaxed font-medium mx-auto">
-            Reva conducts feasibility studies and designs pilot plants across a
-            wide range of process industries — from conventional chemicals to
-            emerging green technologies.
+            {section.description}
           </p>
         </motion.div>
 
@@ -56,8 +58,8 @@ const IndustriesServed = () => {
           >
             <div className="relative group">
               <img
-                src="./hero1.png"
-                alt="Reva Pilot Plant and Feasibility Study Projects"
+                src={sectionImage}
+                alt={section.title || "Industries Served"}
                 className="w-full h-96 lg:h-[500px] object-cover rounded-3xl shadow-2xl group-hover:shadow-primary/30 transition-all duration-700 lg:rounded-[3rem]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl lg:rounded-[3rem]" />
@@ -66,14 +68,16 @@ const IndustriesServed = () => {
               <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-br-[60px] rounded-tl-[3rem]" />
 
               {/* Floating badge */}
-              <div className="absolute bottom-8 left-8 bg-white/95 backdrop-blur-sm px-5 py-3 rounded-2xl shadow-xl border-l-4 border-secondary">
-                <p className="text-primary font-bold text-sm leading-none mb-0.5">
-                  Concept to Pilot
-                </p>
-                <p className="text-gray-500 text-xs font-medium">
-                  Across diverse process industries
-                </p>
-              </div>
+              {extraData.image_badge_title && (
+                <div className="absolute bottom-8 left-8 bg-white/95 backdrop-blur-sm px-5 py-3 rounded-2xl shadow-xl border-l-4 border-secondary">
+                  <p className="text-primary font-bold text-sm leading-none mb-0.5">
+                    {extraData.image_badge_title}
+                  </p>
+                  <p className="text-gray-500 text-xs font-medium">
+                    {extraData.image_badge_text}
+                  </p>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -86,16 +90,16 @@ const IndustriesServed = () => {
             className="space-y-6"
           >
             {/* Intro text */}
-            <p className="text-base text-gray-600 leading-relaxed border-l-4 border-primary pl-4">
-              Our documented project references span a wide range of chemistries
-              and process types — reflecting capability in handling complex,
-              multi-disciplinary feasibility and pilot plant scopes.
-            </p>
+            {extraData.intro_text && (
+              <p className="text-base text-gray-600 leading-relaxed border-l-4 border-primary pl-4">
+                {extraData.intro_text}
+              </p>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
-              {industries.map((industry, index) => (
+              {items.map((item, index) => (
                 <motion.div
-                  key={index}
+                  key={item.id || index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -105,28 +109,28 @@ const IndustriesServed = () => {
                 >
                   <div className="w-3 h-3 mt-1.5 bg-gradient-to-r from-primary to-secondary rounded-full flex-shrink-0 shadow-md" />
                   <h3 className="text-base font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300 leading-tight">
-                    {industry}
+                    {item.title}
                   </h3>
                 </motion.div>
               ))}
             </div>
 
-            {/* Bottom note */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {["Oil & Gas", "Hexamine Plants", "Vapour Adsorption", "Carbon Capture"].map(
-                (tag) => (
+            {/* Bottom tags */}
+            {extraData.bottom_tags && extraData.bottom_tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-2">
+                {extraData.bottom_tags.map((tag) => (
                   <span
                     key={tag}
                     className="px-3 py-1.5 bg-primary/5 text-primary text-xs font-semibold rounded-full border border-primary/15 hover:bg-primary/10 transition-colors duration-200"
                   >
                     {tag}
                   </span>
-                )
-              )}
-              <span className="px-3 py-1.5 bg-secondary/10 text-secondary text-xs font-semibold rounded-full border border-secondary/20">
-                + More
-              </span>
-            </div>
+                ))}
+                <span className="px-3 py-1.5 bg-secondary/10 text-secondary text-xs font-semibold rounded-full border border-secondary/20">
+                  + More
+                </span>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

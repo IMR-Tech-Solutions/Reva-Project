@@ -214,7 +214,7 @@ const NewsCard = ({ article }) => {
       transition={{ duration: 0.25 }}
       className="group relative h-[380px] rounded-xl overflow-hidden bg-white border-2 border-gray-200 hover:border-secondary shadow-sm hover:shadow-xl transition-all duration-300"
     >
-      <Link to={`/news/${article.id}`} className="absolute inset-0 z-10" aria-label={`Read article ${article.title}`} />
+      <Link to={`/news/${article.slug}`} className="absolute inset-0 z-10" aria-label={`Read article ${article.title}`} />
 
       {/* Image */}
       <div className="h-48 overflow-hidden relative">

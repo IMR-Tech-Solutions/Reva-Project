@@ -1,12 +1,78 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, JSON
+from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, JSON, ForeignKey
+from sqlalchemy.orm import relationship
 from database import Base
 import datetime
+
+# =====================================================================
+# SERVICE MODULE — 3-table architecture
+# =====================================================================
 
 class Service(Base):
     __tablename__ = "services"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(100), nullable=False)
-    description = Column(Text, nullable=False)
+    title = Column(String(200), nullable=False)
+    slug = Column(String(150), unique=True, index=True, nullable=False)
+    tagline = Column(String(255))
+    description = Column(Text)
+    icon_name = Column(String(100))
+    number = Column(String(10))
+    href = Column(String(200))
+    tags = Column(JSON, default=list)
+
+    # Hero / Banner
+    hero_breadcrumb = Column(String(255))
+    hero_title = Column(String(255))
+    hero_highlight = Column(String(255))
+    hero_description = Column(Text)
+    hero_pills = Column(JSON, default=list)
+    hero_image = Column(String(500))
+    hero_stat_title = Column(String(255))
+    hero_stat_text = Column(String(255))
+    hero_cta1_text = Column(String(150))
+    hero_cta1_link = Column(String(255))
+    hero_cta2_text = Column(String(150))
+    hero_cta2_link = Column(String(255))
+
+    # Display
+    is_active = Column(Boolean, default=True)
+    display_order = Column(Integer, default=0)
+
+    # Relationships
+    sections = relationship("ServiceSection", back_populates="service", cascade="all, delete-orphan", order_by="ServiceSection.display_order")
+
+
+class ServiceSection(Base):
+    __tablename__ = "service_sections"
+    id = Column(Integer, primary_key=True, index=True)
+    service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"), nullable=False)
+    section_key = Column(String(100))
+    section_label = Column(String(200))
+    title = Column(String(255))
+    title_highlight = Column(String(255))
+    description = Column(Text)
+    image = Column(String(500))
+    extra_data = Column(JSON, default=dict)
+    display_order = Column(Integer, default=0)
+
+    # Relationships
+    service = relationship("Service", back_populates="sections")
+    items = relationship("SectionItem", back_populates="section", cascade="all, delete-orphan", order_by="SectionItem.display_order")
+
+
+class SectionItem(Base):
+    __tablename__ = "section_items"
+    id = Column(Integer, primary_key=True, index=True)
+    section_id = Column(Integer, ForeignKey("service_sections.id", ondelete="CASCADE"), nullable=False)
+    title = Column(String(255))
+    description = Column(Text)
+    icon_name = Column(String(100))
+    image = Column(String(500))
+    step_number = Column(String(10))
+    extra_data = Column(JSON, default=dict)
+    display_order = Column(Integer, default=0)
+
+    # Relationships
+    section = relationship("ServiceSection", back_populates="items")
 
 class Product(Base):
     __tablename__ = "products"
@@ -21,6 +87,8 @@ class Product(Base):
     keysubheading = Column(Text)
     features = Column(JSON)
     applications = Column(JSON)
+    reactor_types = Column(JSON, default=list)
+    stats = Column(JSON, default=list)
 
 class NewsArticle(Base):
     __tablename__ = "news"
@@ -127,6 +195,7 @@ class Technology(Base):
     img = Column(Text)
     keysubheading = Column(Text)
     features = Column(JSON)
+    stats = Column(JSON, default=list) # List of {label, value}
 
 class ContactSetting(Base):
     __tablename__ = "contact_settings"

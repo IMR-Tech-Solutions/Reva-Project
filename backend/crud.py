@@ -55,9 +55,121 @@ def delete_career_application(db: Session, application_id: int):
         db.commit()
     return db_application
 
-# General CRUD functions for other models can be added here
-def get_services(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Service).offset(skip).limit(limit).all()
+# =====================================================================
+# SERVICE MODULE CRUD
+# =====================================================================
+from sqlalchemy.orm import joinedload
+
+# --- Services ---
+def get_all_services(db: Session):
+    """Admin: all services ordered by display_order"""
+    return db.query(models.Service).order_by(models.Service.display_order.asc()).all()
+
+def get_active_services(db: Session):
+    """Public: active services only"""
+    return db.query(models.Service).filter(models.Service.is_active == True).order_by(models.Service.display_order.asc()).all()
+
+def get_service_by_slug(db: Session, slug: str):
+    """Get single service with all sections and items"""
+    return db.query(models.Service).options(
+        joinedload(models.Service.sections).joinedload(models.ServiceSection.items)
+    ).filter(models.Service.slug == slug).first()
+
+def get_service_by_id(db: Session, service_id: int):
+    """Get single service by ID with all sections and items"""
+    return db.query(models.Service).options(
+        joinedload(models.Service.sections).joinedload(models.ServiceSection.items)
+    ).filter(models.Service.id == service_id).first()
+
+def create_service(db: Session, service_data: dict):
+    db_service = models.Service(**service_data)
+    db.add(db_service)
+    db.commit()
+    db.refresh(db_service)
+    return db_service
+
+def update_service(db: Session, service_id: int, service_data: dict):
+    db_service = db.query(models.Service).filter(models.Service.id == service_id).first()
+    if not db_service:
+        return None
+    for key, value in service_data.items():
+        if value is not None:
+            setattr(db_service, key, value)
+    db.commit()
+    db.refresh(db_service)
+    return db_service
+
+def delete_service(db: Session, service_id: int):
+    db_service = db.query(models.Service).filter(models.Service.id == service_id).first()
+    if db_service:
+        db.delete(db_service)
+        db.commit()
+    return db_service
+
+def reorder_services(db: Session, ordered_ids: list):
+    for idx, sid in enumerate(ordered_ids):
+        db.query(models.Service).filter(models.Service.id == sid).update({"display_order": idx + 1})
+    db.commit()
+
+# --- Service Sections ---
+def create_section(db: Session, service_id: int, section_data: dict):
+    db_section = models.ServiceSection(service_id=service_id, **section_data)
+    db.add(db_section)
+    db.commit()
+    db.refresh(db_section)
+    return db_section
+
+def update_section(db: Session, section_id: int, section_data: dict):
+    db_section = db.query(models.ServiceSection).filter(models.ServiceSection.id == section_id).first()
+    if not db_section:
+        return None
+    for key, value in section_data.items():
+        if value is not None:
+            setattr(db_section, key, value)
+    db.commit()
+    db.refresh(db_section)
+    return db_section
+
+def delete_section(db: Session, section_id: int):
+    db_section = db.query(models.ServiceSection).filter(models.ServiceSection.id == section_id).first()
+    if db_section:
+        db.delete(db_section)
+        db.commit()
+    return db_section
+
+def reorder_sections(db: Session, service_id: int, ordered_ids: list):
+    for idx, sid in enumerate(ordered_ids):
+        db.query(models.ServiceSection).filter(
+            models.ServiceSection.id == sid,
+            models.ServiceSection.service_id == service_id
+        ).update({"display_order": idx + 1})
+    db.commit()
+
+# --- Section Items ---
+def create_item(db: Session, section_id: int, item_data: dict):
+    db_item = models.SectionItem(section_id=section_id, **item_data)
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def update_item(db: Session, item_id: int, item_data: dict):
+    db_item = db.query(models.SectionItem).filter(models.SectionItem.id == item_id).first()
+    if not db_item:
+        return None
+    for key, value in item_data.items():
+        if value is not None:
+            setattr(db_item, key, value)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def delete_item(db: Session, item_id: int):
+    db_item = db.query(models.SectionItem).filter(models.SectionItem.id == item_id).first()
+    if db_item:
+        db.delete(db_item)
+        db.commit()
+    return db_item
 
 # Products
 def get_products(db: Session, skip: int = 0, limit: int = 100):

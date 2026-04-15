@@ -108,29 +108,34 @@ const ManufacturingServices = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              whileHover={{ y: -6, boxShadow: "0 12px 24px rgba(0,0,0,0.08)" }}
+              whileHover={{ y: -5 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="group relative bg-white border border-gray-200 rounded-2xl p-6 overflow-hidden cursor-pointer hover:border-secondary/30"
+              className="group relative bg-white border border-gray-200 rounded-xl p-6 flex flex-col h-full transition-all duration-300 hover:border-secondary hover:shadow-lg overflow-hidden"
             >
-              {/* Decorative blob */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-secondary/5 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Top accent bar */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-secondary to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+
+              {/* Step number badge */}
+              <div className="absolute top-4 right-5 text-4xl font-black text-gray-50 group-hover:text-secondary/10 transition-colors duration-300 pointer-events-none select-none">
+                0{index + 1}
+              </div>
 
               {/* Icon */}
-              <div className="relative mb-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:bg-secondary/10 transition-all duration-300 text-primary group-hover:text-secondary">
-                  <service.icon className="w-6 h-6" />
+              <div className="mb-6 relative">
+                <div className="w-16 h-16 bg-gray-50 group-hover:bg-secondary border border-gray-100 group-hover:border-secondary rounded-2xl flex items-center justify-center transition-all duration-300">
+                  <service.icon className="w-8 h-8 text-primary group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
                 </div>
               </div>
 
-              {/* Title */}
-              <h3 className="relative text-base sm:text-lg font-bold text-primary mb-2 group-hover:text-secondary transition-colors duration-300">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="relative text-xs sm:text-sm text-gray-600 leading-relaxed">
-                {service.description}
-              </p>
+              {/* Content */}
+              <div className="relative z-10 flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-primary group-hover:text-secondary transition-colors duration-300 mb-2 leading-tight">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-gray-500 leading-relaxed">
+                  {service.description}
+                </p>
+              </div>
 
               {/* Bottom accent line */}
               <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-secondary to-primary group-hover:w-full transition-all duration-500" />
