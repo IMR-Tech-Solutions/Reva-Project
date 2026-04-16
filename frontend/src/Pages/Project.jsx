@@ -426,7 +426,7 @@ const ProjectManagement = () => {
                      px-8 py-3.5 bg-secondary text-white font-bold rounded-xl
                      hover:bg-secondary/90 transition-all duration-300"
               >
-                Contact Us <FiArrowRight />
+                Contact Us
               </Link>
               <Link
                 to="/about"

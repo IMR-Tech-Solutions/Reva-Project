@@ -9,7 +9,7 @@ const industries = [
     description:
       'Techno-economic feasibility studies and pilot plant design to de-risk scale-up before full investment.',
     image: './industry1.jpg',
-    link: '/feasibility',
+    link: '/services/feasibility',
     tag: 'De-Risk First',
   },
   {
@@ -18,7 +18,7 @@ const industries = [
     description:
       'Design basis, PFDs, heat & mass balances, equipment sizing, P&IDs, and HAZID — complete BEP ready for detailed engineering.',
     image: './industry2.jpg',
-    link: '/BasicEngineering',
+    link: '/services/BasicEngineering',
     tag: 'Engineering Foundation',
   },
   {
@@ -27,7 +27,7 @@ const industries = [
     description:
       'Multi-discipline IFC-level construction packages with 3D modeling, piping, civil, structural, and instrumentation.',
     image: './industry3.jpg',
-    link: '/detailed',
+    link: '/services/detailed',
     tag: 'Execution-Ready',
   },
   {
@@ -36,7 +36,7 @@ const industries = [
     description:
       'Vendor evaluation, PO placement, active expediting, and pre-dispatch inspection — engineering-backed and schedule-driven.',
     image: './industry4.jpg',
-    link: '/procurement',
+    link: '/services/procurement',
     tag: 'Right Quality. Right Time.',
   },
   {
@@ -45,7 +45,7 @@ const industries = [
     description:
       'Integrated EPC execution framework — schedule control, cost management, risk mitigation, and stakeholder reporting.',
     image: '/hero1.png',
-    link: '/project',
+    link: '/services/basic',
     tag: 'On-Time. On-Budget.',
   },
   {
@@ -54,7 +54,7 @@ const industries = [
     description:
       'Precision equipment fabrication, on-site erection, and cold/hot commissioning through to performance-proven handover.',
     image: '/hero3.png',
-    link: '/site',
+    link: '/services/site',
     tag: 'Concept to Handover',
   },
 ];
@@ -186,15 +186,6 @@ const IndustriesSection = () => {
                   {/* CTA */}
                   <div className="flex items-center gap-1.5 text-secondary font-bold text-xs mt-0.5 group-hover:gap-2.5 transition-all duration-300">
                     <span>Explore Service</span>
-                    <svg
-                      className="w-3.5 h-3.5 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
                   </div>
                 </div>
 
@@ -218,14 +209,6 @@ const IndustriesSection = () => {
             className="group inline-flex items-center gap-2.5 bg-primary text-white font-semibold px-7 py-3.5 rounded-lg hover:bg-secondary transition-all duration-300 shadow-md hover:shadow-lg text-sm"
           >
             View All Services
-            <svg
-              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
           </Link>
         </motion.div>
 

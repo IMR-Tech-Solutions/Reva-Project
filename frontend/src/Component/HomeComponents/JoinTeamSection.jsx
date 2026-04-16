@@ -106,14 +106,14 @@ const JoinTeamSection = () => {
       {/* Animated background patterns */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      
+
       {/* Geometric patterns */}
       <div className="absolute top-10 left-10 w-20 h-20 border-2 border-secondary/20 rounded-lg rotate-45" />
       <div className="absolute bottom-20 right-20 w-32 h-32 border-2 border-gray-500/20 rounded-full" />
 
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          
+
           {/* Left Side - Content (7 columns) */}
           <motion.div
             variants={containerVariants}
@@ -131,7 +131,7 @@ const JoinTeamSection = () => {
             </motion.h3>
 
             {/* Heading */}
-            <motion.h2 
+            <motion.h2
               variants={itemVariants}
               className="text-3xl md:text-4xl lg:text-4xl font-bold leading-tight mb-6 text-white"
             >
@@ -144,7 +144,7 @@ const JoinTeamSection = () => {
             </motion.h2>
 
             {/* Description */}
-            <motion.p 
+            <motion.p
               variants={itemVariants}
               className="text-base md:text-lg text-gray-100 leading-relaxed mb-8"
             >
@@ -152,7 +152,7 @@ const JoinTeamSection = () => {
             </motion.p>
 
             {/* Benefits Grid */}
-            <motion.div 
+            <motion.div
               variants={itemVariants}
               className="grid grid-cols-2 gap-4 mb-8"
             >
@@ -178,16 +178,13 @@ const JoinTeamSection = () => {
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base md:text-lg font-bold rounded-full hover:bg-gray-500/90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 Explore careers
-                <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
               </Link>
-              <Link
+              {/* <Link
                 to="#"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-white/30 text-white text-base md:text-lg font-bold rounded-full hover:bg-white/10 hover:border-white/50 transition-all duration-300"
               >
                 Our culture
-              </Link>
+              </Link> */}
             </motion.div>
           </motion.div>
 
@@ -206,7 +203,7 @@ const JoinTeamSection = () => {
                 alt="Team collaboration"
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              
+
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
 

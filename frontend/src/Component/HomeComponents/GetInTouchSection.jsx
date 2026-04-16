@@ -344,16 +344,6 @@ const GetInTouchSection = () => {
                 className="group w-full py-4 bg-secondary text-white font-bold text-sm rounded-lg hover:bg-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 uppercase tracking-[0.18em] flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {submitting ? "Sending..." : "Send Message"}
-                {!submitting && (
-                  <svg
-                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                )}
               </button>
 
               <p className="text-xs text-gray-500 text-center">

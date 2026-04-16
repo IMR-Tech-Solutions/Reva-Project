@@ -461,7 +461,6 @@ const ProcurementQuality = ({ section }) => {
               className="group mt-5 inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white text-sm font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-md hover:shadow-lg"
             >
               {getExtra(section.extra_data, "cta_button_text")}
-              <ArrowRightCircle className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </motion.div>
 

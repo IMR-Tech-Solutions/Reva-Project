@@ -498,7 +498,7 @@ const AdminServices = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             {showForm && (
-              <button onClick={backToList} className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-2 transition-colors"><ArrowLeft size={16} />Back to Services</button>
+              <button onClick={backToList} className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-2 transition-colors">Back to Services</button>
             )}
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary">
               Services <span className="text-secondary">Management</span>
@@ -593,7 +593,7 @@ const AdminServices = () => {
                 </div>
                 {renderInput("Description", "description", "Service description...", "textarea")}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {renderInput("Route / href", "href", "/feasibility")}
+                  {renderInput("Route / href", "href", "/services/feasibility")}
                   {renderInput("Tags (comma-separated)", "tags", "Technical Feasibility, Pilot Plant Design")}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

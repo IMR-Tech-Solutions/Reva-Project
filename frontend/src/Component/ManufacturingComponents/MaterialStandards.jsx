@@ -2,16 +2,16 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const standards = {
-  software: [
-    "Aspen HYSYS / Aspen Plus",
-    "AVEVA E3D / PDMS",
-    "AutoCAD Plant 3D",
-    "SmartPlant P&ID",
-    "HTRI (Heat Transfer)",
-    "Caesar II (Pipe Stress)",
-    "PV Elite (Vessel Design)",
-    "STAAD.Pro (Structural)",
-  ],
+  // software: [
+  //   "Aspen HYSYS / Aspen Plus",
+  //   "AVEVA E3D / PDMS",
+  //   "AutoCAD Plant 3D",
+  //   "SmartPlant P&ID",
+  //   "HTRI (Heat Transfer)",
+  //   "Caesar II (Pipe Stress)",
+  //   "PV Elite (Vessel Design)",
+  //   "STAAD.Pro (Structural)",
+  // ],
   deliverables: [
     "PFDs & P&IDs (IFC Issue)",
     "Equipment Datasheets & Specs",
@@ -52,12 +52,12 @@ const itemVariants = {
 };
 
 const columns = [
-  {
-    key: "software",
-    title: "Software & Tools",
-    icon: "💻",
-    label: "01",
-  },
+  // {
+  //   key: "software",
+  //   title: "Software & Tools",
+  //   icon: "💻",
+  //   label: "01",
+  // },
   {
     key: "deliverables",
     title: "Key Deliverables",

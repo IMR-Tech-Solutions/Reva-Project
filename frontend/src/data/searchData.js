@@ -40,7 +40,7 @@ export const searchData = [
   {
     title: "Feasibility & Pilot Plant Study",
     description: "Comprehensive feasibility studies evaluating technical viability, economic returns, environmental impact, and regulatory compliance — plus pilot plant design to de-risk scale-up.",
-    url: "/feasibility",
+    url: "/services/feasibility",
     keywords: [
       "feasibility study", "pilot plant", "techno-economic", "technical feasibility",
       "economic viability", "scale-up", "process validation", "regulatory compliance"
@@ -49,7 +49,7 @@ export const searchData = [
   {
     title: "Basic Engineering",
     description: "Simulation-backed basic engineering covering design basis, PFDs, heat & mass balances, equipment sizing, P&IDs, and HAZID — complete Basic Engineering Package (BEP) ready for detailed engineering.",
-    url: "/BasicEngineering",
+    url: "/services/BasicEngineering",
     keywords: [
       "basic engineering", "PFD", "P&ID", "heat mass balance", "equipment sizing",
       "design basis", "BEP", "HAZID", "process simulation", "HYSYS", "aspen plus"
@@ -58,7 +58,7 @@ export const searchData = [
   {
     title: "Detailed Engineering",
     description: "Multi-discipline detailed engineering across process, piping, mechanical, civil, structural, electrical, and instrumentation — IFC-level construction packages with 3D modeling and clash detection.",
-    url: "/detailed",
+    url: "/services/detailed",
     keywords: [
       "detailed engineering", "IFC", "piping", "isometrics", "3D modeling",
       "civil", "structural", "electrical", "instrumentation", "clash detection", "AVEVA"
@@ -67,7 +67,7 @@ export const searchData = [
   {
     title: "Procurement & Expediting",
     description: "End-to-end procurement from specification preparation and vendor evaluation through PO placement, active expediting, and pre-dispatch inspection — engineering-backed and schedule-driven.",
-    url: "/procurement",
+    url: "/services/procurement",
     keywords: [
       "procurement", "expediting", "vendor evaluation", "techno-commercial",
       "purchase order", "PO", "inspection", "supplier", "materials", "logistics"
@@ -76,7 +76,7 @@ export const searchData = [
   {
     title: "EPC Project Management",
     description: "Dedicated EPC project management integrating engineering, procurement, and construction — schedule control, cost management, risk mitigation, and stakeholder reporting.",
-    url: "/project",
+    url: "/services/project",
     keywords: [
       "project management", "EPC", "schedule control", "cost management",
       "risk management", "milestone tracking", "stakeholder", "planning", "execution"
@@ -85,7 +85,7 @@ export const searchData = [
   {
     title: "Manufacturing & Site Services",
     description: "Precision fabrication of process equipment and on-site installation, supervision, and commissioning — ASME-certified with full NDT, testing, and documentation.",
-    url: "/site",
+    url: "/services/site",
     keywords: [
       "manufacturing", "fabrication", "site services", "erection", "installation",
       "commissioning", "ASME", "NDT", "pressure vessel", "piping spools", "skid"

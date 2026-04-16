@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getAllTechnologies } from "../services/technologiesApi";
 import { getAllProducts } from "../services/productsApi";
 import { Link } from "react-router-dom";
+import { getContactSettings } from "../services/contactApi";
+import api from "../api/api";
 import {
   FaLinkedin,
   FaTwitter,
@@ -20,12 +22,12 @@ const Footer = () => {
       { name: "Contact Us", href: "/contact" },
     ],
     services: [
-      { name: "Feasibility & Pilot Plant Study", href: "/Feasibility" },
-      { name: "Basic Engineering", href: "/BasicEngineering" },
-      { name: "Detailed Engineering", href: "/detailed" },
-      { name: "Procurement", href: "/procurement" },
-      { name: "EPC Project Management", href: "/basic" },
-      { name: "Manufacturing & Site Services", href: "/site" },
+      { name: "Feasibility & Pilot Plant Study", href: "/services/feasibility" },
+      { name: "Basic Engineering", href: "/services/BasicEngineering" },
+      { name: "Detailed Engineering", href: "/services/detailed" },
+      { name: "Procurement", href: "/services/procurement" },
+      { name: "EPC Project Management", href: "/services/basic" },
+      { name: "Manufacturing & Site Services", href: "/services/site" },
     ],
     technologies: [
       { name: "Amine System", href: "/amine" },
@@ -47,6 +49,8 @@ const Footer = () => {
 
   const [techLinks, setTechLinks] = useState(footerLinks.technologies);
   const [productLinks, setProductLinks] = useState(footerLinks.products);
+  const [settings, setSettings] = useState(null);
+  const [generalSettings, setGeneralSettings] = useState(null);
 
   useEffect(() => {
     const fetchFooterTechs = async () => {
@@ -69,9 +73,27 @@ const Footer = () => {
         console.error("Failed to load footer products:", err);
       }
     };
+    const fetchContactSettings = async () => {
+      try {
+        const data = await getContactSettings();
+        setSettings(data);
+      } catch (err) {
+        console.error("Failed to load contact settings:", err);
+      }
+    };
+    const fetchGeneralSettings = async () => {
+      try {
+        const data = await api.getSettings();
+        setGeneralSettings(data);
+      } catch (err) {
+        console.error("Failed to load general settings:", err);
+      }
+    };
     fetchFooterTechs();
     fetchFooterProducts();
-  }, []); 
+    fetchContactSettings();
+    fetchGeneralSettings();
+  }, []);
 
   return (
     <footer className="w-full bg-gradient-to-br from-primary via-[#1e2d6f] to-primary text-white relative overflow-hidden">
@@ -91,16 +113,16 @@ const Footer = () => {
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
 
       {/* Main Content */}
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12 py-12 md:py-16 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-8 md:py-12 relative z-10">
         {/* Top Section */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
+        <div className="flex flex-wrap lg:flex-nowrap gap-x-10 gap-y-8 mb-6">
           {/* Logo & Description */}
-          <div className="lg:col-span-1">
+          <div className="w-full lg:w-[30%] shrink-0">
             <div className="flex items-center gap-3 mb-4 group">
               <img
                 src="./logo12.png"
                 alt="REVA"
-                className="h-24 drop-shadow-2xl transition-transform duration-300 group-hover:scale-105"
+                className="h-20 drop-shadow-2xl transition-transform duration-300 group-hover:scale-105"
               />
             </div>
 
@@ -108,14 +130,13 @@ const Footer = () => {
             <div className="h-1 w-20 bg-gradient-to-r from-secondary to-transparent rounded-full mb-4" />
 
             <p className="text-white/90 leading-relaxed mb-6 max-w-md font-light">
-              Leading provider of innovative process engineering and technology
-              solutions worldwide.
+              {generalSettings?.site_description || "Leading provider of innovative process engineering and technology solutions worldwide."}
             </p>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
               <a
-                href="https://linkedin.com"
+                href={settings?.social_linkedin || "https://linkedin.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
@@ -125,7 +146,7 @@ const Footer = () => {
                 <FaLinkedin className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://twitter.com"
+                href={settings?.social_twitter || "https://twitter.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
@@ -135,7 +156,7 @@ const Footer = () => {
                 <FaTwitter className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://facebook.com"
+                href={settings?.social_facebook || "https://facebook.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
@@ -145,7 +166,7 @@ const Footer = () => {
                 <FaFacebookF className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://instagram.com"
+                href={settings?.social_instagram || "https://instagram.com"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
@@ -157,16 +178,18 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Company */}
+          {/* Links Sections Grid */}
+          <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6">
+            {/* Company */}
           <div className="group">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
               <h4 className="text-base font-bold text-white tracking-wide">
                 Company
               </h4>
             </div>
-            <ul className="space-y-2">
-                {footerLinks.company.map((link, index) => (
+            <ul className="space-y-1.5">
+              {footerLinks.company.map((link, index) => (
                 <li key={index}>
                   <Link
                     to={link.href}
@@ -184,14 +207,14 @@ const Footer = () => {
 
           {/* Services */}
           <div className="group">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
               <h4 className="text-base font-bold text-white tracking-wide">
                 Services
               </h4>
             </div>
-            <ul className="space-y-2">
-                {footerLinks.services.map((link, index) => (
+            <ul className="space-y-1.5">
+              {footerLinks.services.map((link, index) => (
                 <li key={index}>
                   <Link
                     to={link.href}
@@ -209,13 +232,13 @@ const Footer = () => {
 
           {/* Technologies */}
           <div className="group">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
               <h4 className="text-base font-bold text-white tracking-wide">
                 Technologies
               </h4>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {techLinks.map((link, index) => (
                 <li key={index}>
                   <Link
@@ -240,7 +263,7 @@ const Footer = () => {
                 Products
               </h4>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {productLinks.map((link, index) => (
                 <li key={index}>
                   <Link
@@ -257,6 +280,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
+      </div>
 
         {/* Bottom Section */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">

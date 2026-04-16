@@ -122,15 +122,6 @@ const WorkInActionSection = () => {
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 View Our Projects
-                <svg
-                  className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
               </Link>
             </motion.div>
           </motion.div>

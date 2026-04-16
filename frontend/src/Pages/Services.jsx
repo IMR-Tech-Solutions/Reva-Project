@@ -168,11 +168,16 @@ const ServicesSection = () => {
 
                       {/* CTA link */}
                       <Link
-                        to={service.href || `/services/${service.slug}`}
+                        to={
+                          service.href 
+                            ? (service.href.startsWith('/') && !service.href.startsWith('/services') 
+                                ? `/services${service.href}` 
+                                : service.href)
+                            : `/services/${service.slug}`
+                        }
                         className="inline-flex items-center gap-2 text-secondary text-xs font-black uppercase tracking-widest transition-all duration-300 hover:gap-3"
                       >
                         <span>Learn More</span>
-                        <ArrowRight className="w-4 h-4" />
                       </Link>
                     </div>
                   </motion.div>

@@ -178,19 +178,6 @@ const HeroHomeSection = () => {
                   className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white font-semibold rounded hover:bg-secondary/90 transition-all duration-300 text-base md:text-lg shadow-lg hover:shadow-xl"
                 >
                   {currentSlide.button_text}
-                  <svg
-                    className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
                 </motion.a>
               )}
             </motion.div>

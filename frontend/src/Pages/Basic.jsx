@@ -108,7 +108,6 @@ const EPCHero = ({ service }) => {
                 className="group inline-flex items-center justify-center gap-3 bg-secondary text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-secondary/90 hover:shadow-lg transition-all duration-300 text-sm sm:text-base cursor-pointer"
               >
                 {service.hero_cta1_text}
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </MotionLink>
             )}
 

@@ -15,13 +15,13 @@ const Breadcrumb = ({ title: customTitle }) => {
     
     // Services (from Header dropdown)
     '/services': 'Our Services',
-    '/feasibility': 'Feasibility & Pilot Plant Study',
-    '/BasicEngineering': 'Basic Engineering',
-    '/detailed': 'Detailed Engineering',
-    '/procurement': 'Procurement',
-    '/basic': 'EPC Project Management',
-    '/site': 'Manufacturing & Site Services',
-    '/project': 'Project Management',
+    '/services/feasibility': 'Feasibility & Pilot Plant Study',
+    '/services/BasicEngineering': 'Basic Engineering',
+    '/services/detailed': 'Detailed Engineering',
+    '/services/procurement': 'Procurement',
+    '/services/basic': 'EPC Project Management',
+    '/services/site': 'Manufacturing & Site Services',
+    '/services/project': 'Project Management',
     
     // Footer Links - Company
     '/career': 'Careers',
@@ -96,7 +96,7 @@ const Breadcrumb = ({ title: customTitle }) => {
 
   // Define service detail paths or prefixes that should show "Our Services" in breadcrumb
   const serviceDetailPaths = [
-    '/feasibility', '/BasicEngineering', '/detailed', '/procurement', '/basic', '/site', '/project'
+    '/services/feasibility', '/services/BasicEngineering', '/services/detailed', '/services/procurement', '/services/basic', '/services/site', '/services/project'
     
   ];
 

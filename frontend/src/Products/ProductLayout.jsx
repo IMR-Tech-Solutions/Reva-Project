@@ -57,12 +57,7 @@ const ProductLayout = ({
               <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-3">{paragraph1}</p>
               <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-8">{paragraph2}</p>
 
-              <div className="flex items-center gap-2 mb-8">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-white/50 text-xs font-semibold uppercase tracking-widest">
-                  In Stock & Ready to Ship
-                </span>
-              </div>
+             
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
@@ -72,7 +67,7 @@ const ProductLayout = ({
                text-sm rounded-xl hover:bg-secondary/90
                transition-all duration-300"
                 >
-                  Request Quote <FiArrowRight className="text-xs" />
+                  Request Quote
                 </Link>
                 <Link
                   to="/services"
@@ -200,9 +195,7 @@ const ProductLayout = ({
                 </p>
 
                 {/* Arrow */}
-                <FiArrowRight className="hidden sm:block shrink-0 text-gray-200
-                                         group-hover:text-secondary group-hover:translate-x-1
-                                         transition-all duration-300 text-lg" />
+                
               </motion.div>
             ))}
           </div>
@@ -376,7 +369,7 @@ const ProductLayout = ({
                               px-6 py-3 bg-secondary text-white font-bold text-sm
                               rounded-xl hover:bg-secondary/90 transition-all duration-300
                               whitespace-nowrap">
-                  Contact Us <FiArrowRight className="text-xs" />
+                  Contact Us
                 </Link>
                 {/* <Link to="/products"
                    className="inline-flex items-center justify-center gap-2

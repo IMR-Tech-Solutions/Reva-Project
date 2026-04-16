@@ -65,7 +65,6 @@ const NewsDetail = () => {
                      bg-primary text-white font-bold rounded-xl
                      hover:bg-secondary transition-all duration-300"
         >
-          <FiArrowLeft className="text-sm" />
           Return to All News
         </Link>
       </div>
@@ -119,7 +118,6 @@ const NewsDetail = () => {
                              bg-primary text-white font-bold rounded-xl
                              hover:bg-secondary transition-all duration-300"
                 >
-                  <FiArrowLeft className="text-sm" />
                   All News
                 </Link>
                 <Link
@@ -139,7 +137,7 @@ const NewsDetail = () => {
                   to="/news"
                   className="text-sm font-bold text-primary hover:text-secondary flex items-center gap-2"
                 >
-                  <FiArrowLeft /> Back to News List
+                  Back to News List
                 </Link>
               </div>
             </motion.div>
@@ -211,7 +209,7 @@ const NewsDetail = () => {
                              bg-secondary text-white text-xs font-bold rounded-xl
                              hover:bg-secondary/90 transition-all duration-300 relative z-10"
                 >
-                  Contact Us <FiArrowRight className="text-xs" />
+                  Contact Us
                 </Link>
               </div>
             </motion.aside>

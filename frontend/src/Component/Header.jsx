@@ -131,7 +131,7 @@ const Header = () => {
       {/* HEADER */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${isScrolled || !isHomePage
-            ? "bg-white shadow-md"
+            ? "bg-white/85 shadow-md"
             : "bg-gradient-to-b from-black/40 to-transparent"
           }`}
       >

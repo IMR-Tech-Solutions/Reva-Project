@@ -30,7 +30,7 @@ const TechnologyLayout = ({
   ];
 
   return (
-    <div className="bg-background min-h-screen text-text">
+    <div className="bg-background min-h-screen text-text ">
       {/* BREADCRUMB */}
       <div className="bg-white border-b border-gray-100 shadow-sm">
         <Breadcrumb />
@@ -41,23 +41,14 @@ const TechnologyLayout = ({
         <div className="max-w-7xl mx-auto px-6 lg:px-16">
           {/* Meta row */}
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-gray-400 mb-1">
-                Technology
-              </p>
-              {title && (
-                <p className="text-sm font-semibold text-gray-600">
-                  {title}
-                </p>
-              )}
-            </div>
+           
 
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2 text-[11px] text-gray-500">
-                
-               
+
+
               </div>
-             
+
             </div>
           </div>
 
@@ -86,23 +77,13 @@ const TechnologyLayout = ({
                 </div>
 
                 {/* Small “spec label” badge */}
-                <div className="absolute bottom-5 left-5 z-20 px-4 py-2 bg-white border border-gray-200 rounded-md shadow-sm flex items-center gap-3">
+                <div className="">
                   <div className="flex flex-col">
-                    <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400">
-                      Category
-                    </span>
-                    <span className="text-xs font-semibold text-primary">
-                      Process Technology
-                    </span>
+                    
                   </div>
-                  <span className="hidden sm:inline-block w-px h-8 bg-gray-200" />
+                 
                   <div className="hidden sm:flex flex-col">
-                    <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400">
-                      Application
-                    </span>
-                    <span className="text-xs font-semibold text-gray-700">
-                      Refinery · Petrochem · Waste
-                    </span>
+                   
                   </div>
                 </div>
               </div>
@@ -268,7 +249,7 @@ const TechnologyLayout = ({
                   to="/contact"
                   className="px-6 py-3 bg-secondary hover:bg-yellow-400 text-text font-bold text-sm rounded-lg transition-colors duration-200 shadow-md whitespace-nowrap"
                 >
-                  Get In Touch →
+                  Get In Touch
                 </Link>
                 <Link
                   to="/about"

@@ -588,7 +588,6 @@ const DetailedCTA = ({ section }) => {
                 className="px-8 py-4 bg-secondary text-white font-bold rounded-xl hover:bg-secondary/90 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
               >
                 {getExtra(section.extra_data, "button1_text")}
-                <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to={getExtra(section.extra_data, "button2_link", "/services")}
