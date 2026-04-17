@@ -93,7 +93,7 @@ class Product(Base):
 class NewsArticle(Base):
     __tablename__ = "news"
     id = Column(Integer, primary_key=True, index=True)
-    image = Column(String(500), nullable=True)
+    image = Column(Text, nullable=True)
     category = Column(String(50))
     title = Column(String(150), nullable=False)
     slug = Column(String(200), unique=True, index=True)

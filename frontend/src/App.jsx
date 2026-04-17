@@ -41,6 +41,7 @@ import AdminLogin from "./admin/Pages/AdminLogin";
 import ProtectedRoute from "./admin/Layout/ProtectedRoute";
 
 import { Toaster } from "react-hot-toast";
+import NotFound from "./Pages/NotFound";
 
 const App = () => {
   return (
@@ -62,6 +63,7 @@ const App = () => {
             <Route path="/services/procurement" element={<Procurement />} />
             <Route path="/services/project" element={<Project />} />
             <Route path="/services/site" element={<Site />} />
+           
 
             {/* Technology Routes */}
             <Route path="/technology/:slug" element={<TechnologyDetail />} />
@@ -92,6 +94,7 @@ const App = () => {
               <Route path="/admin/strategic-advice" element={<AdminStrategicAdvice />} />
             </Route>
           </Route>
+           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Router>
     </>
