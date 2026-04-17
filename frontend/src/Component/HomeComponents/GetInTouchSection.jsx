@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { getContactSettings, submitContactMessage } from "../../services/contactApi";
 import toast, { Toaster } from "react-hot-toast";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from "react";
 
 const GetInTouchSection = () => {
   const [settings, setSettings] = useState(null);
-  
+  const [isNotRobot, setIsNotRobot] = useState(false);
+  const recaptchaRef = useRef(null);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+
   const initialFormState = {
     full_name: "",
     company_name: "",
@@ -14,7 +19,7 @@ const GetInTouchSection = () => {
     project_type: "",
     message_body: ""
   };
-  
+
   const [formData, setFormData] = useState(initialFormState);
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,14 +40,45 @@ const GetInTouchSection = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //   //   if (!isNotRobot) {
+  //   //   alert("Please confirm you are not a robot.");
+  //   //   return;  // stops form from submitting
+  //   // }
+  //   if (!captchaVerified) {
+  //   alert("Please complete the CAPTCHA verification.");
+  //   return;
+  // }
+  //     setSubmitting(true);
+
+  //     try {
+  //       await submitContactMessage(formData);
+  //       toast.success("Message sent successfully! We will get back to you soon.");
+  //       setFormData(initialFormState); // reset
+  //     } catch (error) {
+  //       toast.error("Failed to send message. Please try again later.");
+  //       console.error(error);
+  //     } finally {
+  //       setSubmitting(false);
+  //     }
+  //   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!captchaVerified) {
+      alert("Please complete the CAPTCHA verification.");
+      return;
+    }
+
     setSubmitting(true);
-    
+
     try {
       await submitContactMessage(formData);
       toast.success("Message sent successfully! We will get back to you soon.");
-      setFormData(initialFormState); // reset
+      setFormData(initialFormState);
+      recaptchaRef.current.reset();
+      setCaptchaVerified(false);
     } catch (error) {
       toast.error("Failed to send message. Please try again later.");
       console.error(error);
@@ -338,14 +374,34 @@ const GetInTouchSection = () => {
                 />
               </div>
 
+              {/* I am not a Robot */}
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LeBHrUsAAAAAMQmVbgg5cFk6HQBCsMj8FKTEKpk"
+                onChange={(token) => {
+                  if (token) setCaptchaVerified(true);
+                }}
+                onExpired={() => setCaptchaVerified(false)}
+              />
+
+              {/* Submit Button - unchanged */}
               <button
                 type="submit"
                 disabled={submitting}
                 className="group w-full py-4 bg-secondary text-white font-bold text-sm rounded-lg hover:bg-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 uppercase tracking-[0.18em] flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {submitting ? "Sending..." : "Send Message"}
+                {!submitting && (
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                )}
               </button>
-
               <p className="text-xs text-gray-500 text-center">
                 By submitting this form, you agree to our privacy policy. We never share your data with third parties.
               </p>

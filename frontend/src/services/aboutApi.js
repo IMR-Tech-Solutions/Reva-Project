@@ -1,6 +1,6 @@
 import authService from "../api/authService";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 const aboutApi = {
   // Get all about data (Public)

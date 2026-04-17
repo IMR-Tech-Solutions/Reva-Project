@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -62,16 +62,19 @@ TECHNOLOGIES_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 from fastapi.staticfiles import StaticFiles
 app.mount("/api/uploads", StaticFiles(directory=Path(__file__).parent / "uploads"), name="uploads")
 
-@app.get("/")
+# --- API Router Setup ---
+api_router = APIRouter()
+
+@api_router.get("/")
 async def root():
     return {"message": "Welcome to the Reva API"}
 
-@app.get("/health")
+@api_router.get("/health")
 async def health():
     return {"status": "healthy"}
 
 # --- Auth Dependencies ---
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
 async def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -98,7 +101,7 @@ async def get_current_active_admin(current_user: models.AdminUser = Depends(get_
     return current_user
 
 # --- Authentication API ---
-@app.post("/auth/login", response_model=schemas.Token)
+@api_router.post("/auth/login", response_model=schemas.Token)
 def login_for_access_token(login_data: schemas.LoginRequest, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=login_data.email)
     if not user or not verify_password(login_data.password, user.hashed_password):
@@ -110,46 +113,46 @@ def login_for_access_token(login_data: schemas.LoginRequest, db: Session = Depen
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
 
-@app.get("/auth/me", response_model=schemas.UserRead)
+@api_router.get("/auth/me", response_model=schemas.UserRead)
 async def read_users_me(current_user: models.AdminUser = Depends(get_current_active_admin)):
     return current_user
 
-@app.get("/auth/stats", response_model=schemas.AdminDashboardStats)
+@api_router.get("/auth/stats", response_model=schemas.AdminDashboardStats)
 def get_dashboard_stats(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.get_admin_dashboard_stats(db)
 
 # --- News API ---
-@app.get("/news", response_model=List[schemas.News])
+@api_router.get("/news", response_model=List[schemas.News])
 def read_news(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     news_articles = crud.get_news(db, skip=skip, limit=limit)
     return news_articles
 
-@app.post("/news", response_model=schemas.News)
+@api_router.post("/news", response_model=schemas.News)
 def create_news_article(news: schemas.NewsCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_news(db=db, news=news)
 
-@app.get("/news/{news_id}", response_model=schemas.News)
+@api_router.get("/news/{news_id}", response_model=schemas.News)
 def read_news_article(news_id: int, db: Session = Depends(get_db)):
     db_news = db.query(models.NewsArticle).filter(models.NewsArticle.id == news_id).first()
     if not db_news:
         raise HTTPException(status_code=404, detail="News article not found")
     return db_news
 
-@app.get("/news/slug/{slug}", response_model=schemas.News)
+@api_router.get("/news/slug/{slug}", response_model=schemas.News)
 def read_news_article_by_slug(slug: str, db: Session = Depends(get_db)):
     db_news = db.query(models.NewsArticle).filter(models.NewsArticle.slug == slug).first()
     if not db_news:
         raise HTTPException(status_code=404, detail="News article not found")
     return db_news
 
-@app.put("/news/{news_id}", response_model=schemas.News)
+@api_router.put("/news/{news_id}", response_model=schemas.News)
 def update_news_article(news_id: int, news: schemas.NewsCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_news = crud.update_news(db=db, news_id=news_id, news=news)
     if not db_news:
         raise HTTPException(status_code=404, detail="News article not found")
     return db_news
 
-@app.delete("/news/{news_id}")
+@api_router.delete("/news/{news_id}")
 def delete_news_article(news_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_news = crud.delete_news(db=db, news_id=news_id)
     if not db_news:
@@ -157,23 +160,23 @@ def delete_news_article(news_id: int, db: Session = Depends(get_db), current_use
     return {"message": "News article deleted successfully"}
 
 # --- Career Positions API ---
-@app.get("/career/positions", response_model=List[schemas.CareerPosition])
+@api_router.get("/career/positions", response_model=List[schemas.CareerPosition])
 def read_career_positions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     positions = crud.get_career_positions(db, skip=skip, limit=limit)
     return positions
 
-@app.post("/career/positions", response_model=schemas.CareerPosition)
+@api_router.post("/career/positions", response_model=schemas.CareerPosition)
 def create_career_position(position: schemas.CareerPositionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_career_position(db=db, position=position)
 
-@app.put("/career/positions/{position_id}", response_model=schemas.CareerPosition)
+@api_router.put("/career/positions/{position_id}", response_model=schemas.CareerPosition)
 def update_career_position(position_id: int, position: schemas.CareerPositionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_position = crud.update_career_position(db=db, position_id=position_id, position=position)
     if not db_position:
         raise HTTPException(status_code=404, detail="Position not found")
     return db_position
 
-@app.delete("/career/positions/{position_id}")
+@api_router.delete("/career/positions/{position_id}")
 def delete_career_position(position_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_position = crud.delete_career_position(db=db, position_id=position_id)
     if not db_position:
@@ -181,12 +184,12 @@ def delete_career_position(position_id: int, db: Session = Depends(get_db), curr
     return {"message": "Position deleted successfully"}
 
 # --- Career Applications API ---
-@app.get("/career/applications", response_model=List[schemas.CareerApplication])
+@api_router.get("/career/applications", response_model=List[schemas.CareerApplication])
 def read_career_applications(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     applications = crud.get_career_applications(db, skip=skip, limit=limit)
     return applications
 
-@app.post("/career/applications", response_model=schemas.CareerApplication)
+@api_router.post("/career/applications", response_model=schemas.CareerApplication)
 def create_career_application(
     name: str = Form(...),
     email: str = Form(...),
@@ -275,7 +278,7 @@ def create_career_application(
         print(f"✗ Application creation error: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Failed to create application: {str(e)}")
 
-@app.patch("/career/applications/{application_id}/status", response_model=schemas.CareerApplication)
+@api_router.patch("/career/applications/{application_id}/status", response_model=schemas.CareerApplication)
 def update_application_status(application_id: int, status: str = None, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     """Update application status and send email notifications."""
     
@@ -323,7 +326,7 @@ def update_application_status(application_id: int, status: str = None, db: Sessi
     print(f"✓ Status update complete - ID: {application_id}")
     return db_application
 
-@app.delete("/career/applications/{application_id}")
+@api_router.delete("/career/applications/{application_id}")
 def delete_career_application(application_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_application = crud.delete_career_application(db=db, application_id=application_id)
     if not db_application:
@@ -331,11 +334,11 @@ def delete_career_application(application_id: int, db: Session = Depends(get_db)
     return {"message": "Application deleted successfully"}
 
 # Career Page Content Endpoints
-@app.get("/career/content", response_model=schemas.CareerContent)
+@api_router.get("/career/content", response_model=schemas.CareerContent)
 def get_career_content(db: Session = Depends(get_db)):
     return crud.get_career_content(db)
 
-@app.put("/career/content", response_model=schemas.CareerContent)
+@api_router.put("/career/content", response_model=schemas.CareerContent)
 async def update_career_content(
     hero_title: Optional[str] = Form(None),
     hero_subtitle: Optional[str] = Form(None),
@@ -385,7 +388,7 @@ async def update_career_content(
     )
     return crud.update_career_content(db=db, content_update=content_data)
 
-@app.get("/career/applications/{application_id}/download-resume")
+@api_router.get("/career/applications/{application_id}/download-resume")
 def download_resume(application_id: int, db: Session = Depends(get_db)):
     """Download the resume file for an application."""
     # Get the application
@@ -457,18 +460,18 @@ def download_resume(application_id: int, db: Session = Depends(get_db)):
     )
 
 # --- Products API ---
-@app.get("/products", response_model=List[schemas.Product])
+@api_router.get("/products", response_model=List[schemas.Product])
 def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_products(db, skip=skip, limit=limit)
 
-@app.get("/products/{product_id}", response_model=schemas.Product)
+@api_router.get("/products/{product_id}", response_model=schemas.Product)
 def read_product(product_id: int, db: Session = Depends(get_db)):
     db_product = crud.get_product(db, product_id=product_id)
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
     return db_product
 
-@app.get("/products/path/{path:path}", response_model=schemas.Product)
+@api_router.get("/products/path/{path:path}", response_model=schemas.Product)
 def read_product_by_path(path: str, db: Session = Depends(get_db)):
     # if path starts with a slash, we can query it that way depending on how it's stored.
     # but since it's passed via URL, wait, FastAPI might strip it or we just use path:path
@@ -483,18 +486,18 @@ def read_product_by_path(path: str, db: Session = Depends(get_db)):
         return db_product_with_slash
     return db_product
 
-@app.post("/products", response_model=schemas.Product)
+@api_router.post("/products", response_model=schemas.Product)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_product(db=db, product=product)
 
-@app.put("/products/{product_id}", response_model=schemas.Product)
+@api_router.put("/products/{product_id}", response_model=schemas.Product)
 def update_product(product_id: int, product: schemas.ProductCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_product = crud.update_product(db=db, product_id=product_id, product=product)
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
     return db_product
 
-@app.delete("/products/{product_id}")
+@api_router.delete("/products/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_product = crud.delete_product(db=db, product_id=product_id)
     if not db_product:
@@ -502,36 +505,36 @@ def delete_product(product_id: int, db: Session = Depends(get_db), current_user:
     return {"message": "Product deleted successfully"}
 
 # --- Technologies API ---
-@app.get("/technologies", response_model=List[schemas.Technology])
+@api_router.get("/technologies", response_model=List[schemas.Technology])
 def read_technologies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_technologies(db, skip=skip, limit=limit)
 
-@app.get("/technologies/{tech_id}", response_model=schemas.Technology)
+@api_router.get("/technologies/{tech_id}", response_model=schemas.Technology)
 def read_technology(tech_id: int, db: Session = Depends(get_db)):
     db_tech = crud.get_technology(db, tech_id=tech_id)
     if not db_tech:
         raise HTTPException(status_code=404, detail="Technology not found")
     return db_tech
 
-@app.get("/technologies/slug/{slug}", response_model=schemas.Technology)
+@api_router.get("/technologies/slug/{slug}", response_model=schemas.Technology)
 def read_technology_by_slug(slug: str, db: Session = Depends(get_db)):
     db_tech = crud.get_technology_by_slug(db, slug=slug)
     if not db_tech:
         raise HTTPException(status_code=404, detail="Technology not found")
     return db_tech
 
-@app.post("/technologies", response_model=schemas.Technology)
+@api_router.post("/technologies", response_model=schemas.Technology)
 def create_technology(tech: schemas.TechnologyCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_technology(db=db, tech=tech)
 
-@app.put("/technologies/{tech_id}", response_model=schemas.Technology)
+@api_router.put("/technologies/{tech_id}", response_model=schemas.Technology)
 def update_technology(tech_id: int, tech: schemas.TechnologyCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_tech = crud.update_technology(db=db, tech_id=tech_id, tech=tech)
     if not db_tech:
         raise HTTPException(status_code=404, detail="Technology not found")
     return db_tech
 
-@app.delete("/technologies/{tech_id}")
+@api_router.delete("/technologies/{tech_id}")
 def delete_technology(tech_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_tech = crud.delete_technology(db=db, tech_id=tech_id)
     if not db_tech:
@@ -540,18 +543,18 @@ def delete_technology(tech_id: int, db: Session = Depends(get_db), current_user:
 
 # --- Contact API ---
 
-@app.get("/contact/settings", response_model=schemas.ContactSetting)
+@api_router.get("/contact/settings", response_model=schemas.ContactSetting)
 def get_contact_settings(db: Session = Depends(get_db)):
     settings = crud.get_contact_settings(db)
     if not settings:
         raise HTTPException(status_code=404, detail="Contact settings not found")
     return settings
 
-@app.put("/contact/settings", response_model=schemas.ContactSetting)
+@api_router.put("/contact/settings", response_model=schemas.ContactSetting)
 def update_contact_settings(settings: schemas.ContactSettingCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.update_contact_settings(db=db, settings=settings)
 
-@app.post("/contact/messages", response_model=schemas.ContactMessage)
+@api_router.post("/contact/messages", response_model=schemas.ContactMessage)
 def create_contact_message(message: schemas.ContactMessageCreate, db: Session = Depends(get_db)):
     # Save the message
     saved_msg = crud.create_contact_message(db=db, message=message)
@@ -571,18 +574,18 @@ def create_contact_message(message: schemas.ContactMessageCreate, db: Session = 
         
     return saved_msg
 
-@app.get("/contact/messages", response_model=List[schemas.ContactMessage])
+@api_router.get("/contact/messages", response_model=List[schemas.ContactMessage])
 def get_contact_messages(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.get_contact_messages(db)
 
-@app.put("/contact/messages/{message_id}/read", response_model=schemas.ContactMessage)
+@api_router.put("/contact/messages/{message_id}/read", response_model=schemas.ContactMessage)
 def mark_message_read(message_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_msg = crud.mark_message_read(db, message_id=message_id)
     if not db_msg:
         raise HTTPException(status_code=404, detail="Message not found")
     return db_msg
 
-@app.delete("/contact/messages/{message_id}", response_model=schemas.ContactMessage)
+@api_router.delete("/contact/messages/{message_id}", response_model=schemas.ContactMessage)
 def delete_contact_message(message_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     db_msg = crud.delete_contact_message(db, message_id=message_id)
     if not db_msg:
@@ -591,7 +594,7 @@ def delete_contact_message(message_id: int, db: Session = Depends(get_db), curre
 
 # --- About Us API ---
 
-@app.get("/about", response_model=schemas.AboutFullResponse)
+@api_router.get("/about", response_model=schemas.AboutFullResponse)
 def get_about_full(db: Session = Depends(get_db)):
     content = crud.get_about_content(db)
     if not content:
@@ -606,14 +609,14 @@ def get_about_full(db: Session = Depends(get_db)):
         "testimonials": crud.get_testimonials(db)
     }
 
-@app.get("/about/content", response_model=schemas.AboutContent)
+@api_router.get("/about/content", response_model=schemas.AboutContent)
 def get_about_content(db: Session = Depends(get_db)):
     content = crud.get_about_content(db)
     if not content:
         raise HTTPException(status_code=404, detail="About content not found")
     return content
 
-@app.put("/about/content", response_model=schemas.AboutContent)
+@api_router.put("/about/content", response_model=schemas.AboutContent)
 async def update_about_content(
     hero_title: str = Form(...),
     hero_subtitle: Optional[str] = Form(None),
@@ -704,19 +707,19 @@ async def update_about_content(
     return crud.update_about_content(db=db, about=about_data)
 
 # Testimonial Endpoints
-@app.get("/about/testimonials", response_model=List[schemas.Testimonial])
+@api_router.get("/about/testimonials", response_model=List[schemas.Testimonial])
 def get_testimonials(db: Session = Depends(get_db)):
     return crud.get_testimonials(db)
 
-@app.post("/about/testimonials", response_model=schemas.Testimonial)
+@api_router.post("/about/testimonials", response_model=schemas.Testimonial)
 def create_testimonial(testimonial: schemas.TestimonialCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_testimonial(db, testimonial)
 
-@app.put("/about/testimonials/{testimonial_id}", response_model=schemas.Testimonial)
+@api_router.put("/about/testimonials/{testimonial_id}", response_model=schemas.Testimonial)
 def update_testimonial(testimonial_id: int, testimonial: schemas.TestimonialCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.update_testimonial(db, testimonial_id, testimonial)
 
-@app.delete("/about/testimonials/{testimonial_id}")
+@api_router.delete("/about/testimonials/{testimonial_id}")
 def delete_testimonial(testimonial_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     res = crud.delete_testimonial(db, testimonial_id)
     if not res:
@@ -724,11 +727,11 @@ def delete_testimonial(testimonial_id: int, db: Session = Depends(get_db), curre
     return {"message": "Testimonial deleted"}
 
 # Team Member Endpoints
-@app.get("/about/team", response_model=List[schemas.TeamMember])
+@api_router.get("/about/team", response_model=List[schemas.TeamMember])
 def get_team_members(db: Session = Depends(get_db)):
     return crud.get_team_members(db)
 
-@app.post("/about/team", response_model=schemas.TeamMember)
+@api_router.post("/about/team", response_model=schemas.TeamMember)
 async def create_team_member(
     name: str = Form(...),
     role: str = Form(...),
@@ -758,7 +761,7 @@ async def create_team_member(
     )
     return crud.create_team_member(db, member_data)
 
-@app.put("/about/team/{member_id}", response_model=schemas.TeamMember)
+@api_router.put("/about/team/{member_id}", response_model=schemas.TeamMember)
 async def update_team_member(
     member_id: int,
     name: str = Form(...),
@@ -791,7 +794,7 @@ async def update_team_member(
     )
     return crud.update_team_member(db, member_id, member_data)
 
-@app.delete("/about/team/{member_id}")
+@api_router.delete("/about/team/{member_id}")
 def delete_team_member(member_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     member = crud.delete_team_member(db, member_id)
     if not member:
@@ -799,15 +802,15 @@ def delete_team_member(member_id: int, db: Session = Depends(get_db), current_us
     return {"message": "Team member deleted"}
 
 # Company Values
-@app.post("/about/values", response_model=schemas.ValueIndicator)
+@api_router.post("/about/values", response_model=schemas.ValueIndicator)
 def create_company_value(val: schemas.ValueIndicatorCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_company_value(db, val)
 
-@app.put("/about/values/{val_id}", response_model=schemas.ValueIndicator)
+@api_router.put("/about/values/{val_id}", response_model=schemas.ValueIndicator)
 def update_company_value(val_id: int, val: schemas.ValueIndicatorCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.update_company_value(db, val_id, val)
 
-@app.delete("/about/values/{val_id}")
+@api_router.delete("/about/values/{val_id}")
 def delete_company_value(val_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     val = crud.delete_company_value(db, val_id)
     if not val:
@@ -815,15 +818,15 @@ def delete_company_value(val_id: int, db: Session = Depends(get_db), current_use
     return {"message": "Value indicator deleted"}
 
 # Differentiators
-@app.post("/about/differentiators", response_model=schemas.Differentiator)
+@api_router.post("/about/differentiators", response_model=schemas.Differentiator)
 def create_differentiator(diff: schemas.DifferentiatorCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_differentiator(db, diff)
 
-@app.put("/about/differentiators/{diff_id}", response_model=schemas.Differentiator)
+@api_router.put("/about/differentiators/{diff_id}", response_model=schemas.Differentiator)
 def update_differentiator(diff_id: int, diff: schemas.DifferentiatorCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.update_differentiator(db, diff_id, diff)
 
-@app.delete("/about/differentiators/{diff_id}")
+@api_router.delete("/about/differentiators/{diff_id}")
 def delete_differentiator(diff_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     diff = crud.delete_differentiator(db, diff_id)
     if not diff:
@@ -831,11 +834,11 @@ def delete_differentiator(diff_id: int, db: Session = Depends(get_db), current_u
     return {"message": "Differentiator deleted"}
 
 # --- Home Hero API ---
-@app.get("/home/hero", response_model=List[schemas.HomeHeroSlide])
+@api_router.get("/home/hero", response_model=List[schemas.HomeHeroSlide])
 def get_home_hero_slides(db: Session = Depends(get_db)):
     return crud.get_home_hero_slides(db)
 
-@app.post("/home/hero", response_model=schemas.HomeHeroSlide)
+@api_router.post("/home/hero", response_model=schemas.HomeHeroSlide)
 async def create_home_hero_slide(
     small_text: str = Form(...),
     heading: str = Form(...),
@@ -875,7 +878,7 @@ async def create_home_hero_slide(
     )
     return crud.create_home_hero_slide(db, slide_data)
 
-@app.put("/home/hero/{slide_id}", response_model=schemas.HomeHeroSlide)
+@api_router.put("/home/hero/{slide_id}", response_model=schemas.HomeHeroSlide)
 async def update_home_hero_slide(
     slide_id: int,
     small_text: str = Form(...),
@@ -918,13 +921,13 @@ async def update_home_hero_slide(
         raise HTTPException(status_code=404, detail="Slide not found")
     return db_slide
 
-@app.delete("/home/hero/{slide_id}")
+@api_router.delete("/home/hero/{slide_id}")
 def delete_home_hero_slide(slide_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     crud.delete_home_hero_slide(db, slide_id)
     return {"message": "Slide deleted successfully"}
 
 # --- Home About API ---
-@app.get("/home/about", response_model=schemas.HomeAboutContent)
+@api_router.get("/home/about", response_model=schemas.HomeAboutContent)
 def get_home_about_content(db: Session = Depends(get_db)):
     content = crud.get_home_about_content(db)
     if not content:
@@ -932,7 +935,7 @@ def get_home_about_content(db: Session = Depends(get_db)):
         content = crud.update_home_about_content(db, schemas.HomeAboutContentCreate(heading="Welcome to Reva"))
     return content
 
-@app.put("/home/about", response_model=schemas.HomeAboutContent)
+@api_router.put("/home/about", response_model=schemas.HomeAboutContent)
 async def update_home_about_content(
     description: str = Form(...),
     heading: str = Form(""),
@@ -991,14 +994,14 @@ async def update_home_about_content(
     return crud.update_home_about_content(db, about_data)
 
 # --- Strategic Advice API ---
-@app.get("/home/strategic-advice", response_model=schemas.StrategicAdvice)
+@api_router.get("/home/strategic-advice", response_model=schemas.StrategicAdvice)
 def get_strategic_advice(db: Session = Depends(get_db)):
     content = crud.get_strategic_advice(db)
     if not content:
         content = crud.update_strategic_advice(db, schemas.StrategicAdviceCreate(heading="Strategic Advice"))
     return content
 
-@app.put("/home/strategic-advice", response_model=schemas.StrategicAdvice)
+@api_router.put("/home/strategic-advice", response_model=schemas.StrategicAdvice)
 async def update_strategic_advice(
     label: Optional[str] = Form(None),
     heading: Optional[str] = Form(None),
@@ -1043,7 +1046,7 @@ async def update_strategic_advice(
     return crud.update_strategic_advice(db, advice_data)
 
 # --- Legal Content APIs ---
-@app.get("/legal/{type}", response_model=schemas.LegalContent)
+@api_router.get("/legal/{type}", response_model=schemas.LegalContent)
 def get_legal_content(type: str, db: Session = Depends(get_db)):
     content = crud.get_legal_content(db, type)
     if not content:
@@ -1051,7 +1054,7 @@ def get_legal_content(type: str, db: Session = Depends(get_db)):
         return schemas.LegalContent(type=type, title=type.capitalize(), sections=[], last_updated="Not set")
     return content
 
-@app.put("/legal/{type}", response_model=schemas.LegalContent)
+@api_router.put("/legal/{type}", response_model=schemas.LegalContent)
 def update_legal_content(
     type: str, 
     data: schemas.LegalContentCreate, 
@@ -1061,11 +1064,11 @@ def update_legal_content(
     return crud.update_legal_content(db, type, data)
 
 # --- Site Settings APIs ---
-@app.get("/settings", response_model=schemas.SiteSettings)
+@api_router.get("/settings", response_model=schemas.SiteSettings)
 def get_site_settings(db: Session = Depends(get_db)):
     return crud.get_site_settings(db)
 
-@app.put("/settings", response_model=schemas.SiteSettings)
+@api_router.put("/settings", response_model=schemas.SiteSettings)
 def update_site_settings(
     data: schemas.SiteSettingsCreate, 
     db: Session = Depends(get_db),
@@ -1078,12 +1081,12 @@ def update_site_settings(
 # =====================================================================
 
 # --- Public Endpoints ---
-@app.get("/services", response_model=List[schemas.ServiceCard])
+@api_router.get("/services", response_model=List[schemas.ServiceCard])
 def get_active_services(db: Session = Depends(get_db)):
     """Public: Get all active services for the All Services page"""
     return crud.get_active_services(db)
 
-@app.get("/services/{slug}", response_model=schemas.ServiceFull)
+@api_router.get("/services/{slug}", response_model=schemas.ServiceFull)
 def get_service_by_slug(slug: str, db: Session = Depends(get_db)):
     """Public: Get a single service with all sections and items"""
     service = crud.get_service_by_slug(db, slug)
@@ -1092,12 +1095,12 @@ def get_service_by_slug(slug: str, db: Session = Depends(get_db)):
     return service
 
 # --- Admin Service Endpoints ---
-@app.get("/admin/services", response_model=List[schemas.ServiceAdmin])
+@api_router.get("/admin/services", response_model=List[schemas.ServiceAdmin])
 def admin_get_all_services(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     """Admin: Get all services including inactive"""
     return crud.get_all_services(db)
 
-@app.get("/admin/services/{service_id}", response_model=schemas.ServiceFull)
+@api_router.get("/admin/services/{service_id}", response_model=schemas.ServiceFull)
 def admin_get_service(service_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     """Admin: Get single service with sections and items"""
     service = crud.get_service_by_id(db, service_id)
@@ -1105,66 +1108,66 @@ def admin_get_service(service_id: int, db: Session = Depends(get_db), current_us
         raise HTTPException(status_code=404, detail="Service not found")
     return service
 
-@app.post("/admin/services", response_model=schemas.ServiceAdmin)
+@api_router.post("/admin/services", response_model=schemas.ServiceAdmin)
 def admin_create_service(service: schemas.ServiceCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_service(db, service.model_dump())
 
-@app.put("/admin/services/{service_id}", response_model=schemas.ServiceAdmin)
+@api_router.put("/admin/services/{service_id}", response_model=schemas.ServiceAdmin)
 def admin_update_service(service_id: int, service: schemas.ServiceUpdate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.update_service(db, service_id, service.model_dump(exclude_unset=True))
     if not result:
         raise HTTPException(status_code=404, detail="Service not found")
     return result
 
-@app.delete("/admin/services/{service_id}")
+@api_router.delete("/admin/services/{service_id}")
 def admin_delete_service(service_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.delete_service(db, service_id)
     if not result:
         raise HTTPException(status_code=404, detail="Service not found")
     return {"message": "Service deleted successfully"}
 
-@app.put("/admin/services/reorder")
+@api_router.put("/admin/services/reorder")
 def admin_reorder_services(ordered_ids: List[int], db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     crud.reorder_services(db, ordered_ids)
     return {"message": "Services reordered successfully"}
 
 # --- Admin Section Endpoints ---
-@app.post("/admin/services/{service_id}/sections", response_model=schemas.ServiceSection)
+@api_router.post("/admin/services/{service_id}/sections", response_model=schemas.ServiceSection)
 def admin_create_section(service_id: int, section: schemas.ServiceSectionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_section(db, service_id, section.model_dump())
 
-@app.put("/admin/sections/{section_id}", response_model=schemas.ServiceSection)
+@api_router.put("/admin/sections/{section_id}", response_model=schemas.ServiceSection)
 def admin_update_section(section_id: int, section: schemas.ServiceSectionCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.update_section(db, section_id, section.model_dump(exclude_unset=True))
     if not result:
         raise HTTPException(status_code=404, detail="Section not found")
     return result
 
-@app.delete("/admin/sections/{section_id}")
+@api_router.delete("/admin/sections/{section_id}")
 def admin_delete_section(section_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.delete_section(db, section_id)
     if not result:
         raise HTTPException(status_code=404, detail="Section not found")
     return {"message": "Section deleted successfully"}
 
-@app.put("/admin/services/{service_id}/sections/reorder")
+@api_router.put("/admin/services/{service_id}/sections/reorder")
 def admin_reorder_sections(service_id: int, ordered_ids: List[int], db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     crud.reorder_sections(db, service_id, ordered_ids)
     return {"message": "Sections reordered successfully"}
 
 # --- Admin Item Endpoints ---
-@app.post("/admin/sections/{section_id}/items", response_model=schemas.SectionItem)
+@api_router.post("/admin/sections/{section_id}/items", response_model=schemas.SectionItem)
 def admin_create_item(section_id: int, item: schemas.SectionItemCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     return crud.create_item(db, section_id, item.model_dump())
 
-@app.put("/admin/items/{item_id}", response_model=schemas.SectionItem)
+@api_router.put("/admin/items/{item_id}", response_model=schemas.SectionItem)
 def admin_update_item(item_id: int, item: schemas.SectionItemCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.update_item(db, item_id, item.model_dump(exclude_unset=True))
     if not result:
         raise HTTPException(status_code=404, detail="Item not found")
     return result
 
-@app.delete("/admin/items/{item_id}")
+@api_router.delete("/admin/items/{item_id}")
 def admin_delete_item(item_id: int, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
     result = crud.delete_item(db, item_id)
     if not result:
@@ -1172,7 +1175,7 @@ def admin_delete_item(item_id: int, db: Session = Depends(get_db), current_user:
     return {"message": "Item deleted successfully"}
 
 # --- Service Image Upload ---
-@app.post("/admin/services/upload-image")
+@api_router.post("/admin/services/upload-image")
 async def upload_service_image(
     image: UploadFile = File(...),
     current_user: models.AdminUser = Depends(get_current_active_admin)
@@ -1187,7 +1190,7 @@ async def upload_service_image(
     url = f"/api/uploads/services/{filename}"
     return {"url": url, "filename": filename}
 
-@app.post("/admin/technologies/upload-image")
+@api_router.post("/admin/technologies/upload-image")
 async def upload_technology_image(
     image: UploadFile = File(...),
     current_user: models.AdminUser = Depends(get_current_active_admin)
@@ -1201,6 +1204,10 @@ async def upload_technology_image(
         shutil.copyfileobj(image.file, buffer)
     url = f"/api/uploads/technologies/{filename}"
     return {"url": url, "filename": filename}
+
+
+# Include the API router with /api prefix
+app.include_router(api_router, prefix="/api")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
