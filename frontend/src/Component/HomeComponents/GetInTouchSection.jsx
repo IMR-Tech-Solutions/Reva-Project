@@ -377,7 +377,7 @@ const GetInTouchSection = () => {
               {/* I am not a Robot */}
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6LdDIrwsAAAAACOUpAapTkprwQCB5mgB1zcd62-w"
+                sitekey={`${import.meta.env.VITE_SITE_KEY}`}
                 onChange={(token) => {
                   if (token) setCaptchaVerified(true);
                 }}

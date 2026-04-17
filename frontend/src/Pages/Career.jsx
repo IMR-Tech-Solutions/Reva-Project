@@ -669,7 +669,7 @@ const Career = () => {
               {/* I am not a Robot */}
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey="6LeBHrUsAAAAAMQmVbgg5cFk6HQBCsMj8FKTEKpk"
+                sitekey={`${import.meta.env.VITE_SITE_KEY}`}
                 onChange={(token) => {
                   if (token) setCaptchaVerified(true);
                 }}
