@@ -26,8 +26,7 @@ from jose import JWTError, jwt
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Reva API", description="Dynamic Backend for Reva Project")
-
+app = FastAPI(title="Reva API", debug=True,description="Dynamic Backend for Reva Project")
 # Enable CORS (allowing your frontend to talk to the backend)
 app.add_middleware(
     CORSMiddleware,
@@ -40,7 +39,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Create uploads directory if it doesn't exist
 UPLOADS_DIR = Path(__file__).parent / "uploads" / "resumes"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
