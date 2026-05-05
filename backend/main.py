@@ -107,11 +107,18 @@ def login_for_access_token(login_data: schemas.LoginRequest, db: Session = Depen
     if not user or not verify_password(login_data.password, user.hashed_password):
         raise HTTPException(
             status_code=401,
-            detail="Incorrect email or password",
+            detail="Incorrect password or not found user",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
+
+@api_router.post("/auth/register", response_model=schemas.UserRead)
+def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    return crud.create_admin_user(db=db, user=user)
 
 @api_router.get("/auth/me", response_model=schemas.UserRead)
 async def read_users_me(current_user: models.AdminUser = Depends(get_current_active_admin)):

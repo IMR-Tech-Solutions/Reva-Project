@@ -65,6 +65,7 @@ const NewsDetail = () => {
                      bg-primary text-white font-bold rounded-xl
                      hover:bg-secondary transition-all duration-300"
         >
+          <FiArrowLeft className="text-sm" />
           Return to All News
         </Link>
       </div>

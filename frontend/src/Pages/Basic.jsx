@@ -76,7 +76,7 @@ const EPCHero = ({ service }) => {
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10">
         {/* Left Side - Content */}
         <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="order-2 lg:order-1 flex flex-col gap-5">
-          <motion.span initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-xs sm:text-sm uppercase tracking-widest text-secondary font-semibold">
+          <motion.span initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-xs sm:text-sm uppercase tracking-widest text-primary font-semibold">
             {service.hero_breadcrumb || `Services / ${service.title}`}
           </motion.span>
 
@@ -151,7 +151,7 @@ const EPCServices = ({ section }) => {
     <section className="bg-gray-50 py-8 md:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-3xl mb-12 md:mb-14">
-          <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full mb-4">
+          <span className="inline-block px-4 py-2 bg-primary/10 text-primary uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full mb-4">
             {section.section_label || "Complete EPC Delivery"}
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-4">
@@ -202,7 +202,7 @@ const ProjectLifecycle = ({ section }) => {
     <section className="py-8 md:py-12 bg-[hsl(220,15%,98%)]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center mb-8 lg:mb-12 max-w-3xl mx-auto">
-          <span className="inline-block bg-[#F4B400]/10 text-[#F4B400] px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-6">
+          <span className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wider mb-6">
             {section.section_label || "Project Execution"}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6 leading-tight">
@@ -251,7 +251,7 @@ const EPCCapabilities = ({ section }) => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
-          <span className="inline-flex items-center gap-2 px-4 py-2 text-secondary uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full mb-4">
+          <span className="inline-flex items-center gap-2 px-4 py-2 text-primary uppercase tracking-widest text-xs sm:text-sm font-bold rounded-full mb-4">
             <span className="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
             {section.section_label || "Project Delivery Models"}
           </span>
@@ -292,7 +292,7 @@ const EPCAdvantages = ({ section }) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <div className="grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-2 items-center">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-            <span className="inline-block px-3 py-1.5 bg-secondary/10 text-secondary uppercase tracking-widest text-xs font-bold rounded-full mb-4">
+            <span className="inline-block px-3 py-1.5 bg-primary/10 text-primary uppercase tracking-widest text-xs font-bold rounded-full mb-4">
               {section.section_label || "The Reva Advantage"}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4 leading-tight">

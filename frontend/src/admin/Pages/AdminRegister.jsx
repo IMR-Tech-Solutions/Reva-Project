@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, LogIn, AlertCircle, ShieldCheck } from "lucide-react";
+import { Mail, Lock, User, UserPlus, AlertCircle, ShieldCheck } from "lucide-react";
 import toast from "react-hot-toast";
 import authService from "../../api/authService";
 
-const AdminLogin = () => {
+const AdminRegister = () => {
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -19,15 +21,39 @@ const AdminLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Basic Validation
+        if (!fullName || !email || !password || !confirmPassword) {
+            toast.error("Please fill in all fields.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match.");
+            return;
+        }
+
+        if (password.length < 6) {
+            toast.error("Password should be at least 6 characters.");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            await authService.login(email, password);
-            toast.success("Login Successful! Welcome to Reva Admin.");
-            navigate("/admin/dashboard");
+            const userData = {
+                full_name: fullName,
+                email: email,
+                password: password,
+                is_active: true,
+                is_admin: true // Defaulting to admin for this specific use case
+            };
+            await authService.register(userData);
+            toast.success("Registration Successful! Please login.");
+            navigate("/admin/login");
         } catch (error) {
-            console.error("Login Error:", error);
-            toast.error("Incorrect password or not found user");
+            console.error("Registration Error:", error);
+            toast.error(typeof error === 'string' ? error : "Registration failed. Email might already exist.");
         } finally {
             setLoading(false);
         }
@@ -48,13 +74,33 @@ const AdminLogin = () => {
                         <ShieldCheck size={32} className="text-secondary" />
                     </div>
                     <h1 className="text-3xl font-bold text-white tracking-tight">Reva Admin</h1>
-                    <p className="text-white/60 mt-2">Secure access to control panel</p>
+                    <p className="text-white/60 mt-2">Create a new admin account</p>
                 </div>
 
-                {/* Login Card */}
+                {/* Register Card */}
                 <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
                     <div className="p-8">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            {/* Full Name Field */}
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest leading-none">
+                                    Full Name
+                                </label>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                        <User size={20} />
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        placeholder="John Doe"
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all text-gray-900"
+                                    />
+                                </div>
+                            </div>
+
                             {/* Email Field */}
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest leading-none">
@@ -95,6 +141,26 @@ const AdminLogin = () => {
                                 </div>
                             </div>
 
+                            {/* Confirm Password Field */}
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-2 tracking-widest leading-none">
+                                    Confirm Password
+                                </label>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                        <Lock size={20} />
+                                    </div>
+                                    <input
+                                        required
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all text-gray-900"
+                                    />
+                                </div>
+                            </div>
+
                             {/* Submit Button */}
                             <button
                                 type="submit"
@@ -109,7 +175,7 @@ const AdminLogin = () => {
                                     <div className="w-6 h-6 border-4 border-gray-300 border-t-primary rounded-full animate-spin" />
                                 ) : (
                                     <>
-                                        Sign In <LogIn size={20} />
+                                        Register Now <UserPlus size={20} />
                                     </>
                                 )}
                             </button>
@@ -117,9 +183,9 @@ const AdminLogin = () => {
                         
                         <div className="mt-6 text-center">
                             <p className="text-gray-500 text-sm">
-                                Don't have an account?{" "}
-                                <Link to="/admin/register" className="text-primary font-bold hover:underline">
-                                    Register
+                                Already have an account?{" "}
+                                <Link to="/admin/login" className="text-primary font-bold hover:underline">
+                                    Sign In
                                 </Link>
                             </p>
                         </div>
@@ -129,7 +195,7 @@ const AdminLogin = () => {
                     <div className="bg-gray-50 px-8 py-5 border-t border-gray-100 flex items-center gap-3 text-gray-500">
                         <AlertCircle size={18} className="shrink-0" />
                         <p className="text-xs leading-relaxed">
-                            Only authorized administrators should proceed. Your IP address is logged for security.
+                            Fill in your details to create an admin account. All registrations are monitored.
                         </p>
                     </div>
                 </div>
@@ -145,4 +211,4 @@ const AdminLogin = () => {
     );
 };
 
-export default AdminLogin;
+export default AdminRegister;

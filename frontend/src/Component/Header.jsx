@@ -367,6 +367,14 @@ const Header = () => {
                 </div>
               )}
             </div>
+              <div className="border-t border-white/20 mt-2 pt-2">
+              <MobileNavLink
+                text="News"
+                href="/news"
+                active={location.pathname === "/news"}
+                onClick={() => setMobileMenuOpen(false)}
+              />
+            </div>
 
             <div className="border-t border-white/20 mt-2 pt-2">
               <MobileNavLink

@@ -42,7 +42,7 @@ const ProcessWorkflow = ({ section }) => {
         >
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs sm:text-sm font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.3em]">
               {section.section_label || "Our Approach"}
             </span>
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
@@ -98,11 +98,11 @@ const ProcessWorkflow = ({ section }) => {
                 {/* Content Card */}
                 <div className="flex-1 lg:max-w-md p-8 lg:p-10 rounded-3xl shadow-lg border border-gray-100 hover:border-secondary/40 hover:shadow-xl transition-all duration-500 bg-white group">
                   {/* Step label pill */}
-                  <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-bold rounded-full uppercase tracking-widest mb-3">
+                  <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-widest mb-3">
                     Step {stepNum}
                   </span>
 
-                  <h3 className="text-base md:text-xl font-bold text-secondary group-hover:text-primary transition-colors duration-300 leading-tight mb-2">
+                  <h3 className="text-base md:text-xl font-bold text-primary group-hover:text-secondary transition-colors duration-300 leading-tight mb-2">
                     {item.title}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed">

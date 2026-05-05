@@ -15,6 +15,15 @@ const authService = {
       throw error.response?.data?.detail || "Login failed";
     }
   },
+  
+  register: async (userData) => {
+    try {
+      const response = await axios.post(`${API_URL}/register`, userData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data?.detail || "Registration failed";
+    }
+  },
 
   logout: () => {
     localStorage.removeItem("admin_token");

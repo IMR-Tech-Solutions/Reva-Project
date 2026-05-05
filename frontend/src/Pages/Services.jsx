@@ -140,12 +140,12 @@ const ServicesSection = () => {
                     {/* Content */}
                     <div className="relative z-10 flex-1 flex flex-col">
                       {/* Title */}
-                      <h3 className="text-lg font-bold text-secondary hover:text-primary transition-colors duration-300 mb-1.5 leading-tight pr-8">
+                      <h3 className="text-lg font-bold text-primary hover:text-secondary transition-colors duration-300 mb-1.5 leading-tight pr-8">
                         {service.title}
                       </h3>
 
                       {/* Tagline */}
-                      <p className="text-[11px] text-secondary font-black uppercase tracking-[0.15em] mb-4">
+                      <p className="text-[11px] text-gray-500 font-black uppercase tracking-[0.15em] mb-4">
                         {service.tagline}
                       </p>
 
@@ -159,7 +159,7 @@ const ServicesSection = () => {
                         {(service.tags || []).map((tag) => (
                           <span
                             key={tag}
-                            className="px-3 py-1 bg-white border border-secondary/30 text-secondary text-[11px] font-medium rounded-full group-hover:bg-secondary/5 transition-all duration-300"
+                            className="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[11px] font-medium rounded-full group-hover:border-secondary/30 transition-all duration-300"
                           >
                             {tag}
                           </span>
@@ -175,7 +175,7 @@ const ServicesSection = () => {
                                 : service.href)
                             : `/services/${service.slug}`
                         }
-                        className="inline-flex items-center gap-2 text-secondary text-xs font-black uppercase tracking-widest transition-all duration-300 hover:gap-3"
+                        className="inline-flex items-center gap-2 text-primary text-xs font-black uppercase tracking-widest transition-all duration-300 hover:gap-3 hover:text-secondary"
                       >
                         <span>Learn More</span>
                       </Link>

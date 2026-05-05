@@ -38,6 +38,7 @@ import AdminHomeHero from "./admin/Pages/AdminHomeHero";
 import AdminHomeAbout from "./admin/Pages/AdminHomeAbout";
 import AdminStrategicAdvice from "./admin/Pages/AdminStrategicAdvice";
 import AdminLogin from "./admin/Pages/AdminLogin";
+import AdminRegister from "./admin/Pages/AdminRegister";
 import ProtectedRoute from "./admin/Layout/ProtectedRoute";
 
 import { Toaster } from "react-hot-toast";
@@ -77,6 +78,7 @@ const App = () => {
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/register" element={<AdminRegister />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<AdminLayout />}>

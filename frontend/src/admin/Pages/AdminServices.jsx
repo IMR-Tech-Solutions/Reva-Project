@@ -566,13 +566,12 @@ const AdminServices = () => {
                   key={tab.key}
                   onClick={() => !tab.disabled && setActiveTab(tab.key)}
                   disabled={tab.disabled}
-                  className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                    activeTab === tab.key
-                      ? "bg-secondary text-white shadow-sm"
-                      : tab.disabled
+                  className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${activeTab === tab.key
+                    ? "bg-secondary text-white shadow-sm"
+                    : tab.disabled
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-gray-600 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -593,7 +592,7 @@ const AdminServices = () => {
                 </div>
                 {renderInput("Description", "description", "Service description...", "textarea")}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {renderInput("Route / href", "href", "/services/feasibility")}
+                  {renderInput("Route / href", "href", "/feasibility")}
                   {renderInput("Tags (comma-separated)", "tags", "Technical Feasibility, Pilot Plant Design")}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

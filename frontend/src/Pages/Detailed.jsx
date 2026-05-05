@@ -81,7 +81,7 @@ const DetailedDisciplines = ({ section }) => {
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em]">
               {section.section_label}
             </span>
           </div>
@@ -162,7 +162,7 @@ const DetailedScope = ({ section }) => {
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em]">
               {section.section_label}
             </span>
           </div>
@@ -288,7 +288,7 @@ const DetailedStandards = ({ section }) => {
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs sm:text-sm font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.3em]">
               {section.section_label}
             </span>
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
@@ -392,7 +392,7 @@ const DetailedWorkflow = ({ section }) => {
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em]">
               {section.section_label}
             </span>
           </div>
@@ -486,7 +486,7 @@ const DetailedWhyReva = ({ section }) => {
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
-            <span className="text-secondary text-xs font-bold uppercase tracking-[0.3em]">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.3em]">
               {section.section_label}
             </span>
             <div className="w-8 sm:w-10 h-[3px] bg-secondary rounded-full" />
