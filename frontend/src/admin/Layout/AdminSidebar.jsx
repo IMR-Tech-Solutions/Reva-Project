@@ -11,6 +11,7 @@ import {
   Mail,
   Layout,
   Settings,
+  Star,
 } from "lucide-react";
 
 const AdminSidebar = ({ isOpen, toggleSidebar }) => {
@@ -22,7 +23,9 @@ const AdminSidebar = ({ isOpen, toggleSidebar }) => {
     { name: "Home About", path: "/admin/home-about", icon: Info },
     { name: "Strategic Advice", path: "/admin/strategic-advice", icon: Layout },
     { name: "News", path: "/admin/news", icon: Newspaper },
+    { name: "Work In Action", path: "/admin/work-in-action", icon: Layout },
     { name: "About Page", path: "/admin/about", icon: Info },
+    { name: "What Sets Us Apart", path: "/admin/what-sets-us-apart", icon: Star },
     { name: "Services", path: "/admin/services", icon: Briefcase },
     { name: "Technologies", path: "/admin/technologies", icon: Zap },
     { name: "Products", path: "/admin/products", icon: Package },

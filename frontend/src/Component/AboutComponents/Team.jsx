@@ -59,7 +59,7 @@ const Team = ({ content, team }) => {
 
           <motion.p
             variants={itemVariants}
-            className="text-base md:text-lg text-gray-600 mt-4 max-w-2xl mx-auto leading-relaxed"
+            className="text-base md:text-lg text-gray-600 mt-4 max-w-2xl mx-auto leading-relaxed text-justify"
           >
             {content.team_subtitle}
           </motion.p>
@@ -151,7 +151,7 @@ const TeamCard = ({ name, role, bio, image, linkedin, email, delay }) => {
           {name}
         </h3>
 
-        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
+        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed text-justify">
           {bio}
         </p>
       </div>

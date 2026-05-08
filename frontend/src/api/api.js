@@ -5,6 +5,7 @@ const API_BASE_URL = API_ROOT; // Root domain for images
 const API_LOGIC_URL = `${API_ROOT}/api`; // Prefixed root for API logic
 
 const api = {
+  BASE_URL: API_BASE_URL,
   // =====================================================================
   // SERVICES MODULE API
   // =====================================================================
@@ -577,6 +578,69 @@ const api = {
       body: JSON.stringify(data),
     });
     if (!response.ok) throw new Error("Failed to update settings");
+    return response.json();
+  },
+
+  // --- Work In Action ---
+  getWorkInAction: async () => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action`);
+    if (!response.ok) throw new Error("Failed to fetch work in action content");
+    return response.json();
+  },
+
+  updateWorkInActionContent: async (data) => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update work in action content");
+    return response.json();
+  },
+
+  getWorkInActionItems: async () => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action/items`, {
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to fetch work in action items");
+    return response.json();
+  },
+
+  createWorkInActionItem: async (itemData) => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action/items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(itemData),
+    });
+    if (!response.ok) throw new Error("Failed to create work in action item");
+    return response.json();
+  },
+
+  updateWorkInActionItem: async (id, itemData) => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action/items/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(itemData),
+    });
+    if (!response.ok) throw new Error("Failed to update work in action item");
+    return response.json();
+  },
+
+  deleteWorkInActionItem: async (id) => {
+    const response = await fetch(`${API_LOGIC_URL}/home/work-in-action/items/${id}`, {
+      method: "DELETE",
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to delete work in action item");
     return response.json();
   },
 };

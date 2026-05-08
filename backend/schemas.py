@@ -331,14 +331,18 @@ class Differentiator(DifferentiatorBase):
         from_attributes = True
 
 class AboutContentBase(BaseModel):
+    hero_label: Optional[str] = None
     hero_title: Optional[str] = None
+    hero_highlight: Optional[str] = None
     hero_subtitle: Optional[str] = None
     hero_description: Optional[str] = None
+    hero_description2: Optional[str] = None
     hero_year: Optional[str] = None
+    hero_year_text: Optional[str] = None
     hero_image_main: Optional[str] = None
     hero_image_sub: Optional[str] = None
     highlights: List[dict] = []
-    core_pills: List[str] = []
+    core_pills: List[dict] = []
     mission_text: Optional[str] = None
     vision_text: Optional[str] = None
     values_title: Optional[str] = None
@@ -543,3 +547,84 @@ class SiteSettings(SiteSettingsBase):
     id: int
     class Config:
         from_attributes = True
+
+# --- What Sets Us Apart Schemas ---
+
+class WhatSetsUsApartItemBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    icon: Optional[str] = "LuHardHat"
+    order: int = 0
+    is_active: bool = True
+
+class WhatSetsUsApartItemCreate(WhatSetsUsApartItemBase):
+    pass
+
+class WhatSetsUsApartItem(WhatSetsUsApartItemBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True
+
+class WhatSetsUsApartContentBase(BaseModel):
+    label: Optional[str] = "WHY CHOOSE REVA"
+    heading: Optional[str] = "What Sets Us Apart?"
+    description: Optional[str] = None
+
+class WhatSetsUsApartContentCreate(WhatSetsUsApartContentBase):
+    pass
+
+class WhatSetsUsApartContent(WhatSetsUsApartContentBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True
+
+class WhatSetsUsApartFullResponse(BaseModel):
+    content: WhatSetsUsApartContent
+    items: list[WhatSetsUsApartItem] = []
+
+# --- Work In Action Schemas ---
+
+class WorkInActionItemBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    order: int = 0
+    is_active: bool = True
+
+class WorkInActionItemCreate(WorkInActionItemBase):
+    pass
+
+class WorkInActionItem(WorkInActionItemBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True
+
+class WorkInActionContentBase(BaseModel):
+    label: Optional[str] = "Our Projects In Action"
+    heading1: Optional[str] = "Proven credentials."
+    heading2: Optional[str] = "Real-world delivery."
+    description: Optional[str] = None
+    image: Optional[str] = "./hero3.png"
+    scope_title: Optional[str] = "Scope Coverage"
+    scope_content: Optional[str] = None
+    stats: List[dict] = []
+
+class WorkInActionContentCreate(WorkInActionContentBase):
+    pass
+
+class WorkInActionContent(WorkInActionContentBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True
+
+class WorkInActionFullResponse(BaseModel):
+    content: WorkInActionContent
+    items: List[WorkInActionItem] = []

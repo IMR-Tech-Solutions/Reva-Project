@@ -193,6 +193,79 @@ const aboutApi = {
     if (!response.ok) throw new Error("Failed to delete testimonial");
     return response.json();
   },
+
+  // =====================================================================
+  // What Sets Us Apart
+  // =====================================================================
+
+  // Public: Get combined content + active items
+  getWhatSetsUsApart: async () => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart`);
+    if (!response.ok) throw new Error("Failed to fetch What Sets Us Apart data");
+    return response.json();
+  },
+
+  // Admin: Update section content (label, heading, description)
+  updateWhatSetsUsApartContent: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update section content");
+    return response.json();
+  },
+
+  // Admin: Get ALL items (including inactive)
+  getWhatSetsUsApartItems: async () => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart/items`, {
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to fetch feature items");
+    return response.json();
+  },
+
+  // Admin: Create a new feature item
+  createWhatSetsUsApartItem: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart/items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to create feature item");
+    return response.json();
+  },
+
+  // Admin: Update a feature item
+  updateWhatSetsUsApartItem: async (id, data) => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart/items/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...authService.getAuthHeader(),
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update feature item");
+    return response.json();
+  },
+
+  // Admin: Delete a feature item
+  deleteWhatSetsUsApartItem: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/about/what-sets-us-apart/items/${id}`, {
+      method: "DELETE",
+      headers: { ...authService.getAuthHeader() },
+    });
+    if (!response.ok) throw new Error("Failed to delete feature item");
+    return response.json();
+  },
 };
 
 export default aboutApi;
+

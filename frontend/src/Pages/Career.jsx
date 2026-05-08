@@ -181,7 +181,7 @@ const Career = () => {
               </h1>
 
               <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-lg lg:max-w-xl
-                            mb-6 sm:mb-8 leading-relaxed font-medium">
+                            mb-6 sm:mb-8 leading-relaxed font-medium text-justify">
                 {careerContent?.hero_description || "Work on mission-critical refinery projects with a team that treats process engineering like precision manufacturing."}
               </p>
 
@@ -388,7 +388,7 @@ const Career = () => {
 
                   {/* Description */}
                   <div className="px-6 pt-4 pb-3 flex-1">
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
                       {job.description}
                     </p>
                   </div>

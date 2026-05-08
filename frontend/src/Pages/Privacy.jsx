@@ -48,7 +48,7 @@ const Privacy = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-5">
               {content.title || "Privacy Policy"}
             </h1>
-            <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 text-justify">
               {content.description || "At Reva, we are committed to protecting your privacy and ensuring the security of your personal information."}
             </p>
             <p className="text-xs sm:text-sm text-gray-500">
@@ -83,7 +83,7 @@ const Privacy = () => {
                 
                 <div className="pl-12 space-y-3">
                   {(section.content || []).map((paragraph, idx) => (
-                    <p key={idx} className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                    <p key={idx} className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify">
                       {paragraph}
                     </p>
                   ))}
@@ -103,7 +103,7 @@ const Privacy = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4">
                   Contact Us
                 </h2>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6 text-justify">
                   If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
                 </p>
                 
@@ -155,7 +155,7 @@ const Privacy = () => {
       <section className="bg-primary py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-16">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-gray-400 text-xs sm:text-sm">
+            <p className="text-gray-400 text-xs sm:text-sm text-justify">
               By using Reva's website and services, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy.
             </p>
           </div>

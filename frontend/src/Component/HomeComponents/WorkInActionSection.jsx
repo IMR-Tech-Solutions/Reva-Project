@@ -1,25 +1,51 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
-
-const projectRefs = [
-  "Biomass to CBG",
-  "Lube Oil Distillation",
-  "Pyrolysis Oil Refining",
-  "Fuel Gas Desulphurization",
-  "Vapour Adsorption",
-  "Phenol-Formaldehyde Resin",
-  "Hexamine Plants",
-  "FEED & Detailed Engineering",
-];
-
-const statsData = [
-  { number: 2014, suffix: "", label: "Established", color: "text-primary" },
-  { number: 50, suffix: "+", label: "Projects Delivered", color: "text-secondary" },
-  { number: 10, suffix: "+", label: "Countries Served", color: "text-accent" },
-];
+import api from "../../api/api";
 
 const WorkInActionSection = () => {
+  const [content, setContent] = useState({
+    label: "Our Projects In Action",
+    heading1: "Proven credentials.",
+    heading2: "Real-world delivery.",
+    description: "Documented project references across India and international markets — covering basic & detailed engineering, process design, FEED, and supply of key equipment for leading public and private sector clients.",
+    image: "./hero3.png",
+    scope_title: "Scope Coverage",
+    scope_content: "Basic & Detailed Engineering · FEED · Process Design · Key Equipment Supply · Site Execution",
+    stats: [
+      { number: 2014, suffix: "", label: "Established", color: "text-primary" },
+      { number: 50, suffix: "+", label: "Projects Delivered", color: "text-secondary" },
+      { number: 10, suffix: "+", label: "Countries Served", color: "text-accent" },
+    ]
+  });
+  const [items, setItems] = useState([
+    "Biomass to CBG",
+    "Lube Oil Distillation",
+    "Pyrolysis Oil Refining",
+    "Fuel Gas Desulphurization",
+    "Vapour Adsorption",
+    "Phenol-Formaldehyde Resin",
+    "Hexamine Plants",
+    "FEED & Detailed Engineering",
+  ]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.getWorkInAction();
+        if (response.content) {
+          setContent(response.content);
+        }
+        if (response.items && response.items.length > 0) {
+          setItems(response.items.map(item => item.title));
+        }
+      } catch (error) {
+        console.error("Failed to fetch work in action data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,7 +94,7 @@ const WorkInActionSection = () => {
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-5">
               <div className="w-12 h-[3px] bg-gradient-to-r from-secondary to-secondary/50 rounded-full" />
               <span className="text-sm md:text-base font-bold text-secondary uppercase tracking-wider">
-                Our Projects In Action
+                {content.label}
               </span>
             </motion.div>
 
@@ -77,8 +103,8 @@ const WorkInActionSection = () => {
               variants={itemVariants}
               className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5"
             >
-              <span className="text-primary">Proven credentials.</span>
-              <span className="block mt-1 text-gray-700">Real-world delivery.</span>
+              <span className="text-primary">{content.heading1}</span>
+              <span className="block mt-1 text-gray-700">{content.heading2}</span>
             </motion.h2>
 
             {/* Description — kept short */}
@@ -86,9 +112,7 @@ const WorkInActionSection = () => {
               variants={itemVariants}
               className="text-base md:text-lg text-gray-600 leading-relaxed mb-7 max-w-xl"
             >
-              Documented project references across India and international markets —
-              covering basic &amp; detailed engineering, process design, FEED, and supply
-              of key equipment for leading public and private sector clients.
+              {content.description}
             </motion.p>
 
             {/* Project Reference Tags */}
@@ -97,7 +121,7 @@ const WorkInActionSection = () => {
                 Project References
               </p>
               <div className="flex flex-wrap gap-2">
-                {projectRefs.map((ref) => (
+                {items.map((ref) => (
                   <span
                     key={ref}
                     className="px-3 py-1.5 bg-primary/5 text-primary text-xs font-semibold rounded-full border border-primary/15 hover:bg-primary/10 transition-colors duration-200"
@@ -110,7 +134,7 @@ const WorkInActionSection = () => {
 
             {/* Stats */}
             <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4 mb-8">
-              {statsData.map((stat, index) => (
+                {content.stats.map((stat, index) => (
                 <CounterCard key={index} stat={stat} delay={index * 0.2} />
               ))}
             </motion.div>
@@ -119,9 +143,9 @@ const WorkInActionSection = () => {
             <motion.div variants={itemVariants}>
               <Link
                 to="/about"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-secondary text-white text-base font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="group inline-flex items-center gap-3 px-5 py-3 bg-secondary text-white text-base font-semibold rounded-lg hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                View Our Projects
+                About us
               </Link>
             </motion.div>
           </motion.div>
@@ -140,7 +164,7 @@ const WorkInActionSection = () => {
               {/* ✅ h-full so image fills the column height */}
               <div className="relative rounded-xl overflow-hidden shadow-2xl h-full min-h-[450px]">
                 <img
-                  src="./hero3.png"
+                  src={content.image.startsWith('./') ? content.image : `${api.BASE_URL}${content.image}`}
                   alt="Reva Process Technologies project site"
                   className="w-full h-full object-cover"
                 />
@@ -153,10 +177,10 @@ const WorkInActionSection = () => {
                 <div className="absolute bottom-6 left-6 right-6">
                   <div className="bg-white/95 backdrop-blur-sm rounded-xl px-5 py-4 shadow-lg border-l-4 border-secondary">
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
-                      Scope Coverage
+                      {content.scope_title}
                     </p>
                     <p className="text-sm font-semibold text-primary leading-snug">
-                      Basic & Detailed Engineering · FEED · Process Design · Key Equipment Supply · Site Execution
+                      {content.scope_content}
                     </p>
                   </div>
                 </div>

@@ -49,7 +49,7 @@ const Terms = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-5">
               {content.title || "Terms & Conditions"}
             </h1>
-            <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 text-justify">
               {content.description || "These Terms and Conditions govern your use of Reva's website and services."}
             </p>
             <p className="text-xs sm:text-sm text-gray-500">
@@ -84,7 +84,7 @@ const Terms = () => {
                 
                 <div className="pl-12 space-y-3">
                   {(section.content || []).map((paragraph, idx) => (
-                    <p key={idx} className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                    <p key={idx} className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify">
                       {paragraph}
                     </p>
                   ))}
@@ -103,7 +103,7 @@ const Terms = () => {
               <h2 className="text-lg sm:text-xl font-black text-secondary mb-3 flex items-center gap-2">
                 <span>⚠️</span> Important Notice
               </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-3">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-3 text-justify">
                 These general Terms and Conditions are supplemented by project-specific contracts, purchase orders, and service agreements. In case of conflict, the specific contract terms shall prevail.
               </p>
               <p className="text-sm sm:text-base text-gray-700 font-medium italic">
@@ -123,7 +123,7 @@ const Terms = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4">
                   Contact Information
                 </h2>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6 text-justify">
                   For questions regarding these Terms and Conditions or to request contract documents, please contact our legal team:
                 </p>
                 
@@ -182,7 +182,7 @@ const Terms = () => {
               <h3 className="text-xl sm:text-2xl font-black text-white mb-4 uppercase tracking-tight">
                 Acknowledgment of Terms
               </h3>
-              <p className="text-gray-400 text-sm sm:text-base mb-8 max-w-2xl mx-auto">
+              <p className="text-gray-400 text-sm sm:text-base mb-8 max-w-2xl mx-auto text-justify">
                 By using Reva's website and services, you acknowledge that you have read these Terms and Conditions, understand them, and agree to be bound by them. If you do not agree, please discontinue use of our services immediately.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

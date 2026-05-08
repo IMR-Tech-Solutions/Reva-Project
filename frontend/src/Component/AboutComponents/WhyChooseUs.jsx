@@ -129,7 +129,7 @@ const WhyChooseUs = ({ content, differentiators }) => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-4">
                 {content.why_us_title || "Why Choose Reva"}
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify">
                 {content.why_us_description}
               </p>
             </motion.div>
@@ -159,7 +159,7 @@ const WhyChooseUs = ({ content, differentiators }) => {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-primary mb-0.5">{item.title}</p>
-                    <p className="text-xs text-gray-500 leading-snug">{item.desc}</p>
+                    <p className="text-xs text-gray-500 leading-snug text-justify">{item.desc}</p>
                   </div>
                 </div>
               ))}

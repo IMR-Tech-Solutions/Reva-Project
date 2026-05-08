@@ -160,19 +160,18 @@ const AboutHero = () => {
             </motion.h1>
 
             {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-base md:text-lg text-gray-600 leading-relaxed mb-6 max-w-xl"
-            >
-              {content.description}
-            </motion.p>
+          <motion.p
+  variants={itemVariants}
+  className="text-base md:text-lg text-gray-600 leading-relaxed mb-6 max-w-xl text-justify">
+  {content.description}
+</motion.p>
 
             {/* Highlight box */}
             <motion.div
               variants={itemVariants}
               className="bg-gray-50 border-l-4 border-primary rounded-lg p-5 mb-7"
             >
-              <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+              <p className="text-gray-700 leading-relaxed text-sm md:text-base text-justify">
                 {content.highlight_text}
               </p>
             </motion.div>
@@ -203,12 +202,12 @@ const AboutHero = () => {
                 Learn More About Us
               </Link>
 
-              <Link
+              {/* <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 text-primary font-semibold text-base hover:gap-3 transition-all duration-300"
               >
                 Get in Touch
-              </Link>
+              </Link> */}
             </motion.div>
           </motion.div>
         </div>

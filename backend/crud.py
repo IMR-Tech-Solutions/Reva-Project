@@ -631,3 +631,126 @@ def update_site_settings(db: Session, data: schemas.SiteSettingsCreate):
     db.commit()
     db.refresh(db_settings)
     return db_settings
+
+# =====================================================================
+# WHAT SETS US APART CRUD
+# =====================================================================
+
+def get_wsua_content(db: Session):
+    content = db.query(models.WhatSetsUsApartContent).first()
+    if not content:
+        content = models.WhatSetsUsApartContent(
+            label="WHY CHOOSE REVA",
+            heading="What Sets Us Apart?",
+            description="At REVA Process Technologies, we stand out through engineering excellence, execution capabilities, industry expertise, and reliable process solutions tailored to evolving industrial requirements."
+        )
+        db.add(content)
+        db.commit()
+        db.refresh(content)
+    return content
+
+def update_wsua_content(db: Session, data: schemas.WhatSetsUsApartContentCreate):
+    db_content = get_wsua_content(db)
+    for key, value in data.model_dump().items():
+        if value is not None:
+            setattr(db_content, key, value)
+    db.commit()
+    db.refresh(db_content)
+    return db_content
+
+def get_wsua_items(db: Session, active_only: bool = False):
+    query = db.query(models.WhatSetsUsApartItem)
+    if active_only:
+        query = query.filter(models.WhatSetsUsApartItem.is_active == True)
+    return query.order_by(models.WhatSetsUsApartItem.order.asc()).all()
+
+def create_wsua_item(db: Session, item: schemas.WhatSetsUsApartItemCreate):
+    db_item = models.WhatSetsUsApartItem(**item.model_dump())
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def update_wsua_item(db: Session, item_id: int, item: schemas.WhatSetsUsApartItemCreate):
+    db_item = db.query(models.WhatSetsUsApartItem).filter(models.WhatSetsUsApartItem.id == item_id).first()
+    if db_item:
+        for key, value in item.model_dump().items():
+            if value is not None:
+                setattr(db_item, key, value)
+        db.commit()
+        db.refresh(db_item)
+        return db_item
+    return None
+
+def delete_wsua_item(db: Session, item_id: int):
+    db_item = db.query(models.WhatSetsUsApartItem).filter(models.WhatSetsUsApartItem.id == item_id).first()
+    if db_item:
+        db.delete(db_item)
+        db.commit()
+    return db_item
+
+# =====================================================================
+# WORK IN ACTION CRUD
+# =====================================================================
+
+def get_work_in_action_content(db: Session):
+    content = db.query(models.WorkInActionContent).first()
+    if not content:
+        content = models.WorkInActionContent(
+            label="Our Projects In Action",
+            heading1="Proven credentials.",
+            heading2="Real-world delivery.",
+            description="Documented project references across India and international markets — covering basic & detailed engineering, process design, FEED, and supply of key equipment for leading public and private sector clients.",
+            image="./hero3.png",
+            scope_title="Scope Coverage",
+            scope_content="Basic & Detailed Engineering · FEED · Process Design · Key Equipment Supply · Site Execution",
+            stats=[
+                {"number": 2014, "suffix": "", "label": "Established", "color": "text-primary"},
+                {"number": 50, "suffix": "+", "label": "Projects Delivered", "color": "text-secondary"},
+                {"number": 10, "suffix": "+", "label": "Countries Served", "color": "text-accent"}
+            ]
+        )
+        db.add(content)
+        db.commit()
+        db.refresh(content)
+    return content
+
+def update_work_in_action_content(db: Session, data: schemas.WorkInActionContentCreate):
+    db_content = get_work_in_action_content(db)
+    for key, value in data.model_dump().items():
+        if value is not None:
+            setattr(db_content, key, value)
+    db.commit()
+    db.refresh(db_content)
+    return db_content
+
+def get_work_in_action_items(db: Session, active_only: bool = False):
+    query = db.query(models.WorkInActionItem)
+    if active_only:
+        query = query.filter(models.WorkInActionItem.is_active == True)
+    return query.order_by(models.WorkInActionItem.order.asc()).all()
+
+def create_work_in_action_item(db: Session, item: schemas.WorkInActionItemCreate):
+    db_item = models.WorkInActionItem(**item.model_dump())
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def update_work_in_action_item(db: Session, item_id: int, item: schemas.WorkInActionItemCreate):
+    db_item = db.query(models.WorkInActionItem).filter(models.WorkInActionItem.id == item_id).first()
+    if db_item:
+        for key, value in item.model_dump().items():
+            if value is not None:
+                setattr(db_item, key, value)
+        db.commit()
+        db.refresh(db_item)
+        return db_item
+    return None
+
+def delete_work_in_action_item(db: Session, item_id: int):
+    db_item = db.query(models.WorkInActionItem).filter(models.WorkInActionItem.id == item_id).first()
+    if db_item:
+        db.delete(db_item)
+        db.commit()
+    return db_item

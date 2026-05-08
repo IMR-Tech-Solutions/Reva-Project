@@ -16,7 +16,7 @@ const Footer = () => {
     company: [
       { name: "Home", href: "/" },
       { name: "About Us", href: "/about" },
-      { name: "News", href: "/news" },
+      // { name: "News", href: "/news" },
       { name: "Services", href: "/services" },
       { name: "Career", href: "/career" },
       { name: "Contact Us", href: "/contact" },
@@ -113,67 +113,61 @@ const Footer = () => {
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
 
       {/* Main Content */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-8 md:py-12 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-4 md:py-6 relative z-10">
         {/* Top Section */}
-        <div className="flex flex-wrap lg:flex-nowrap gap-x-10 gap-y-8 mb-6">
-          {/* Logo & Description */}
-          <div className="w-full lg:w-[30%] shrink-0">
-            <div className="flex items-center gap-3 mb-4 group">
+        <div className="flex flex-wrap lg:flex-nowrap gap-x-6 gap-y-6 mb-4">
+          {/* Logo & Company Info Column */}
+          <div className="w-full lg:w-[28%] shrink-0 flex flex-col">
+            <div className="mb-0">
               <img
-                src="./logo12.png"
-                alt="REVA"
-                className="h-20 drop-shadow-2xl transition-transform duration-300 group-hover:scale-105"
+                src="/logo5.png"
+                alt="ISO Certified: 9001, 14001, 45001"
+                className="h-25 md:h-25 w-auto object-contain transition-transform duration-500 hover:scale-105 -ml-11 -mt-20"
+                style={{ clipPath: 'inset(2px)' }}
               />
             </div>
 
-            {/* Golden accent line */}
-            <div className="h-1 w-20 bg-gradient-to-r from-secondary to-transparent rounded-full mb-4" />
-
-            <p className="text-white/90 leading-relaxed mb-6 max-w-md font-light">
+            <p className="text-white/90 leading-relaxed -mt-10 mb-2 max-w-sm font-light text-sm -ml-2 text-justify">
               {generalSettings?.site_description || "Leading provider of innovative process engineering and technology solutions worldwide."}
             </p>
 
             {/* Social Icons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 -ml-2">
               <a
                 href={settings?.social_linkedin || "https://linkedin.com"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
+                className="w-8 h-8 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-secondary transition-all duration-300 border border-white/10 group"
                 aria-label="LinkedIn"
               >
-                <div className="absolute inset-0 bg-secondary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <FaLinkedin className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
+                <FaLinkedin className="text-base text-white group-hover:scale-110 transition-transform" />
               </a>
               <a
                 href={settings?.social_twitter || "https://twitter.com"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
+                className="w-8 h-8 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-secondary transition-all duration-300 border border-white/10 group"
                 aria-label="Twitter"
               >
-                <div className="absolute inset-0 bg-secondary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <FaTwitter className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
+                <FaTwitter className="text-base text-white group-hover:scale-110 transition-transform" />
               </a>
               <a
                 href={settings?.social_facebook || "https://facebook.com"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
+                className="w-8 h-8 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-secondary transition-all duration-300 border border-white/10 group"
                 aria-label="Facebook"
               >
-                <div className="absolute inset-0 bg-secondary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <FaFacebookF className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
+                <FaFacebookF className="text-base text-white group-hover:scale-110 transition-transform" />
               </a>
               <a
                 href={settings?.social_instagram || "https://instagram.com"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative w-10 h-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-xl flex items-center justify-center hover:from-secondary hover:to-secondary/80 transition-all duration-300 border border-white/10 hover:border-secondary group overflow-hidden"
+                className="w-8 h-8 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-secondary transition-all duration-300 border border-white/10 group"
                 aria-label="Instagram"
               >
-                <div className="absolute inset-0 bg-secondary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <FaInstagram className="text-lg relative z-10 group-hover:scale-110 transition-transform" />
+                <FaInstagram className="text-base text-white group-hover:scale-110 transition-transform" />
               </a>
             </div>
           </div>
@@ -181,109 +175,109 @@ const Footer = () => {
           {/* Links Sections Grid */}
           <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6">
             {/* Company */}
-          <div className="group">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
-              <h4 className="text-base font-bold text-white tracking-wide">
-                Company
-              </h4>
+            <div className="group">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-5 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
+                <h4 className="text-sm font-bold text-white tracking-wide">
+                  Company
+                </h4>
+              </div>
+              <ul className="space-y-1">
+                {footerLinks.company.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={link.href}
+                      className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-1.5">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
-                  >
-                    <span className="relative">
-                      {link.name}
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Services */}
-          <div className="group">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
-              <h4 className="text-base font-bold text-white tracking-wide">
-                Services
-              </h4>
+            {/* Services */}
+            <div className="group">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-5 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
+                <h4 className="text-sm font-bold text-white tracking-wide">
+                  Services
+                </h4>
+              </div>
+              <ul className="space-y-1.5">
+                {footerLinks.services.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={link.href}
+                      className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-1.5">
-              {footerLinks.services.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
-                  >
-                    <span className="relative">
-                      {link.name}
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Technologies */}
-          <div className="group">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
-              <h4 className="text-base font-bold text-white tracking-wide">
-                Technologies
-              </h4>
+            {/* Technologies */}
+            <div className="group">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-5 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
+                <h4 className="text-sm font-bold text-white tracking-wide">
+                  Technologies
+                </h4>
+              </div>
+              <ul className="space-y-1.5">
+                {techLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={link.href}
+                      className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <span className="absolute -bottom-0.5 left-0 h-0.5 bg-secondary w-0 group-hover/link:w-full transition-all duration-300" />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-1.5">
-              {techLinks.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
-                  >
-                    <span className="relative">
-                      {link.name}
-                      <span className="absolute -bottom-0.5 left-0 h-0.5 bg-secondary w-0 group-hover/link:w-full transition-all duration-300" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Products */}
-          <div className="group">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
-              <h4 className="text-base font-bold text-white tracking-wide">
-                Products
-              </h4>
+            {/* Products */}
+            <div className="group">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1.5 h-6 bg-gradient-to-b from-secondary to-secondary/50 rounded-full" />
+                <h4 className="text-base font-bold text-white tracking-wide">
+                  Products
+                </h4>
+              </div>
+              <ul className="space-y-1.5">
+                {productLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={link.href}
+                      className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-1.5">
-              {productLinks.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="relative text-white/70 hover:text-secondary transition-all duration-300 text-sm inline-block group/link"
-                  >
-                    <span className="relative">
-                      {link.name}
-                      <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-secondary group-hover/link:w-full transition-all duration-300" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
-      </div>
 
         {/* Bottom Section */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-3 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/70 text-sm text-center md:text-left font-light">
             © {new Date().getFullYear()} REVA Process Technologies. All rights
             reserved.

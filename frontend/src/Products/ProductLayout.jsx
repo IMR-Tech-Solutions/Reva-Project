@@ -54,8 +54,8 @@ const ProductLayout = ({
 
               <div className="h-px w-16 bg-secondary mb-6" />
 
-              <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-3">{paragraph1}</p>
-              <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-8">{paragraph2}</p>
+              <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-3 text-justify">{paragraph1}</p>
+              <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-8 text-justify">{paragraph2}</p>
 
              
 
@@ -138,7 +138,7 @@ const ProductLayout = ({
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-primary">
                 Key Features & Advantages
               </h2>
-              <p className="text-gray-400 text-sm max-w-xs sm:text-right leading-relaxed">
+              <p className="text-gray-400 text-sm max-w-xs sm:text-right leading-relaxed text-justify">
                 {keysubheading}
               </p>
             </div>
@@ -190,7 +190,7 @@ const ProductLayout = ({
                 <div className="hidden sm:block w-1.5 h-1.5 rounded-full bg-secondary/40 shrink-0" />
 
                 {/* Description */}
-                <p className="text-sm text-gray-500 leading-relaxed flex-1">
+                <p className="text-sm text-gray-500 leading-relaxed flex-1 text-justify">
                   {feature.description}
                 </p>
 
@@ -323,7 +323,7 @@ const ProductLayout = ({
                         {rtype.title}
                       </h3>
                       
-                      <p className="text-sm text-gray-500 leading-relaxed">
+                      <p className="text-sm text-gray-500 leading-relaxed text-justify">
                         {rtype.description}
                       </p>
                     </div>

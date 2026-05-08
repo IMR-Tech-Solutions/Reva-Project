@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import HeroAbout from "../Component/AboutComponents/HeroAbout";
 import Breadcrumb from "../Component/Breadcrumb";
 import IndustriesSection from "../Component/HomeComponents/IndustriesSection";
+import WhatSetsUsApart from "../Component/AboutComponents/WhatSetsUsApart";
 import MissionValues from "../Component/AboutComponents/MissionValues";
 import Team from "../Component/AboutComponents/Team";
 import WhyChooseUs from "../Component/AboutComponents/WhyChooseUs";
-import TestimonialsSection from "../Component/HomeComponents/TestimonialsSection";
+// import TestimonialsSection from "../Component/HomeComponents/TestimonialsSection";
 import aboutApi from "../services/aboutApi";
 import GlobalPresenceSection from "../Component/HomeComponents/GlobalPresenceSection";
 
@@ -40,14 +41,13 @@ const About = () => {
         <div className="bg-white overflow-hidden">
             <Breadcrumb />
             <HeroAbout content={content} />
-            {/* IndustriesSection remains static as requested */}
-            <IndustriesSection />
+            <WhatSetsUsApart />
             <MissionValues content={content} values={values} />
             <Team content={content} team={team} />
             <WhyChooseUs content={content} differentiators={differentiators} />
             <GlobalPresenceSection/>
             
-            <TestimonialsSection testimonials={testimonials} />
+            {/* <TestimonialsSection testimonials={testimonials} /> */}
         </div>
     );
 };

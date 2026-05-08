@@ -27,10 +27,14 @@ const AdminAbout = () => {
 
   // --- States for different sections ---
   const [content, setContent] = useState({
+    hero_label: "",
     hero_title: "",
+    hero_highlight: "",
     hero_subtitle: "",
     hero_description: "",
+    hero_description2: "",
     hero_year: "",
+    hero_year_text: "",
     hero_image_main: "",
     hero_image_sub: "",
     mission_text: "",
@@ -310,7 +314,10 @@ const AdminAbout = () => {
   const handleAddHighlight = () => {
     setContent({
       ...content,
-      highlights: [...content.highlights, { label: "", desc: "" }],
+      highlights: [
+        ...content.highlights,
+        { number: "", label: "", icon: "", order: content.highlights.length + 1 },
+      ],
     });
   };
   const handleUpdateHighlight = (index, field, value) => {
@@ -322,6 +329,27 @@ const AdminAbout = () => {
     setContent({
       ...content,
       highlights: content.highlights.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleAddPill = () => {
+    setContent({
+      ...content,
+      core_pills: [
+        ...content.core_pills,
+        { title: "", desc: "", icon: "", order: content.core_pills.length + 1 },
+      ],
+    });
+  };
+  const handleUpdatePill = (index, field, value) => {
+    const newPills = [...content.core_pills];
+    newPills[index][field] = value;
+    setContent({ ...content, core_pills: newPills });
+  };
+  const handleRemovePill = (index) => {
+    setContent({
+      ...content,
+      core_pills: content.core_pills.filter((_, i) => i !== index),
     });
   };
 
@@ -390,47 +418,66 @@ const AdminAbout = () => {
       <div className="mt-6">
         {activeTab === "general" && (
           <form onSubmit={handleSaveContent} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Left Column: Text Content */}
               <div className="space-y-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 className="text-lg font-bold text-primary border-b pb-2">
-                  Hero Section
+                <h3 className="text-lg font-bold text-primary border-b pb-2 flex items-center gap-2">
+                  <FileText size={20} className="text-secondary" />
+                  Hero Text Content
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                      Main Title
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                      Small Label
                     </label>
                     <input
                       type="text"
-                      value={content.hero_title}
+                      value={content.hero_label}
                       onChange={(e) =>
-                        setContent({ ...content, hero_title: e.target.value })
+                        setContent({ ...content, hero_label: e.target.value })
                       }
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
+                      placeholder="e.g. ABOUT REVA PROCESS TECHNOLOGIES"
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                      Subtitle
-                    </label>
-                    <input
-                      type="text"
-                      value={content.hero_subtitle}
-                      onChange={(e) =>
-                        setContent({
-                          ...content,
-                          hero_subtitle: e.target.value,
-                        })
-                      }
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
-                    />
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                        Main Heading (Part 1)
+                      </label>
+                      <input
+                        type="text"
+                        value={content.hero_title}
+                        onChange={(e) =>
+                          setContent({ ...content, hero_title: e.target.value })
+                        }
+                        placeholder="e.g. Engineering Solutions."
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                        Highlight Word / Colored Text
+                      </label>
+                      <input
+                        type="text"
+                        value={content.hero_highlight}
+                        onChange={(e) =>
+                          setContent({ ...content, hero_highlight: e.target.value })
+                        }
+                        placeholder="e.g. Progress."
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all text-secondary font-bold"
+                      />
+                    </div>
                   </div>
+
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                      Description
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                      Description Paragraph 1
                     </label>
                     <textarea
-                      rows={4}
+                      rows={3}
                       value={content.hero_description}
                       onChange={(e) =>
                         setContent({
@@ -438,13 +485,33 @@ const AdminAbout = () => {
                           hero_description: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
+                      placeholder="Enter the main intro paragraph..."
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all resize-none"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                      Description Paragraph 2
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={content.hero_description2}
+                      onChange={(e) =>
+                        setContent({
+                          ...content,
+                          hero_description2: e.target.value,
+                        })
+                      }
+                      placeholder="Enter the second paragraph..."
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all resize-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-50">
                     <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                        Est. Year
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                        Since Year (Badge)
                       </label>
                       <input
                         type="text"
@@ -452,191 +519,289 @@ const AdminAbout = () => {
                         onChange={(e) =>
                           setContent({ ...content, hero_year: e.target.value })
                         }
-                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
+                        placeholder="e.g. 2015"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all"
                       />
                     </div>
-                  </div>
-
-                  {/* Hero Image Uploads */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
-                    {/* Hero Main */}
-                    <div className="space-y-2">
-                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        Hero Main Image
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                        Badge Text
                       </label>
-                      <div className="relative group aspect-video bg-gray-50 rounded-xl overflow-hidden border-2 border-dashed border-gray-200 hover:border-secondary transition-colors cursor-pointer">
-                        {content.hero_image_main || content.hero_main_file ? (
-                          <img
-                            src={getMediaSource(
-                              content.hero_image_main,
-                              content.hero_main_file,
-                            )}
-                            alt="Hero Main Preview"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
-                            <Upload size={24} className="mb-2" />
-                            <span className="text-[10px] font-medium">
-                              Hero Main
-                            </span>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                          <Upload className="text-white" size={24} />
-                        </div>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) =>
-                            setContent({
-                              ...content,
-                              hero_main_file: e.target.files[0],
-                            })
-                          }
-                          className="absolute inset-0 opacity-0 cursor-pointer z-10"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Hero Sub */}
-                    <div className="space-y-2">
-                      <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        Hero Sub Image
-                      </label>
-                      <div className="relative group aspect-video bg-gray-50 rounded-xl overflow-hidden border-2 border-dashed border-gray-200 hover:border-secondary transition-colors cursor-pointer">
-                        {content.hero_image_sub || content.hero_sub_file ? (
-                          <img
-                            src={getMediaSource(
-                              content.hero_image_sub,
-                              content.hero_sub_file,
-                            )}
-                            alt="Hero Sub Preview"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
-                            <Upload size={24} className="mb-2" />
-                            <span className="text-[10px] font-medium">
-                              Hero Sub
-                            </span>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                          <Upload className="text-white" size={24} />
-                        </div>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) =>
-                            setContent({
-                              ...content,
-                              hero_sub_file: e.target.files[0],
-                            })
-                          }
-                          className="absolute inset-0 opacity-0 cursor-pointer z-10"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        value={content.hero_year_text}
+                        onChange={(e) =>
+                          setContent({ ...content, hero_year_text: e.target.value })
+                        }
+                        placeholder="e.g. Committed to Excellence"
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 outline-none transition-all"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
 
+              {/* Right Column: Images & Media */}
               <div className="space-y-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 className="text-lg font-bold text-primary border-b pb-2">
-                  Mission & Vision
+                <h3 className="text-lg font-bold text-primary border-b pb-2 flex items-center gap-2">
+                  <ImageIcon size={20} className="text-secondary" />
+                  Hero Images
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                      Our Mission Text
+                <div className="space-y-6">
+                  {/* Hero Main Image */}
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                      Hero Main Image (Organic Mask)
                     </label>
-                    <textarea
-                      rows={4}
-                      value={content.mission_text}
-                      onChange={(e) =>
-                        setContent({ ...content, mission_text: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
-                    />
+                    <div className="relative group aspect-[4/3] bg-gray-50 rounded-2xl overflow-hidden border-2 border-dashed border-gray-200 hover:border-secondary transition-all cursor-pointer">
+                      {content.hero_image_main || content.hero_main_file ? (
+                        <img
+                          src={getMediaSource(
+                            content.hero_image_main,
+                            content.hero_main_file,
+                          )}
+                          alt="Hero Main Preview"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                          <Upload size={32} className="mb-2 opacity-50" />
+                          <span className="text-xs font-semibold">Upload Main Image</span>
+                          <span className="text-[10px] opacity-60">Recommended: 800x1000px</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <Upload className="text-white" size={32} />
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          setContent({
+                            ...content,
+                            hero_main_file: e.target.files[0],
+                          })
+                        }
+                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1 uppercase tracking-wider text-xs">
-                      Our Vision Text
+
+                  {/* Hero Sub Image / Decorative */}
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                      Decorative / Sub Image
                     </label>
-                    <textarea
-                      rows={4}
-                      value={content.vision_text}
-                      onChange={(e) =>
-                        setContent({ ...content, vision_text: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-secondary/20 outline-none"
-                    />
+                    <div className="relative group aspect-video bg-gray-50 rounded-2xl overflow-hidden border-2 border-dashed border-gray-200 hover:border-secondary transition-all cursor-pointer">
+                      {content.hero_image_sub || content.hero_sub_file ? (
+                        <img
+                          src={getMediaSource(
+                            content.hero_image_sub,
+                            content.hero_sub_file,
+                          )}
+                          alt="Hero Sub Preview"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                          <Upload size={24} className="mb-2 opacity-50" />
+                          <span className="text-xs font-semibold">Upload Sub Image</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <Upload className="text-white" size={24} />
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          setContent({
+                            ...content,
+                            hero_sub_file: e.target.files[0],
+                          })
+                        }
+                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Highlights List */}
+            {/* Feature Items Management */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <div className="flex justify-between items-center mb-4 pb-2 border-b">
-                <h3 className="text-lg font-bold text-primary">
-                  Hero Highlights
+              <div className="flex justify-between items-center mb-6 pb-2 border-b">
+                <h3 className="text-lg font-bold text-primary flex items-center gap-2">
+                  <CheckCircle size={20} className="text-secondary" />
+                  Hero Feature Pillars
+                </h3>
+                <button
+                  type="button"
+                  onClick={handleAddPill}
+                  className="bg-secondary/10 text-secondary hover:bg-secondary/20 px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-xs transition-all"
+                >
+                  <Plus size={16} /> Add Feature
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {content.core_pills.map((pill, i) => (
+                  <div
+                    key={i}
+                    className="relative group bg-gray-50 p-5 rounded-2xl border border-gray-200 hover:border-secondary/30 transition-all"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePill(i)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-20"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="flex gap-4">
+                        <div className="flex-1">
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Icon Name (Lucide)</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Shield, HardHat"
+                            value={pill.icon}
+                            onChange={(e) => handleUpdatePill(i, "icon", e.target.value)}
+                            className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30"
+                          />
+                        </div>
+                        <div className="w-20">
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Order</label>
+                          <input
+                            type="number"
+                            value={pill.order}
+                            onChange={(e) => handleUpdatePill(i, "order", e.target.value)}
+                            className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Feature Title</label>
+                        <input
+                          type="text"
+                          placeholder="Integrated EPCC Expertise"
+                          value={pill.title}
+                          onChange={(e) => handleUpdatePill(i, "title", e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white font-bold outline-none focus:ring-1 focus:ring-secondary/30"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Short Description</label>
+                        <textarea
+                          rows={2}
+                          placeholder="Describe this feature..."
+                          value={pill.desc}
+                          onChange={(e) => handleUpdatePill(i, "desc", e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30 resize-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {content.core_pills.length === 0 && (
+                <div className="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                  <p className="text-gray-400 text-sm">No feature pillars added yet. Click "Add Feature" to start.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Stats Bar Management */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex justify-between items-center mb-6 pb-2 border-b">
+                <h3 className="text-lg font-bold text-primary flex items-center gap-2">
+                  <Target size={20} className="text-secondary" />
+                  Floating Stats Bar
                 </h3>
                 <button
                   type="button"
                   onClick={handleAddHighlight}
-                  className="text-secondary flex items-center gap-1 font-bold text-sm hover:underline"
+                  className="bg-secondary/10 text-secondary hover:bg-secondary/20 px-4 py-2 rounded-xl flex items-center gap-2 font-bold text-xs transition-all"
                 >
-                  <Plus size={16} /> Add Highlight
+                  <Plus size={16} /> Add Stat
                 </button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {content.highlights.map((h, i) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {content.highlights.map((stat, i) => (
                   <div
                     key={i}
-                    className="flex gap-2 items-start bg-gray-50 p-3 rounded-xl border border-gray-200"
+                    className="relative group bg-gray-50 p-5 rounded-2xl border border-gray-200 hover:border-secondary/30 transition-all"
                   >
-                    <div className="flex-1 space-y-2">
-                      <input
-                        type="text"
-                        placeholder="Label"
-                        value={h.label}
-                        onChange={(e) =>
-                          handleUpdateHighlight(i, "label", e.target.value)
-                        }
-                        className="w-full px-3 py-1 text-sm border rounded bg-white"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Description"
-                        value={h.desc}
-                        onChange={(e) =>
-                          handleUpdateHighlight(i, "desc", e.target.value)
-                        }
-                        className="w-full px-3 py-1 text-sm border rounded bg-white"
-                      />
-                    </div>
                     <button
                       type="button"
                       onClick={() => handleRemoveHighlight(i)}
-                      className="text-red-400 hover:text-red-600 p-1"
+                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-20"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} />
                     </button>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Number</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. 15+"
+                            value={stat.number}
+                            onChange={(e) => handleUpdateHighlight(i, "number", e.target.value)}
+                            className="w-full px-3 py-1.5 text-lg font-black border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30 text-primary"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Icon (Lucide)</label>
+                          <input
+                            type="text"
+                            placeholder="TrendingUp"
+                            value={stat.icon}
+                            onChange={(e) => handleUpdateHighlight(i, "icon", e.target.value)}
+                            className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Label</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Years Experience"
+                          value={stat.label}
+                          onChange={(e) => handleUpdateHighlight(i, "label", e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white font-medium outline-none focus:ring-1 focus:ring-secondary/30"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Display Order</label>
+                        <input
+                          type="number"
+                          value={stat.order}
+                          onChange={(e) => handleUpdateHighlight(i, "order", e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border rounded-lg bg-white outline-none focus:ring-1 focus:ring-secondary/30"
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
+              {content.highlights.length === 0 && (
+                <div className="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                  <p className="text-gray-400 text-sm">No stats added yet. Click "Add Stat" to start.</p>
+                </div>
+              )}
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-4">
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-primary text-white px-12 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-lg"
+                className="bg-primary text-white px-12 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-primary/90 transition-all shadow-xl disabled:opacity-50"
               >
-                <Save size={18} />
-                {saving ? "Saving..." : "Save All General Content"}
+                {saving ? (
+                  <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : (
+                  <Save size={20} />
+                )}
+                {saving ? "Saving Changes..." : "Save About Hero Changes"}
               </button>
             </div>
           </form>

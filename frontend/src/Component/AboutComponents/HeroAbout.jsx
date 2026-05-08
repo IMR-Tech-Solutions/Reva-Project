@@ -1,47 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import * as LucideIcons from 'lucide-react';
 
 const AboutHero = ({ content }) => {
   if (!content) return null;
-
-  const highlights = content.highlights || [];
-  const corePills = content.core_pills || ["Excellence", "Quality", "Trust", "Innovation", "Teamwork"];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.95, x: -30 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      x: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-      },
-    },
-  };
 
   // Helper to format image paths
   const getImageUrl = (path, defaultImg) => {
@@ -51,144 +13,164 @@ const AboutHero = ({ content }) => {
       return `${import.meta.env.VITE_API_URL}${path}`;
     }
     if (path.startsWith("/")) return `${import.meta.env.VITE_API_URL}${path}`;
-    return path; // Assume local path like ./hero1.png
+    return path;
   };
 
+  // Helper to render dynamic Lucide Icon
+  const DynamicIcon = ({ name, className }) => {
+    const IconComponent = LucideIcons[name] || LucideIcons.Info;
+    return <IconComponent className={className} />;
+  };
+
+  const featureItems = content.core_pills && content.core_pills.length > 0 
+    ? [...content.core_pills].sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
+
+  const statsItems = content.highlights && content.highlights.length > 0
+    ? [...content.highlights].sort((a, b) => (a.order || 0) - (b.order || 0))
+    : [];
+
   return (
-    <section className="w-full bg-gray-light py-8 sm:py-12 md:py-16 lg:py-16 xl:py-16 relative overflow-hidden">
-      {/* Background blobs */}
-      <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-accent/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-64 sm:h-64 lg:w-96 lg:h-96 bg-secondary/20 rounded-full blur-3xl" />
+    <section className="relative overflow-hidden bg-[#f8fafc] pt-16 pb-12 lg:pb-16">
+      {/* Decorative Dot Pattern */}
+      <div className="absolute right-10 bottom-16 hidden lg:grid grid-cols-5 gap-2 opacity-20 pointer-events-none">
+        {Array.from({ length: 25 }).map((_, i) => (
+          <span key={i} className="h-1.5 w-1.5 rounded-full bg-[#f5b400]"></span>
+        ))}
+      </div>
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-stretch">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
-          {/* Left Side - Image (5 cols) */}
-          <motion.div
-            variants={imageVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="relative lg:col-span-5 order-2 lg:order-1"
+          {/* Left Content */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="relative z-20"
           >
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl ring-2 sm:ring-4 ring-gray-light/50 aspect-[4/5] sm:aspect-[4/3] lg:aspect-auto">
-              <img
-                src={getImageUrl(content.hero_image_main, "./hero1.png")}
-                alt="Reva Process Technologies facility"
-                className="w-full h-full object-cover"
-              />
-
-              {/* Primary corner accent */}
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 0.95 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.6, ease: "backOut" }}
-                className="absolute top-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary to-primary/80 rounded-br-[60px] sm:rounded-br-[80px] md:rounded-br-[100px]"
-              />
-
-              {/* Floating year badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7, duration: 0.4 }}
-                className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border-l-4 border-secondary"
-              >
-                <p className="text-2xl sm:text-3xl font-bold text-primary leading-none mb-1">{content.hero_year || "2014"}</p>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Est. in Pune, India</p>
-              </motion.div>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="h-10 w-10 rounded-xl bg-[#06264a] flex items-center justify-center text-[#f5b400]">
+                <LucideIcons.TrendingUp className="w-5 h-5" />
+              </span>
+              <p className="text-[#d99a00] text-xs sm:text-sm font-bold uppercase tracking-[0.22em]">
+                {content.hero_label || "ABOUT REVA PROCESS TECHNOLOGIES"}
+              </p>
+              <span className="hidden sm:block w-16 h-[1px] bg-[#d99a00]"></span>
             </div>
 
-            {/* Overlapping small image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-              className="absolute -bottom-4 -right-4 w-24 h-24
-                         sm:-bottom-6 sm:-right-6 sm:w-32 sm:h-32
-                         md:-bottom-8 md:-right-8 md:w-40 md:h-40
-                         lg:-bottom-10 lg:-right-10 lg:w-48 lg:h-48
-                         xl:w-52 xl:h-52
-                         rounded-2xl sm:rounded-3xl overflow-hidden
-                         shadow-xl sm:shadow-2xl
-                         border-4 sm:border-6 md:border-8 border-gray-light/80
-                         z-20 transition-all duration-500"
-            >
-              <img
-                src={getImageUrl(content.hero_image_sub, "./hero2.png")}
-                alt="Reva project execution"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
+            <h1 className="text-[#06264a] text-4xl sm:text-4xl lg:text-4xl font-extrabold leading-tight mb-4">
+              {content.hero_title || "Engineering Solutions."}<br />
+              {content.hero_highlight ? (
+                <span className="text-[#d99a00]">{content.hero_highlight}</span>
+              ) : (
+                <>Built for <span className="text-[#d99a00]">Progress.</span></>
+              )}
+            </h1>
+
+            <div className="w-12 h-[3px] bg-[#06264a] mb-4"></div>
+
+            <div className="space-y-4 text-gray-700 text-base lg:text-lg leading-relaxed max-w-2xl">
+              <p className="text-justify">
+                {content.hero_description || "REVA Process Technologies is a Pune-based engineering and manufacturing company delivering complete process solutions for chemical, petrochemical, biogas, environmental, and allied industries."}
+              </p>
+              {content.hero_description2 && (
+                <p className="text-justify">{content.hero_description2}</p>
+              )}
+            </div>
           </motion.div>
 
-          {/* Right Side - Content (7 cols) */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="flex flex-col justify-center lg:col-span-7 order-1 lg:order-2"
+          {/* Right Image with Organic Mask */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="relative z-10"
           >
-            {/* Label */}
-            <motion.div variants={itemVariants} className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
-              <div className="w-8 sm:w-10 md:w-12 h-0.5 sm:h-1 bg-secondary rounded-full" />
-              <span className="text-xs sm:text-sm md:text-base font-semibold text-secondary uppercase tracking-wide">
-                {content.hero_subtitle || "About Reva Process Technologies"}
-              </span>
-            </motion.div>
+            <div className="relative min-h-[420px] lg:min-h-[560px]">
+              <div className="absolute inset-0 rounded-[44%_56%_38%_62%/38%_40%_60%_62%] overflow-hidden shadow-2xl">
+                <img
+                  src={getImageUrl(content.hero_image_main, "./hero1.png")}
+                  alt="REVA Process Plant"
+                  className="h-full w-full object-cover transform hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-[#06264a]/10 hover:bg-transparent transition-colors duration-500"></div>
+              </div>
 
-            {/* Heading */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl font-bold leading-tight mb-4 sm:mb-5 text-primary"
-            >
-              {content.hero_title || "One Roof. Every Stage."}
-            </motion.h1>
+              {/* Overlapping Badge */}
+              <div className="absolute -left-5 lg:-left-12 top-1/2 -translate-y-1/2 h-32 w-32 lg:h-40 lg:w-40 rounded-full bg-white shadow-2xl border-4 border-[#f5b400]/20 flex items-center justify-center text-center p-4">
+                <div className="flex flex-col items-center">
+                  <p className="text-[10px] font-bold text-[#06264a] uppercase tracking-widest">Since</p>
+                  <h3 className="text-3xl lg:text-4xl font-black text-[#06264a] leading-none my-1">{content.hero_year || "2015"}</h3>
+                  <p className="text-[8px] font-bold text-[#06264a] uppercase leading-tight text-center">
+                    {content.hero_year_text ? (
+                      content.hero_year_text.split(' ').map((word, i) => (
+                        <React.Fragment key={i}>{word}{i === 1 ? <br /> : ' '}</React.Fragment>
+                      ))
+                    ) : (
+                      <>Committed to<br />Excellence</>
+                    )}
+                  </p>
+                </div>
+              </div>
 
-            {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-sm sm:text-base md:text-md text-gray-500 leading-relaxed mb-6 sm:mb-7 max-w-full lg:max-w-2xl"
-            >
-              {content.hero_description}
-            </motion.p>
+              {/* Geometric Decoration */}
+              <div className="absolute -bottom-5 right-10 h-20 w-44 rounded-tl-[50px] rounded-br-[50px] bg-[#06264a] -z-10"></div>
+            </div>
+          </motion.div>
+        </div>
 
-            {/* Key Differentiators Grid */}
-            <motion.div
-              variants={itemVariants}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-7"
-            >
-              {highlights.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-100"
-                >
-                  <div className="mt-1 w-2 h-2 rounded-full bg-secondary flex-shrink-0" />
+        {/* Feature Items Row */}
+        {featureItems.length > 0 && (
+          <div className="relative z-30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+            {featureItems.map((item, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="flex gap-4 border-r-0 lg:border-r border-gray-200 lg:pr-6 last:border-r-0"
+              >
+                <div className="h-12 w-12 rounded-full bg-white shadow-lg flex items-center justify-center text-[#06264a] shrink-0 border border-gray-50">
+                  <DynamicIcon name={item.icon} className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-[#06264a] font-bold text-sm mb-3">{item.title}</h3>
+                  <div className="w-8 h-[2px] bg-[#f5b400] mb-3"></div>
+                  <p className="text-gray-600 text-[13px] leading-relaxed text-justify">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* Floating Stats Bar */}
+        {statsItems.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="relative z-30 mt-12 bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-8 lg:p-10"
+          >
+            <div className={`grid grid-cols-1 md:grid-cols-${statsItems.length} gap-10 divide-y md:divide-y-0 md:divide-x divide-gray-100`}>
+              {statsItems.map((stat, i) => (
+                <div key={i} className={`flex items-center gap-6 justify-center ${i > 0 ? 'pt-8 md:pt-0' : ''}`}>
+                  <div className="h-16 w-16 rounded-2xl bg-[#f8fafc] text-[#06264a] flex items-center justify-center text-3xl shadow-sm border border-gray-50">
+                    <DynamicIcon name={stat.icon || "TrendingUp"} className="w-8 h-8" />
+                  </div>
                   <div>
-                    <p className="text-sm font-bold text-primary">{item.label}</p>
-                    <p className="text-xs text-gray-500 leading-snug">{item.desc || ""}</p>
+                    <h4 className="text-3xl font-black text-[#06264a]">{stat.number}</h4>
+                    <p className="text-sm font-medium text-gray-500 uppercase tracking-widest">{stat.label}</p>
                   </div>
                 </div>
               ))}
-            </motion.div>
-
-            {/* Core Values Pills */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-2 mb-7">
-              {corePills.map((val, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1.5 bg-primary/5 text-primary text-xs font-semibold rounded-full border border-primary/15 hover:bg-primary/10 transition-colors duration-200"
-                >
-                  {val}
-                </span>
-              ))}
-            </motion.div>
+            </div>
           </motion.div>
-
-        </div>
+        )}
       </div>
     </section>
   );

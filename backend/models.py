@@ -130,14 +130,18 @@ class AboutContent(Base):
     __tablename__ = "about_contents"
     id = Column(Integer, primary_key=True, index=True)
     # Hero Section
+    hero_label = Column(String(255))
     hero_title = Column(String(255))
+    hero_highlight = Column(String(255))
     hero_subtitle = Column(String(255))
     hero_description = Column(Text)
+    hero_description2 = Column(Text)
     hero_year = Column(String(50))
+    hero_year_text = Column(String(255))
     hero_image_main = Column(String(500))
     hero_image_sub = Column(String(500))
-    highlights = Column(JSON, default=list) # [{label, desc}]
-    core_pills = Column(JSON, default=list) # [string]
+    highlights = Column(JSON, default=list) # [{label, desc, icon, order, number}]
+    core_pills = Column(JSON, default=list) # [{title, desc, icon, order}]
 
     # Mission & Vision
     mission_text = Column(Text)
@@ -324,3 +328,55 @@ class SiteSettings(Base):
     twitter = Column(String(500))
     linkedin = Column(String(500))
     instagram = Column(String(500))
+
+# =====================================================================
+# WHAT SETS US APART — About Page Section
+# =====================================================================
+
+class WhatSetsUsApartContent(Base):
+    __tablename__ = "what_sets_us_apart_content"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(255), default="WHY CHOOSE REVA")
+    heading = Column(String(255), default="What Sets Us Apart?")
+    description = Column(Text)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+class WhatSetsUsApartItem(Base):
+    __tablename__ = "what_sets_us_apart_items"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    icon = Column(String(100), default="LuHardHat")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+# =====================================================================
+# WORK IN ACTION — Home Page Section
+# =====================================================================
+
+class WorkInActionContent(Base):
+    __tablename__ = "work_in_action_content"
+    id = Column(Integer, primary_key=True, index=True)
+    label = Column(String(255), default="Our Projects In Action")
+    heading1 = Column(String(255), default="Proven credentials.")
+    heading2 = Column(String(255), default="Real-world delivery.")
+    description = Column(Text)
+    image = Column(String(500), default="./hero3.png")
+    scope_title = Column(String(255), default="Scope Coverage")
+    scope_content = Column(Text, default="Basic & Detailed Engineering · FEED · Process Design · Key Equipment Supply · Site Execution")
+    stats = Column(JSON, default=list) # [{number, suffix, label, color}]
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+class WorkInActionItem(Base):
+    __tablename__ = "work_in_action_items"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    icon = Column(String(100), nullable=True)
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)

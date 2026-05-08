@@ -101,12 +101,12 @@ const NewsDetail = () => {
 
               {/* Article content */}
               <div className="space-y-5 text-gray-600 text-sm sm:text-base leading-relaxed">
-                <p className="text-base sm:text-lg font-semibold text-primary border-l-4 border-secondary pl-4 py-1">
+                <p className="text-base sm:text-lg font-semibold text-primary border-l-4 border-secondary pl-4 py-1 text-justify">
                   {article.short_description}
                 </p>
 
                 <div 
-                  className="prose prose-sm sm:prose-base max-w-none text-gray-600"
+                  className="prose prose-sm sm:prose-base max-w-none text-gray-600 text-justify"
                   dangerouslySetInnerHTML={{ __html: article.detailed_description }}
                 />
               </div>

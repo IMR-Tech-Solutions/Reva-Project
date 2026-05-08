@@ -37,7 +37,9 @@ import AdminSettings from "./admin/Pages/AdminSettings";
 import AdminHomeHero from "./admin/Pages/AdminHomeHero";
 import AdminHomeAbout from "./admin/Pages/AdminHomeAbout";
 import AdminStrategicAdvice from "./admin/Pages/AdminStrategicAdvice";
+import AdminWhatSetsUsApart from "./admin/Pages/AdminWhatSetsUsApart";
 import AdminLogin from "./admin/Pages/AdminLogin";
+import AdminWorkInAction from "./admin/Pages/AdminWorkInAction";
 import AdminRegister from "./admin/Pages/AdminRegister";
 import ProtectedRoute from "./admin/Layout/ProtectedRoute";
 
@@ -64,7 +66,7 @@ const App = () => {
             <Route path="/services/procurement" element={<Procurement />} />
             <Route path="/services/project" element={<Project />} />
             <Route path="/services/site" element={<Site />} />
-           
+
 
             {/* Technology Routes */}
             <Route path="/technology/:slug" element={<TechnologyDetail />} />
@@ -84,6 +86,7 @@ const App = () => {
             <Route element={<AdminLayout />}>
               <Route path="/admin/dashboard" element={<AdminHome />} />
               <Route path="/admin/about" element={<AdminAbout />} />
+              <Route path="/admin/what-sets-us-apart" element={<AdminWhatSetsUsApart />} />
               <Route path="/admin/services" element={<AdminServices />} />
               <Route path="/admin/technologies" element={<AdminTechnologies />} />
               <Route path="/admin/products" element={<AdminProducts />} />
@@ -94,9 +97,10 @@ const App = () => {
               <Route path="/admin/home-hero" element={<AdminHomeHero />} />
               <Route path="/admin/home-about" element={<AdminHomeAbout />} />
               <Route path="/admin/strategic-advice" element={<AdminStrategicAdvice />} />
+              <Route path="/admin/work-in-action" element={<AdminWorkInAction />} />
             </Route>
           </Route>
-           <Route path="*" element={<NotFound/>}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

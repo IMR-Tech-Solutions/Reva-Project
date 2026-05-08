@@ -115,11 +115,11 @@ const TechnologyLayout = ({
                 <div className="h-[2px] w-6 bg-secondary/40" />
               </div>
 
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 text-justify">
                 {paragraph1}
               </p>
 
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-7">
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-7 text-justify">
                 {paragraph2}
               </p>
 
@@ -168,7 +168,7 @@ const TechnologyLayout = ({
             <h2 className="text-3xl sm:text-4xl font-black text-primary mb-4">
               Key Features & Advantages
             </h2>
-            <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+            <p className="text-gray-500 text-sm sm:text-base leading-relaxed text-justify">
               {keysubheading}
             </p>
           </motion.div>
@@ -202,7 +202,7 @@ const TechnologyLayout = ({
                     <h3 className="text-base sm:text-lg font-semibold text-primary mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
                       {feature.description}
                     </p>
                   </div>

@@ -78,7 +78,7 @@ const MissionValues = ({ content, values }) => {
                   Our Mission
                 </h3>
               </div>
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed text-justify">
                 {content.mission_text}
               </p>
             </motion.div>
@@ -106,7 +106,7 @@ const MissionValues = ({ content, values }) => {
                   Our Vision
                 </h3>
               </div>
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed text-justify">
                 {content.vision_text}
               </p>
             </motion.div>
@@ -131,7 +131,7 @@ const MissionValues = ({ content, values }) => {
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
                 {content.values_title || "Our Core Values"}
               </h2>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed mt-3 max-w-lg">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed mt-3 max-w-lg text-justify">
                 {content.values_description}
               </p>
             </motion.div>
@@ -194,7 +194,7 @@ const ValueCard = ({ icon_name, title, description, delay }) => {
                      group-hover:text-secondary transition-colors duration-300">
         {title}
       </h4>
-      <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+      <p className="text-xs sm:text-sm text-gray-400 leading-relaxed text-justify">
         {description}
       </p>
     </motion.div>

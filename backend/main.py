@@ -625,10 +625,14 @@ def get_about_content(db: Session = Depends(get_db)):
 
 @api_router.put("/about/content", response_model=schemas.AboutContent)
 async def update_about_content(
+    hero_label: Optional[str] = Form(None),
     hero_title: str = Form(...),
+    hero_highlight: Optional[str] = Form(None),
     hero_subtitle: Optional[str] = Form(None),
     hero_description: Optional[str] = Form(None),
+    hero_description2: Optional[str] = Form(None),
     hero_year: Optional[str] = Form(None),
+    hero_year_text: Optional[str] = Form(None),
     hero_image_main: Optional[str] = Form(None),
     hero_image_sub: Optional[str] = Form(None),
     highlights: str = Form("[]"),
@@ -691,10 +695,14 @@ async def update_about_content(
         pills_list = []
 
     about_data = schemas.AboutContentCreate(
+        hero_label=hero_label,
         hero_title=hero_title,
+        hero_highlight=hero_highlight,
         hero_subtitle=hero_subtitle,
         hero_description=hero_description,
+        hero_description2=hero_description2,
         hero_year=hero_year,
+        hero_year_text=hero_year_text,
         hero_image_main=hero_image_main,
         hero_image_sub=hero_image_sub,
         highlights=highlights_list,
@@ -1212,9 +1220,129 @@ async def upload_technology_image(
     url = f"/api/uploads/technologies/{filename}"
     return {"url": url, "filename": filename}
 
+# =====================================================================
+# WHAT SETS US APART API — About Page Section
+# =====================================================================
+
+@api_router.get("/about/what-sets-us-apart", response_model=schemas.WhatSetsUsApartFullResponse)
+def get_what_sets_us_apart(db: Session = Depends(get_db)):
+    """Public: Get the What Sets Us Apart section content and active items."""
+    content = crud.get_wsua_content(db)
+    items = crud.get_wsua_items(db, active_only=True)
+    return {"content": content, "items": items}
+
+@api_router.put("/about/what-sets-us-apart", response_model=schemas.WhatSetsUsApartContent)
+def update_what_sets_us_apart_content(
+    data: schemas.WhatSetsUsApartContentCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Update the main section content (label, heading, description)."""
+    return crud.update_wsua_content(db, data)
+
+@api_router.get("/about/what-sets-us-apart/items", response_model=List[schemas.WhatSetsUsApartItem])
+def get_what_sets_us_apart_items(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    """Admin: Get ALL items (including inactive) for dashboard management."""
+    return crud.get_wsua_items(db, active_only=False)
+
+@api_router.post("/about/what-sets-us-apart/items", response_model=schemas.WhatSetsUsApartItem)
+def create_what_sets_us_apart_item(
+    item: schemas.WhatSetsUsApartItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Create a new feature point."""
+    return crud.create_wsua_item(db, item)
+
+@api_router.put("/about/what-sets-us-apart/items/{item_id}", response_model=schemas.WhatSetsUsApartItem)
+def update_what_sets_us_apart_item(
+    item_id: int,
+    item: schemas.WhatSetsUsApartItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Update an existing feature point."""
+    db_item = crud.update_wsua_item(db, item_id, item)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Feature item not found")
+    return db_item
+
+@api_router.delete("/about/what-sets-us-apart/items/{item_id}")
+def delete_what_sets_us_apart_item(
+    item_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Delete a feature point."""
+    db_item = crud.delete_wsua_item(db, item_id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Feature item not found")
+    return {"message": "Feature item deleted successfully"}
+
+
+# =====================================================================
+# WORK IN ACTION API — Home Page Section
+# =====================================================================
+
+@api_router.get("/home/work-in-action", response_model=schemas.WorkInActionFullResponse)
+def get_work_in_action(db: Session = Depends(get_db)):
+    """Public: Get the Work In Action section content and active items."""
+    content = crud.get_work_in_action_content(db)
+    items = crud.get_work_in_action_items(db, active_only=True)
+    return {"content": content, "items": items}
+
+@api_router.put("/home/work-in-action", response_model=schemas.WorkInActionContent)
+def update_work_in_action_content(
+    data: schemas.WorkInActionContentCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Update the main section content (label, heading, description, etc.)."""
+    return crud.update_work_in_action_content(db, data)
+
+@api_router.get("/home/work-in-action/items", response_model=List[schemas.WorkInActionItem])
+def get_work_in_action_items(db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    """Admin: Get ALL items (including inactive) for dashboard management."""
+    return crud.get_work_in_action_items(db, active_only=False)
+
+@api_router.post("/home/work-in-action/items", response_model=schemas.WorkInActionItem)
+def create_work_in_action_item(
+    item: schemas.WorkInActionItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Create a new project reference tag."""
+    return crud.create_work_in_action_item(db, item)
+
+@api_router.put("/home/work-in-action/items/{item_id}", response_model=schemas.WorkInActionItem)
+def update_work_in_action_item(
+    item_id: int,
+    item: schemas.WorkInActionItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Update an existing project reference tag."""
+    db_item = crud.update_work_in_action_item(db, item_id, item)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return db_item
+
+@api_router.delete("/home/work-in-action/items/{item_id}")
+def delete_work_in_action_item(
+    item_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Delete a project reference tag."""
+    db_item = crud.delete_work_in_action_item(db, item_id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"message": "Item deleted successfully"}
+
 
 # Include the API router with /api prefix
 app.include_router(api_router, prefix="/api")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+

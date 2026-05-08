@@ -86,7 +86,7 @@ const ServicesSection = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4">
               Our <span className="text-secondary">Services</span>
             </h2>
-            <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl text-justify">
               Six integrated service capabilities spanning the full project
               lifecycle — from feasibility and engineering through procurement,
               manufacturing, and site commissioning.
@@ -150,7 +150,7 @@ const ServicesSection = () => {
                       </p>
 
                       {/* Description */}
-                      <p className="text-[13px] md:text-sm text-gray-600 leading-relaxed mb-6">
+                      <p className="text-[13px] md:text-sm text-gray-600 leading-relaxed mb-6 text-justify">
                         {service.description}
                       </p>
 

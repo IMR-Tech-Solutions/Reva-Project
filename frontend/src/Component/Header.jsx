@@ -180,12 +180,12 @@ const Header = () => {
                 isTransparent={!isScrolled && isHomePage}
                 products={dynamicProducts}
               />
-              <NavLink
+              {/* <NavLink
                 text="News"
                 href="/news"
                 active={location.pathname === "/news"}
                 isTransparent={!isScrolled && isHomePage}
-              />
+              /> */}
               <NavLink
                 text="Career"
                 href="/career"
@@ -367,14 +367,14 @@ const Header = () => {
                 </div>
               )}
             </div>
-              <div className="border-t border-white/20 mt-2 pt-2">
+              {/* <div className="border-t border-white/20 mt-2 pt-2">
               <MobileNavLink
                 text="News"
                 href="/news"
                 active={location.pathname === "/news"}
                 onClick={() => setMobileMenuOpen(false)}
               />
-            </div>
+            </div> */}
 
             <div className="border-t border-white/20 mt-2 pt-2">
               <MobileNavLink

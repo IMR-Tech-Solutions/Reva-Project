@@ -21,8 +21,8 @@ const Home = () => {
       <WorkInActionSection />
       <ProductsShowcase />
       <StrategicAdviceSection />
-      <JoinTeamSection />
-      <TestimonialsSection />
+      {/* <JoinTeamSection /> */}
+      {/* <TestimonialsSection /> */}
       {/* <LatestNewsSection /> */}
       {/* <GlobalPresenceSection /> */}
       <GetInTouchSection />
