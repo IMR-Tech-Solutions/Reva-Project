@@ -55,6 +55,7 @@ const Breadcrumb = ({ title: customTitle }) => {
     '/iset':'ISET Technologies',
     '/evaporate':'REVAP Technology',
     '/resin':'Resin Manufacturing Plant',
+    '/bioremediation': 'Bioremediation @ REVA',
   };
 
   // Get title from mapping or auto-format
@@ -94,10 +95,8 @@ const Breadcrumb = ({ title: customTitle }) => {
     ? getTitle(location.pathname)
     : 'Home');
 
-  // Define service detail paths or prefixes that should show "Our Services" in breadcrumb
   const serviceDetailPaths = [
     '/services/feasibility', '/services/BasicEngineering', '/services/detailed', '/services/procurement', '/services/basic', '/services/site', '/services/project'
-    
   ];
 
   const isTechnologyPage = location.pathname.toLowerCase().startsWith('/technology/');

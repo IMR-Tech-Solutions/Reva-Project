@@ -91,6 +91,15 @@ export const searchData = [
       "commissioning", "ASME", "NDT", "pressure vessel", "piping spools", "skid"
     ]
   },
+  {
+    title: "Bioremediation @ REVA",
+    description: "Nature-based and engineered treatment solutions for complex water, soil, and industrial sites using microbial and biogeochemical processes.",
+    url: "/bioremediation",
+    keywords: [
+      "bioremediation", "environmental engineering", "nature-based treatment", "microbial",
+      "biogeochemical", "soil remediation", "water treatment", "sustainable", "dr irfan khan"
+    ]
+  },
 
   // ─── TECHNOLOGIES ─────────────────────────────────────────────────────────
 

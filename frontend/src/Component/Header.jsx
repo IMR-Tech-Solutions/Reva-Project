@@ -131,8 +131,8 @@ const Header = () => {
       {/* HEADER */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${isScrolled || !isHomePage
-            ? "bg-white/85 shadow-md"
-            : "bg-gradient-to-b from-black/40 to-transparent"
+          ? "bg-white/85 shadow-md"
+          : "bg-gradient-to-b from-black/40 to-transparent"
           }`}
       >
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 lg:px-16">
@@ -144,8 +144,8 @@ const Header = () => {
                 src="./logo11.png"
                 alt="REVA"
                 className={`transition-all duration-400 ${isScrolled || !isHomePage
-                    ? "h-12 lg:h-14"
-                    : "h-16 lg:h-20"
+                  ? "h-12 lg:h-14"
+                  : "h-16 lg:h-20"
                   }`}
               />
             </Link>
@@ -168,6 +168,12 @@ const Header = () => {
                 text="Services"
                 href="/services"
                 active={location.pathname === "/services"}
+                isTransparent={!isScrolled && isHomePage}
+              />
+              <NavLink
+                text="Bioremediation"
+                href="/bioremediation"
+                active={location.pathname === "/bioremediation"}
                 isTransparent={!isScrolled && isHomePage}
               />
               <TechnologiesDropdown
@@ -206,8 +212,8 @@ const Header = () => {
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
                 className={`text-xl transition-colors ${isScrolled || !isHomePage
-                    ? "text-primary hover:text-secondary"
-                    : "text-white hover:text-secondary"
+                  ? "text-primary hover:text-secondary"
+                  : "text-white hover:text-secondary"
                   }`}
                 aria-label="Search"
               >
@@ -218,8 +224,8 @@ const Header = () => {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={`lg:hidden text-2xl transition-colors ${isScrolled || !isHomePage
-                    ? "text-primary hover:text-secondary"
-                    : "text-white hover:text-secondary"
+                  ? "text-primary hover:text-secondary"
+                  : "text-white hover:text-secondary"
                   }`}
                 aria-label="Menu"
               >
@@ -316,6 +322,15 @@ const Header = () => {
               />
             </div>
 
+            <div className="border-t border-white/20 mt-2 pt-2">
+              <MobileNavLink
+                text="Bioremediation"
+                href="/bioremediation"
+                active={location.pathname === "/bioremediation"}
+                onClick={() => setMobileMenuOpen(false)}
+              />
+            </div>
+
             {/* Technologies */}
             <div className="border-t border-white/20 mt-2 pt-2">
               <button
@@ -367,7 +382,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-              {/* <div className="border-t border-white/20 mt-2 pt-2">
+            {/* <div className="border-t border-white/20 mt-2 pt-2">
               <MobileNavLink
                 text="News"
                 href="/news"
@@ -415,12 +430,12 @@ const NavLink = ({ text, href, active, isTransparent }) => (
   <Link
     to={href}
     className={`font-semibold text-base pb-1 border-b-2 transition-colors ${isTransparent
-        ? active
-          ? "text-secondary border-secondary"
-          : "text-white border-transparent hover:text-secondary hover:border-secondary"
-        : active
-          ? "text-secondary border-secondary"
-          : "text-primary border-transparent hover:text-secondary hover:border-secondary"
+      ? active
+        ? "text-secondary border-secondary"
+        : "text-white border-transparent hover:text-secondary hover:border-secondary"
+      : active
+        ? "text-secondary border-secondary"
+        : "text-primary border-transparent hover:text-secondary hover:border-secondary"
       }`}
   >
     {text}
@@ -434,8 +449,8 @@ const TechnologiesDropdown = ({ active, isTransparent, technologies = [] }) => {
     <div className="relative group">
       <button
         className={`font-semibold text-base pb-1 border-b-2 transition-colors flex items-center gap-1 ${isTransparent
-            ? active ? "text-secondary border-secondary" : "text-white border-transparent hover:text-secondary hover:border-secondary"
-            : active ? "text-secondary border-secondary" : "text-primary border-transparent hover:text-secondary hover:border-secondary"
+          ? active ? "text-secondary border-secondary" : "text-white border-transparent hover:text-secondary hover:border-secondary"
+          : active ? "text-secondary border-secondary" : "text-primary border-transparent hover:text-secondary hover:border-secondary"
           }`}
       >
         Technologies
@@ -464,8 +479,8 @@ const ProductsDropdown = ({ active, isTransparent, products = [] }) => {
     <div className="relative group">
       <button
         className={`font-semibold text-base pb-1 border-b-2 transition-colors flex items-center gap-1 ${isTransparent
-            ? active ? "text-secondary border-secondary" : "text-white border-transparent hover:text-secondary hover:border-secondary"
-            : active ? "text-secondary border-secondary" : "text-primary border-transparent hover:text-secondary hover:border-secondary"
+          ? active ? "text-secondary border-secondary" : "text-white border-transparent hover:text-secondary hover:border-secondary"
+          : active ? "text-secondary border-secondary" : "text-primary border-transparent hover:text-secondary hover:border-secondary"
           }`}
       >
         Products

@@ -18,6 +18,7 @@ const Footer = () => {
       { name: "About Us", href: "/about" },
       // { name: "News", href: "/news" },
       { name: "Services", href: "/services" },
+      { name: "Bioremediation", href: "/bioremediation" },
       { name: "Career", href: "/career" },
       { name: "Contact Us", href: "/contact" },
     ],
@@ -28,6 +29,7 @@ const Footer = () => {
       { name: "Procurement", href: "/services/procurement" },
       { name: "EPC Project Management", href: "/services/basic" },
       { name: "Manufacturing & Site Services", href: "/services/site" },
+      { name: "Bioremediation @ REVA", href: "/bioremediation" },
     ],
     technologies: [
       { name: "Amine System", href: "/amine" },

@@ -22,6 +22,7 @@ import Career from "./Pages/Career";
 import BasicEngineering from "./Pages/BasicEngineering";
 import ServicesSection from "./Pages/Services";
 import NewsDetail from "./Component/NewsComponents/NewsDetail";
+import Bioremediation from "./Pages/Bioremediation";
 
 // Admin Components
 import AdminLayout from "./admin/Layout/AdminLayout";
@@ -66,6 +67,7 @@ const App = () => {
             <Route path="/services/procurement" element={<Procurement />} />
             <Route path="/services/project" element={<Project />} />
             <Route path="/services/site" element={<Site />} />
+            <Route path="/bioremediation" element={<Bioremediation />} />
 
 
             {/* Technology Routes */}
