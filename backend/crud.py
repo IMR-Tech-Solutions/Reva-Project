@@ -754,3 +754,68 @@ def delete_work_in_action_item(db: Session, item_id: int):
         db.delete(db_item)
         db.commit()
     return db_item
+
+# =====================================================================
+# BIOREMEDIATION CRUD
+# =====================================================================
+
+def get_bioremediation_content(db: Session):
+    content = db.query(models.BioremediationContent).first()
+    if not content:
+        content = models.BioremediationContent()
+        db.add(content)
+        db.commit()
+        db.refresh(content)
+    return content
+
+def update_bioremediation_content(db: Session, data: schemas.BioremediationContentCreate):
+    db_content = get_bioremediation_content(db)
+    for key, value in data.model_dump().items():
+        if value is not None:
+            setattr(db_content, key, value)
+    db.commit()
+    db.refresh(db_content)
+    return db_content
+
+# --- Generic Item CRUD (works for all bioremediation item tables) ---
+
+def get_bio_items(db: Session, model_class, active_only: bool = False):
+    query = db.query(model_class)
+    if active_only:
+        query = query.filter(model_class.is_active == True)
+    return query.order_by(model_class.order.asc()).all()
+
+def create_bio_item(db: Session, model_class, item_data: dict):
+    # Filter item_data to only include keys that exist in the model
+    model_columns = {c.name for c in model_class.__table__.columns}
+    filtered_data = {k: v for k, v in item_data.items() if k in model_columns}
+    
+    db_item = model_class(**filtered_data)
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def update_bio_item(db: Session, model_class, item_id: int, item_data: dict):
+    db_item = db.query(model_class).filter(model_class.id == item_id).first()
+    if not db_item:
+        return None
+    
+    # Filter item_data to only include keys that exist in the model
+    model_columns = {c.name for c in model_class.__table__.columns}
+    
+    for key, value in item_data.items():
+        if key in model_columns and value is not None:
+            setattr(db_item, key, value)
+    
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+def delete_bio_item(db: Session, model_class, item_id: int):
+    db_item = db.query(model_class).filter(model_class.id == item_id).first()
+    if db_item:
+        db.delete(db_item)
+        db.commit()
+    return db_item
+

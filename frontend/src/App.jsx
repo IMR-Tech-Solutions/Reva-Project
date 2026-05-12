@@ -41,6 +41,7 @@ import AdminStrategicAdvice from "./admin/Pages/AdminStrategicAdvice";
 import AdminWhatSetsUsApart from "./admin/Pages/AdminWhatSetsUsApart";
 import AdminLogin from "./admin/Pages/AdminLogin";
 import AdminWorkInAction from "./admin/Pages/AdminWorkInAction";
+import AdminBioremediation from "./admin/Pages/AdminBioremediation";
 import AdminRegister from "./admin/Pages/AdminRegister";
 import ProtectedRoute from "./admin/Layout/ProtectedRoute";
 
@@ -100,6 +101,7 @@ const App = () => {
               <Route path="/admin/home-about" element={<AdminHomeAbout />} />
               <Route path="/admin/strategic-advice" element={<AdminStrategicAdvice />} />
               <Route path="/admin/work-in-action" element={<AdminWorkInAction />} />
+              <Route path="/admin/bioremediation" element={<AdminBioremediation />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

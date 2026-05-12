@@ -39,6 +39,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Create database tables
+models.Base.metadata.create_all(bind=engine)
+
 # Create uploads directory if it doesn't exist
 UPLOADS_DIR = Path(__file__).parent / "uploads" / "resumes"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
@@ -1336,6 +1339,227 @@ def delete_work_in_action_item(
     """Admin: Delete a project reference tag."""
     db_item = crud.delete_work_in_action_item(db, item_id)
     if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"message": "Item deleted successfully"}
+
+
+# =====================================================================
+# BIOREMEDIATION API
+# =====================================================================
+
+BIOREMEDIATION_UPLOADS_DIR = Path(__file__).parent / "uploads" / "bioremediation"
+BIOREMEDIATION_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
+# Model lookup map for generic CRUD
+BIO_MODEL_MAP = {
+    "hero-badges": models.BioremediationHeroBadge,
+    "features": models.BioremediationFeature,
+    "applications": models.BioremediationApplication,
+    "approach-steps": models.BioremediationApproachStep,
+    "approach-highlights": models.BioremediationApproachHighlight,
+    "nature-options": models.BioremediationNatureOption,
+    "engineered-options": models.BioremediationEngineeredOption,
+    "deliverables": models.BioremediationDeliverable,
+    "focus-areas": models.BioremediationFocusArea,
+    "info-chips": models.BioremediationInfoChip,
+    "pilot-images": models.BioremediationPilotImage,
+}
+
+@api_router.get("/bioremediation", response_model=schemas.BioremediationFullResponse)
+def get_bioremediation_full(db: Session = Depends(get_db)):
+    """Public: Get all bioremediation content and active items."""
+    content = crud.get_bioremediation_content(db)
+    return {
+        "content": content,
+        "hero_badges": crud.get_bio_items(db, models.BioremediationHeroBadge, active_only=True),
+        "features": crud.get_bio_items(db, models.BioremediationFeature, active_only=True),
+        "applications": crud.get_bio_items(db, models.BioremediationApplication, active_only=True),
+        "approach_steps": crud.get_bio_items(db, models.BioremediationApproachStep, active_only=True),
+        "approach_highlights": crud.get_bio_items(db, models.BioremediationApproachHighlight, active_only=True),
+        "nature_options": crud.get_bio_items(db, models.BioremediationNatureOption, active_only=True),
+        "engineered_options": crud.get_bio_items(db, models.BioremediationEngineeredOption, active_only=True),
+        "deliverables": crud.get_bio_items(db, models.BioremediationDeliverable, active_only=True),
+        "focus_areas": crud.get_bio_items(db, models.BioremediationFocusArea, active_only=True),
+        "info_chips": crud.get_bio_items(db, models.BioremediationInfoChip, active_only=True),
+        "pilot_images": crud.get_bio_items(db, models.BioremediationPilotImage, active_only=True),
+    }
+
+@api_router.put("/bioremediation/content", response_model=schemas.BioremediationContent)
+async def update_bioremediation_content(
+    hero_small_label: Optional[str] = Form(None),
+    hero_main_heading: Optional[str] = Form(None),
+    hero_highlight_text: Optional[str] = Form(None),
+    hero_subtitle: Optional[str] = Form(None),
+    hero_bg_image: Optional[str] = Form(None),
+    hero_partner_label: Optional[str] = Form(None),
+    hero_partner_name: Optional[str] = Form(None),
+    hero_partner_designation: Optional[str] = Form(None),
+    hero_cta1_text: Optional[str] = Form(None),
+    hero_cta1_link: Optional[str] = Form(None),
+    hero_cta2_text: Optional[str] = Form(None),
+    hero_cta2_link: Optional[str] = Form(None),
+    what_section_label: Optional[str] = Form(None),
+    what_heading: Optional[str] = Form(None),
+    what_heading_highlight: Optional[str] = Form(None),
+    what_description1: Optional[str] = Form(None),
+    what_description2: Optional[str] = Form(None),
+    what_image: Optional[str] = Form(None),
+    where_heading: Optional[str] = Form(None),
+    where_heading_highlight: Optional[str] = Form(None),
+    where_subtitle: Optional[str] = Form(None),
+    approach_section_label: Optional[str] = Form(None),
+    approach_heading1: Optional[str] = Form(None),
+    approach_heading2: Optional[str] = Form(None),
+    approach_subtitle: Optional[str] = Form(None),
+    approach_side_description: Optional[str] = Form(None),
+    toolbox_heading: Optional[str] = Form(None),
+    toolbox_heading_highlight: Optional[str] = Form(None),
+    toolbox_subtitle: Optional[str] = Form(None),
+    toolbox_bottom_note: Optional[str] = Form(None),
+    deliverables_section_label: Optional[str] = Form(None),
+    deliverables_heading: Optional[str] = Form(None),
+    deliverables_heading_highlight: Optional[str] = Form(None),
+    deliverables_subtitle: Optional[str] = Form(None),
+    europe_section_label: Optional[str] = Form(None),
+    europe_main_heading: Optional[str] = Form(None),
+    europe_subheading: Optional[str] = Form(None),
+    europe_profile_image: Optional[str] = Form(None),
+    europe_designation_badge: Optional[str] = Form(None),
+    europe_paragraph1: Optional[str] = Form(None),
+    europe_paragraph2: Optional[str] = Form(None),
+    pilot_heading: Optional[str] = Form(None),
+    pilot_subtitle: Optional[str] = Form(None),
+    hero_bg_file: Optional[UploadFile] = File(None),
+    what_image_file: Optional[UploadFile] = File(None),
+    europe_profile_file: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    import time
+
+    # Handle image uploads
+    if hero_bg_file and hero_bg_file.filename:
+        ext = os.path.splitext(hero_bg_file.filename)[1]
+        filename = f"bio_hero_{int(time.time())}{ext}"
+        file_path = BIOREMEDIATION_UPLOADS_DIR / filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(hero_bg_file.file, buffer)
+        hero_bg_image = f"/api/uploads/bioremediation/{filename}"
+
+    if what_image_file and what_image_file.filename:
+        ext = os.path.splitext(what_image_file.filename)[1]
+        filename = f"bio_what_{int(time.time())}{ext}"
+        file_path = BIOREMEDIATION_UPLOADS_DIR / filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(what_image_file.file, buffer)
+        what_image = f"/api/uploads/bioremediation/{filename}"
+
+    if europe_profile_file and europe_profile_file.filename:
+        ext = os.path.splitext(europe_profile_file.filename)[1]
+        filename = f"bio_europe_{int(time.time())}{ext}"
+        file_path = BIOREMEDIATION_UPLOADS_DIR / filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(europe_profile_file.file, buffer)
+        europe_profile_image = f"/api/uploads/bioremediation/{filename}"
+
+    content_data = schemas.BioremediationContentCreate(
+        hero_small_label=hero_small_label, hero_main_heading=hero_main_heading,
+        hero_highlight_text=hero_highlight_text, hero_subtitle=hero_subtitle,
+        hero_bg_image=hero_bg_image, hero_partner_label=hero_partner_label,
+        hero_partner_name=hero_partner_name, hero_partner_designation=hero_partner_designation,
+        hero_cta1_text=hero_cta1_text, hero_cta1_link=hero_cta1_link,
+        hero_cta2_text=hero_cta2_text, hero_cta2_link=hero_cta2_link,
+        what_section_label=what_section_label, what_heading=what_heading,
+        what_heading_highlight=what_heading_highlight, what_description1=what_description1,
+        what_description2=what_description2, what_image=what_image,
+        where_heading=where_heading, where_heading_highlight=where_heading_highlight,
+        where_subtitle=where_subtitle, approach_section_label=approach_section_label,
+        approach_heading1=approach_heading1, approach_heading2=approach_heading2,
+        approach_subtitle=approach_subtitle, approach_side_description=approach_side_description,
+        toolbox_heading=toolbox_heading, toolbox_heading_highlight=toolbox_heading_highlight,
+        toolbox_subtitle=toolbox_subtitle, toolbox_bottom_note=toolbox_bottom_note,
+        deliverables_section_label=deliverables_section_label, deliverables_heading=deliverables_heading,
+        deliverables_heading_highlight=deliverables_heading_highlight, deliverables_subtitle=deliverables_subtitle,
+        europe_section_label=europe_section_label, europe_main_heading=europe_main_heading,
+        europe_subheading=europe_subheading, europe_profile_image=europe_profile_image,
+        europe_designation_badge=europe_designation_badge,
+        europe_paragraph1=europe_paragraph1, europe_paragraph2=europe_paragraph2,
+        pilot_heading=pilot_heading, pilot_subtitle=pilot_subtitle,
+    )
+    return crud.update_bioremediation_content(db=db, data=content_data)
+
+@api_router.post("/bioremediation/upload-image")
+async def upload_bioremediation_image(
+    image: UploadFile = File(...),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Upload an image for use in bioremediation sections."""
+    import time
+    ext = os.path.splitext(image.filename)[1]
+    filename = f"bio_{int(time.time())}{ext}"
+    file_path = BIOREMEDIATION_UPLOADS_DIR / filename
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+    url = f"/api/uploads/bioremediation/{filename}"
+    return {"url": url, "filename": filename}
+
+# --- Generic CRUD endpoints for all bioremediation item types ---
+
+@api_router.get("/bioremediation/{item_type}", response_model=List[schemas.BioItem])
+def get_bioremediation_items(
+    item_type: str,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Get ALL items (including inactive) for a specific type."""
+    model_class = BIO_MODEL_MAP.get(item_type)
+    if not model_class:
+        raise HTTPException(status_code=404, detail=f"Unknown item type: {item_type}")
+    return crud.get_bio_items(db, model_class, active_only=False)
+
+@api_router.post("/bioremediation/{item_type}", response_model=schemas.BioItem)
+def create_bioremediation_item(
+    item_type: str,
+    item: schemas.BioItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Create a new item of a specific type."""
+    model_class = BIO_MODEL_MAP.get(item_type)
+    if not model_class:
+        raise HTTPException(status_code=404, detail=f"Unknown item type: {item_type}")
+    return crud.create_bio_item(db, model_class, item.model_dump())
+
+@api_router.put("/bioremediation/{item_type}/{item_id}", response_model=schemas.BioItem)
+def update_bioremediation_item(
+    item_type: str,
+    item_id: int,
+    item: schemas.BioItemCreate,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Update an existing item."""
+    model_class = BIO_MODEL_MAP.get(item_type)
+    if not model_class:
+        raise HTTPException(status_code=404, detail=f"Unknown item type: {item_type}")
+    result = crud.update_bio_item(db, model_class, item_id, item.model_dump())
+    if not result:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return result
+
+@api_router.delete("/bioremediation/{item_type}/{item_id}")
+def delete_bioremediation_item(
+    item_type: str,
+    item_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.AdminUser = Depends(get_current_active_admin)
+):
+    """Admin: Delete an item."""
+    model_class = BIO_MODEL_MAP.get(item_type)
+    if not model_class:
+        raise HTTPException(status_code=404, detail=f"Unknown item type: {item_type}")
+    result = crud.delete_bio_item(db, model_class, item_id)
+    if not result:
         raise HTTPException(status_code=404, detail="Item not found")
     return {"message": "Item deleted successfully"}
 

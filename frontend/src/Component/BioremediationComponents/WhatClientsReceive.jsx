@@ -9,8 +9,18 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-const WhatClientsReceive = () => {
-  const deliverables = [
+const WhatClientsReceive = ({ data }) => {
+  const c = data?.content || {};
+  const apiDeliverables = data?.deliverables;
+  
+  const iconMap = { FileText, Activity, ClipboardCheck, Settings2, FlaskConical, ShieldCheck };
+  
+  const deliverables = apiDeliverables?.length ? apiDeliverables.map(d => ({
+    title: d.title,
+    content: d.description,
+    icon: iconMap[d.icon_name] || FileText,
+    number: d.number
+  })) : [
     {
       title: "Concept note / process selection memo",
       content: "(options, risks, pros/cons)",
@@ -51,11 +61,11 @@ const WhatClientsReceive = () => {
             <div className="flex items-center gap-3 mb-3">
               <span className="w-10 h-[2px] bg-secondary" />
               <span className="text-secondary font-bold text-[10px] uppercase tracking-[0.3em]">
-                Deliverables
+                {c.deliverables_section_label || "Deliverables"}
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-primary leading-tight">
-              What Clients <span className="text-secondary">Receive</span>
+              {c.deliverables_heading || "What Clients"} <span className="text-secondary">{c.deliverables_heading_highlight || "Receive"}</span>
             </h2>
           </motion.div>
 
@@ -66,7 +76,7 @@ const WhatClientsReceive = () => {
             className="flex items-center gap-3 text-slate-400"
           >
             <ShieldCheck className="w-5 h-5 text-secondary" />
-            <span className="text-xs font-bold uppercase tracking-widest">ISO Certified Quality</span>
+            <span className="text-xs font-bold uppercase tracking-widest">{c.deliverables_subtitle || "ISO Certified Quality"}</span>
           </motion.div>
         </div>
 
@@ -108,7 +118,7 @@ const WhatClientsReceive = () => {
 
                 {/* Index Number (Opaque) */}
                 <span className="hidden md:block absolute right-0 top-0 text-4xl font-black text-slate-50 group-hover:text-slate-100/50 transition-colors pointer-events-none">
-                  0{idx + 1}
+                  {item.number || `0${idx + 1}`}
                 </span>
               </motion.div>
             ))}

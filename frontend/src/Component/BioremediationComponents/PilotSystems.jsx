@@ -1,8 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const PilotSystems = () => {
-  const pilots = [
+const PilotSystems = ({ data }) => {
+  const c = data?.content || {};
+  const apiPilots = data?.pilot_images;
+  
+  const pilots = apiPilots?.length ? apiPilots.map(p => ({
+    title: p.title,
+    caption: p.caption,
+    img: p.image
+  })) : [
     { 
       title: "Wetland system", 
       caption: "Phytotechnikum front view", 
@@ -15,6 +22,8 @@ const PilotSystems = () => {
     },
   ];
 
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   return (
     <section className="py-8 bg-white">
       <div className="container mx-auto px-4 md:px-12 lg:px-20">
@@ -22,12 +31,12 @@ const PilotSystems = () => {
         <div className="mb-8">
           <div className="inline-block relative mb-1">
             <h2 className="text-2xl md:text-3xl font-bold text-primary tracking-tight">
-              Bioremediation – Example Pilot Systems
+              {c.pilot_heading || "Bioremediation – Example Pilot Systems"}
             </h2>
             <div className="w-20 h-1 bg-secondary mt-1" />
           </div>
           <p className="text-[11px] md:text-[12px] text-red-700 font-medium tracking-wide uppercase mt-1">
-            Images shown are representative pilot/research-scale systems for concept illustration.
+            {c.pilot_subtitle || "Images shown are representative pilot/research-scale systems for concept illustration."}
           </p>
         </div>
 
@@ -44,7 +53,7 @@ const PilotSystems = () => {
             >
               <div className="aspect-[16/10] overflow-hidden">
                 <img
-                  src={item.img}
+                  src={item.img ? (item.img.startsWith('http') ? item.img : `${API_BASE}${item.img}`) : ""}
                   alt={item.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
                 />

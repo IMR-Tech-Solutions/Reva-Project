@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Mail, Phone, Globe, ArrowRight } from "lucide-react";
 
-const BioremediationCTA = () => {
+const BioremediationCTA = ({ data }) => {
+  const c = data?.content || {};
   return (
     <section className="bg-white overflow-hidden">
       {/* FINAL CTA - Sleek Typography Focus */}
@@ -23,27 +24,27 @@ const BioremediationCTA = () => {
             </div>
             
             <h2 className="text-4xl md:text-6xl font-bold text-primary mb-8 leading-tight tracking-tight">
-              Ready to Deploy <br />
-              <span className="text-secondary italic">Biological Excellence?</span>
+              {c.cta_heading || "Ready to Deploy"} <br />
+              <span className="text-secondary italic">{c.cta_heading_highlight || "Biological Excellence?"}</span>
             </h2>
             
             <p className="text-gray-500 text-base md:text-lg mb-10 max-w-2xl mx-auto font-medium">
-              Join leading industrial partners in adopting sustainable, high-performance bioremediation strategies tailored for complex environments.
+              {c.cta_subtitle || "Join leading industrial partners in adopting sustainable, high-performance bioremediation strategies tailored for complex environments."}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Link
-                to="/contact"
+                to={c.cta_btn1_link || "/contact"}
                 className="group px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-secondary hover:text-primary transition-all duration-300 flex items-center gap-3 shadow-lg shadow-primary/10"
               >
-                Start Project Discussion
+                {c.cta_btn1_text || "Start Project Discussion"}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/contact"
+                to={c.cta_btn2_link || "/contact"}
                 className="flex items-center gap-2 text-primary font-bold hover:text-secondary transition-colors py-4 px-6"
               >
-                <Mail className="w-4 h-4" /> engineering@reva.com
+                <Mail className="w-4 h-4" /> {c.cta_btn2_text || "engineering@reva.com"}
               </Link>
             </div>
           </motion.div>

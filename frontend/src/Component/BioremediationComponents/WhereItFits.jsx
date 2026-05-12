@@ -13,8 +13,19 @@ import {
   HandHeart,
 } from "lucide-react";
 
-const WhereItFits = () => {
-  const applications = [
+const WhereItFits = ({ data }) => {
+  const c = data?.content || {};
+  const apiApps = data?.applications;
+  
+  const iconMap = { Waves, Factory, Droplets, Mountain, ShieldCheck, Leaf, Settings, Shield, RefreshCcw, HandHeart };
+  
+  const applications = apiApps?.length ? apiApps.map(a => ({
+    icon: iconMap[a.icon_name] || Waves,
+    number: a.number,
+    title: a.title,
+    desc: a.description,
+    image: a.image
+  })) : [
     {
       icon: Waves,
       number: "01",
@@ -60,6 +71,8 @@ const WhereItFits = () => {
     { icon: HandHeart, text: "Safe for environment & communities" },
   ];
 
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   return (
     <section className="relative py-8 md:py-12 bg-[#f8fafc] overflow-hidden">
       <div className="container relative z-10 mx-auto px-4 md:px-10 lg:px-16">
@@ -73,9 +86,9 @@ const WhereItFits = () => {
               </span> */}
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-primary leading-tight mb-4">
-              Where It Fits{" "}
+              {c.where_heading || "Where It Fits"}{" "}
               <span className="text-secondary font-bold">
-                (Typical Client Problems)
+                {c.where_heading_highlight || "(Typical Client Problems)"}
               </span>
             </h2>
             <div className="flex items-center">
@@ -84,9 +97,8 @@ const WhereItFits = () => {
           </div>
 
           <div className="lg:max-w-md lg:border-l border-gray-200 lg:pl-10">
-            <p className="text-gray-600 text-sm md:text-base leading-relaxed font-medium">
-              Our bioremediation solutions are designed to solve complex
-              contamination challenges across a wide range of industries.
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed font-medium text-justify">
+              {c.where_subtitle || "Our bioremediation solutions are designed to solve complex contamination challenges across a wide range of industries."}
             </p>
           </div>
         </div>
@@ -94,13 +106,13 @@ const WhereItFits = () => {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {applications.slice(0, 3).map((item, index) => (
-            <ApplicationCard key={index} item={item} index={index} />
+            <ApplicationCard key={index} item={item} index={index} API_BASE={API_BASE} />
           ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto mb-10">
           {applications.slice(3).map((item, index) => (
-            <ApplicationCard key={index + 3} item={item} index={index + 3} />
+            <ApplicationCard key={index + 3} item={item} index={index + 3} API_BASE={API_BASE} />
           ))}
         </div>
 
@@ -124,7 +136,7 @@ const WhereItFits = () => {
   );
 };
 
-const ApplicationCard = ({ item, index }) => {
+const ApplicationCard = ({ item, index, API_BASE }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -165,7 +177,7 @@ const ApplicationCard = ({ item, index }) => {
           }}
         >
           <img
-            src={item.image}
+            src={item.image ? (item.image.startsWith('http') ? item.image : `${API_BASE}${item.image}`) : ""}
             alt={item.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             onError={(e) => {

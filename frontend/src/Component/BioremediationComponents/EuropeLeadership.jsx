@@ -1,8 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const EuropeLeadership = () => {
-  const focusAreas = [
+const EuropeLeadership = ({ data }) => {
+  const c = data?.content || {};
+  const apiFocus = data?.focus_areas;
+  const apiChips = data?.info_chips;
+  
+  const focusAreas = apiFocus?.length ? apiFocus.map(f => ({
+    no: f.number,
+    title: f.title,
+    desc: f.description
+  })) : [
     {
       no: "01",
       title: "Europe Business Development",
@@ -30,6 +38,14 @@ const EuropeLeadership = () => {
     },
   ];
 
+  const infoChips = apiChips?.length ? apiChips.map(ch => ch.text) : [
+    "Germany-Based",
+    "15+ Years Experience",
+    "Europe Project Leadership"
+  ];
+
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   return (
     <section className="relative py-10 md:py-14 bg-white overflow-hidden">
       <div className="container mx-auto px-4 md:px-10 lg:px-16">
@@ -44,8 +60,8 @@ const EuropeLeadership = () => {
           >
             <div className="rounded-[2rem] overflow-hidden border border-secondary/50 shadow-xl bg-white">
               <img
-                src="/bioremediation/drirfan khan.jpeg"
-                alt="Dr. Irfan Khan"
+                src={c.europe_profile_image ? (c.europe_profile_image.startsWith('http') ? c.europe_profile_image : `${API_BASE}${c.europe_profile_image}`) : "/bioremediation/drirfan khan.jpeg"}
+                alt={c.europe_main_heading || "Dr. Irfan Khan"}
                 className="w-full h-[420px] md:h-[500px] object-cover"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
@@ -56,27 +72,19 @@ const EuropeLeadership = () => {
 
               <div className="p-6 md:p-7 text-center">
                 <h3 className="text-primary text-lg md:text-xl font-black uppercase tracking-wide">
-                  European Strategic Partner
+                  {c.europe_designation_badge || "European Strategic Partner"}
                 </h3>
 
                 <div className="w-16 h-[2px] bg-secondary mx-auto my-4" />
 
                 <div className="grid grid-cols-3 divide-x divide-secondary/40">
-                  <div className="px-2">
-                    <p className="text-primary text-sm md:text-base font-semibold">
-                      Germany-Based
-                    </p>
-                  </div>
-                  <div className="px-2">
-                    <p className="text-primary text-sm md:text-base font-semibold">
-                      15+ Years Experience
-                    </p>
-                  </div>
-                  <div className="px-2">
-                    <p className="text-primary text-sm md:text-base font-semibold">
-                      Europe Project Leadership
-                    </p>
-                  </div>
+                  {infoChips.map((chip, idx) => (
+                    <div key={idx} className="px-2">
+                      <p className="text-primary text-[11px] md:text-xs font-semibold uppercase tracking-tight">
+                        {chip}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -93,49 +101,33 @@ const EuropeLeadership = () => {
             <div className="flex items-center gap-3 mb-4">
               <span className="w-10 h-[3px] bg-secondary rounded-full" />
               <p className="text-secondary text-xs md:text-sm font-bold uppercase tracking-[0.22em]">
-                Europe Business Development & Project Leadership
+                {c.europe_section_label || "Europe Business Development & Project Leadership"}
               </p>
             </div>
 
             <h2 className="text-4xl md:text-6xl font-black text-primary leading-tight mb-4">
-              Dr. Irfan Khan
+              {c.europe_main_heading || "Dr. Irfan Khan"}
             </h2>
 
             <div className="w-16 h-[3px] bg-secondary rounded-full mb-5" />
 
             <h3 className="text-lg md:text-xl font-bold text-primary mb-7">
-              European Strategic Partner{" "}
-              <span className="text-secondary mx-2">|</span>
-              Reva Process Technologies
+              {c.europe_subheading || "European Strategic Partner | Reva Process Technologies"}
             </h3>
 
             <div className="space-y-6 text-justify">
               <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                Dr. Khan supports Reva’s expansion into Europe as European
-                Strategic Partner, focusing on Business Development in Europe
-                and on R&amp;D and Market Development for environmental &amp;
-                process technologies. Together with Reva’s leadership, he is
-                establishing a dedicated Bioremediation vertical focusing on
-                nature-based and advanced biogeochemical treatment solutions
-                such as constructed wetlands, biological polishing stages, and
-                remediation concepts for complex industrial sites and effluents.
+                {c.europe_paragraph1 || "Dr. Khan supports Reva’s expansion into Europe as European Strategic Partner, focusing on Business Development in Europe and on R&D and Market Development for environmental & process technologies. Together with Reva’s leadership, he is establishing a dedicated Bioremediation vertical focusing on nature-based and advanced biogeochemical treatment solutions such as constructed wetlands, biological polishing stages, and remediation concepts for complex industrial sites and effluents."}
               </p>
 
-              <div className="w-full h-px bg-secondary/40" />
-
-              <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                Based in Germany, Dr. Khan brings more than 15 years of
-                scientific research experience in isotope biogeochemistry,
-                subsurface natural processes, fate of petroleum hydrocarbons,
-                numerical modelling, wastewater treatment and nutrient
-                chemistry, combined with senior leadership roles in global
-                publishing &amp; sales operations and cross-border trade. He
-                works with industrial clients and research partners in Europe to
-                develop pilot and reference projects in bioremediation, biogas
-                upgrading, used-oil re-refining and industrial wastewater/ZLD,
-                connecting Reva’s engineering capabilities in India with
-                European performance and regulatory requirements.
-              </p>
+              {c.europe_paragraph2 && (
+                <>
+                  <div className="w-full h-px bg-secondary/40" />
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                    {c.europe_paragraph2}
+                  </p>
+                </>
+              )}
             </div>
           </motion.div>
         </div>

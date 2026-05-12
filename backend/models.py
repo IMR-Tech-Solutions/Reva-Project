@@ -380,3 +380,175 @@ class WorkInActionItem(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+# =====================================================================
+# BIOREMEDIATION MODULE
+# =====================================================================
+
+class BioremediationContent(Base):
+    __tablename__ = "bioremediation_content"
+    id = Column(Integer, primary_key=True, index=True)
+    # Hero Section
+    hero_small_label = Column(String(255), default="Nature-Based Industrial Solutions")
+    hero_main_heading = Column(String(255), default="BIOREMEDIATION")
+    hero_highlight_text = Column(String(255), default="@ REVA")
+    hero_subtitle = Column(Text, default="Nature-based + engineered treatment solutions for complex water, soil and industrial sites.")
+    hero_bg_image = Column(String(500))
+    hero_partner_label = Column(String(500), default="Europe focal point for inquiries and project leadership")
+    hero_partner_name = Column(String(255), default="Dr. Irfan Khan")
+    hero_partner_designation = Column(String(255), default="European Strategic Partner")
+    hero_cta1_text = Column(String(150), default="Discuss Your Project")
+    hero_cta1_link = Column(String(255), default="/contact")
+    hero_cta2_text = Column(String(150))
+    hero_cta2_link = Column(String(255))
+    # What We Mean
+    what_section_label = Column(String(255), default="Process Overview")
+    what_heading = Column(String(255), default="What we mean by")
+    what_heading_highlight = Column(String(255), default="Bioremediation")
+    what_description1 = Column(Text)
+    what_description2 = Column(Text)
+    what_image = Column(String(500))
+    # Where It Fits
+    where_heading = Column(String(255), default="Where It Fits")
+    where_heading_highlight = Column(String(255), default="(Typical Client Problems)")
+    where_subtitle = Column(Text)
+    # Reva Approach
+    approach_section_label = Column(String(255), default="Our Approach")
+    approach_heading1 = Column(String(255), default="REVA")
+    approach_heading2 = Column(String(255), default="Approach")
+    approach_subtitle = Column(String(255), default="Simple Project Logic")
+    approach_side_description = Column(Text)
+    # Solution Toolbox
+    toolbox_heading = Column(String(255), default="Solution")
+    toolbox_heading_highlight = Column(String(255), default="Toolbox")
+    toolbox_subtitle = Column(Text)
+    toolbox_bottom_note = Column(String(500), default="Right combination. Right performance. Sustainable results.")
+    # Deliverables
+    deliverables_section_label = Column(String(255), default="Deliverables")
+    deliverables_heading = Column(String(255), default="What Clients")
+    deliverables_heading_highlight = Column(String(255), default="Receive")
+    deliverables_subtitle = Column(String(255), default="ISO Certified Quality")
+    # Europe Leadership
+    europe_section_label = Column(String(500), default="Europe Business Development & Project Leadership")
+    europe_main_heading = Column(String(255), default="Dr. Irfan Khan")
+    europe_subheading = Column(String(500))
+    europe_profile_image = Column(String(500))
+    europe_designation_badge = Column(String(255), default="European Strategic Partner")
+    europe_paragraph1 = Column(Text)
+    europe_paragraph2 = Column(Text)
+    # Pilot Systems
+    pilot_heading = Column(String(255), default="Bioremediation – Example Pilot Systems")
+    pilot_subtitle = Column(Text, default="Images shown are representative pilot/research-scale systems for concept illustration.")
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+
+class BioremediationHeroBadge(Base):
+    __tablename__ = "bioremediation_hero_badges"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    icon_name = Column(String(100), default="Leaf")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationFeature(Base):
+    __tablename__ = "bioremediation_features"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    icon_name = Column(String(100), default="Zap")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationApplication(Base):
+    __tablename__ = "bioremediation_applications"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    image = Column(String(500))
+    icon_name = Column(String(100), default="Waves")
+    number = Column(String(10))
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationApproachStep(Base):
+    __tablename__ = "bioremediation_approach_steps"
+    id = Column(Integer, primary_key=True, index=True)
+    number = Column(String(10))
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    image = Column(String(500))
+    icon_name = Column(String(100), default="SearchCheck")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationApproachHighlight(Base):
+    __tablename__ = "bioremediation_approach_highlights"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    icon_name = Column(String(100), default="ShieldCheck")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationNatureOption(Base):
+    __tablename__ = "bioremediation_nature_options"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    icon_name = Column(String(100), default="Sprout")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationEngineeredOption(Base):
+    __tablename__ = "bioremediation_engineered_options"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    icon_name = Column(String(100), default="Layers")
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationDeliverable(Base):
+    __tablename__ = "bioremediation_deliverables"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    icon_name = Column(String(100), default="FileText")
+    number = Column(String(10))
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationFocusArea(Base):
+    __tablename__ = "bioremediation_focus_areas"
+    id = Column(Integer, primary_key=True, index=True)
+    number = Column(String(10))
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationInfoChip(Base):
+    __tablename__ = "bioremediation_info_chips"
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String(255), nullable=False)
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
+
+
+class BioremediationPilotImage(Base):
+    __tablename__ = "bioremediation_pilot_images"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255))
+    caption = Column(String(500))
+    image = Column(String(500))
+    order = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)

@@ -628,3 +628,99 @@ class WorkInActionContent(WorkInActionContentBase):
 class WorkInActionFullResponse(BaseModel):
     content: WorkInActionContent
     items: List[WorkInActionItem] = []
+
+# =====================================================================
+# BIOREMEDIATION SCHEMAS
+# =====================================================================
+
+# --- Content ---
+class BioremediationContentBase(BaseModel):
+    hero_small_label: Optional[str] = None
+    hero_main_heading: Optional[str] = None
+    hero_highlight_text: Optional[str] = None
+    hero_subtitle: Optional[str] = None
+    hero_bg_image: Optional[str] = None
+    hero_partner_label: Optional[str] = None
+    hero_partner_name: Optional[str] = None
+    hero_partner_designation: Optional[str] = None
+    hero_cta1_text: Optional[str] = None
+    hero_cta1_link: Optional[str] = None
+    hero_cta2_text: Optional[str] = None
+    hero_cta2_link: Optional[str] = None
+    what_section_label: Optional[str] = None
+    what_heading: Optional[str] = None
+    what_heading_highlight: Optional[str] = None
+    what_description1: Optional[str] = None
+    what_description2: Optional[str] = None
+    what_image: Optional[str] = None
+    where_heading: Optional[str] = None
+    where_heading_highlight: Optional[str] = None
+    where_subtitle: Optional[str] = None
+    approach_section_label: Optional[str] = None
+    approach_heading1: Optional[str] = None
+    approach_heading2: Optional[str] = None
+    approach_subtitle: Optional[str] = None
+    approach_side_description: Optional[str] = None
+    toolbox_heading: Optional[str] = None
+    toolbox_heading_highlight: Optional[str] = None
+    toolbox_subtitle: Optional[str] = None
+    toolbox_bottom_note: Optional[str] = None
+    deliverables_section_label: Optional[str] = None
+    deliverables_heading: Optional[str] = None
+    deliverables_heading_highlight: Optional[str] = None
+    deliverables_subtitle: Optional[str] = None
+    europe_section_label: Optional[str] = None
+    europe_main_heading: Optional[str] = None
+    europe_subheading: Optional[str] = None
+    europe_profile_image: Optional[str] = None
+    europe_designation_badge: Optional[str] = None
+    europe_paragraph1: Optional[str] = None
+    europe_paragraph2: Optional[str] = None
+    pilot_heading: Optional[str] = None
+    pilot_subtitle: Optional[str] = None
+
+class BioremediationContentCreate(BioremediationContentBase):
+    pass
+
+class BioremediationContent(BioremediationContentBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True
+
+# --- Generic Item Schema (reused for simple items) ---
+class BioItemBase(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    icon_name: Optional[str] = None
+    image: Optional[str] = None
+    number: Optional[str] = None
+    text: Optional[str] = None
+    caption: Optional[str] = None
+    order: int = 0
+    is_active: bool = True
+
+class BioItemCreate(BioItemBase):
+    pass
+
+class BioItem(BioItemBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+# --- Full Response ---
+class BioremediationFullResponse(BaseModel):
+    content: BioremediationContent
+    hero_badges: List[BioItem] = []
+    features: List[BioItem] = []
+    applications: List[BioItem] = []
+    approach_steps: List[BioItem] = []
+    approach_highlights: List[BioItem] = []
+    nature_options: List[BioItem] = []
+    engineered_options: List[BioItem] = []
+    deliverables: List[BioItem] = []
+    focus_areas: List[BioItem] = []
+    info_chips: List[BioItem] = []
+    pilot_images: List[BioItem] = []
+

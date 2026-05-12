@@ -2,8 +2,17 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Zap, Leaf, Clock, ShieldCheck, Microscope, Droplets } from "lucide-react";
 
-const WhatIsBioremediation = () => {
-  const features = [
+const WhatIsBioremediation = ({ data }) => {
+  const c = data?.content || {};
+  const apiFeatures = data?.features;
+  
+  const iconMap = { Zap, Leaf, Clock, ShieldCheck, Microscope, Droplets };
+  
+  const features = apiFeatures?.length ? apiFeatures.map(f => ({
+    icon: iconMap[f.icon_name] || Zap,
+    title: f.title,
+    desc: f.description
+  })) : [
     {
       icon: Zap,
       title: "Low OPEX",
@@ -26,6 +35,8 @@ const WhatIsBioremediation = () => {
     },
   ];
 
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   return (
     <section className="relative py-8 md:py-12 bg-white overflow-hidden border-y border-gray-100">
       <div className="container relative z-10 mx-auto px-4 md:px-12 lg:px-20">
@@ -42,7 +53,7 @@ const WhatIsBioremediation = () => {
             <div className="relative group">
               <div className="relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-gray-50">
                 <img
-                  src="/bioremediation/bioremidiation.png"
+                  src={c.what_image ? (c.what_image.startsWith('http') ? c.what_image : `${API_BASE}${c.what_image}`) : "/bioremediation/bioremidiation.png"}
                   alt="Environmental Treatment"
                   className="w-full h-[300px] md:h-[400px] object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500"
                   onError={(e) => {
@@ -82,26 +93,26 @@ const WhatIsBioremediation = () => {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/5 border border-secondary/10 mb-5">
               <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
               <span className="text-secondary font-semibold uppercase tracking-wider text-[10px]">
-                Process Overview
+                {c.what_section_label || "Process Overview"}
               </span>
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-5 leading-tight">
-              What we mean by  <span className="text-secondary">Bioremediation</span>
+              {c.what_heading || "What we mean by"} <span className="text-secondary">{c.what_heading_highlight || "Bioremediation"}</span>
             </h2>
 
             <div className="space-y-4 text-justify max-w-2xl">
               <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                Bioremediation leverages natural microbial and biogeochemical processes to 
-                degrade, transform, or immobilize contaminants within water and soil systems. 
-                It represents a sophisticated synergy between biological science and environmental engineering.
+                {c.what_description1 || "Bioremediation leverages natural microbial and biogeochemical processes to degrade, transform, or immobilize contaminants within water and soil systems. It represents a sophisticated synergy between biological science and environmental engineering."}
               </p>
 
-              <div className="bg-slate-50/80 rounded-xl p-5 border-l-2 border-secondary/50">
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                  Ideal for clients seeking <span className="font-semibold text-primary">sustainable, low-OPEX solutions</span> where chemical-heavy alternatives are either cost-prohibitive or pose secondary environmental risks.
-                </p>
-              </div>
+              {c.what_description2 && (
+                <div className="bg-slate-50/80 rounded-xl p-5 border-l-2 border-secondary/50">
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                    {c.what_description2}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Feature Cards - Compact Grid */}

@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Leaf, Globe2, Droplets, Factory, ShieldCheck } from "lucide-react";
 
-const BioremediationHero = () => {
-  const badges = [
+const BioremediationHero = ({ data }) => {
+  const c = data?.content || {};
+  const apiBadges = data?.hero_badges;
+  const badges = apiBadges?.length ? apiBadges.map(b => ({ icon: { Leaf, Factory, Droplets, ShieldCheck, Globe2 }[b.icon_name] || Leaf, title: b.title })) : [
     { icon: Leaf, title: "Nature-Based Solutions" },
     { icon: Factory, title: "Engineered Systems" },
     { icon: Droplets, title: "Water & Soil Treatment" },
@@ -16,7 +18,7 @@ const BioremediationHero = () => {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/bioremediation/bioremidiation.png"
+          src={c.hero_bg_image ? (c.hero_bg_image.startsWith('http') ? c.hero_bg_image : `${API_BASE}${c.hero_bg_image}`) : "/bioremediation/bioremidiation.png"}
           alt="Bioremediation treatment facility"
           className="w-full h-full object-cover opacity-90 scale-105"
           onError={(e) => {
@@ -45,20 +47,19 @@ const BioremediationHero = () => {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-[2px] bg-secondary rounded-full" />
             <span className="text-secondary text-[11px] md:text-xs font-bold uppercase tracking-[0.3em]">
-              Nature-Based Industrial Solutions
+              {c.hero_small_label || "Nature-Based Industrial Solutions"}
             </span>
           </div>
 
           {/* Heading */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-2 tracking-tight">
-            BIOREMEDIATION
-            <span className="block text-secondary drop-shadow-sm mt-0.5">@ REVA</span>
+            {c.hero_main_heading || "BIOREMEDIATION"}
+            <span className="block text-secondary drop-shadow-sm mt-0.5">{c.hero_highlight_text || "@ REVA"}</span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-base md:text-lg text-gray-200 leading-relaxed max-w-[580px] mb-4 opacity-90">
-            Nature-based + engineered treatment solutions for complex water,
-            soil and industrial sites.
+            {c.hero_subtitle || "Nature-based + engineered treatment solutions for complex water, soil and industrial sites."}
           </p>
 
           {/* Partner Card - Compact Glassmorphism */}
@@ -72,13 +73,13 @@ const BioremediationHero = () => {
 
               <div>
                 <p className="text-[9px] md:text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] mb-1.5 opacity-80 leading-none">
-                  Europe focal point for inquiries and project leadership
+                  {c.hero_partner_label || "Europe focal point for inquiries and project leadership"}
                 </p>
                 <h3 className="text-xl md:text-2xl font-black text-secondary leading-tight tracking-wide">
-                  Dr. Irfan Khan
+                  {c.hero_partner_name || "Dr. Irfan Khan"}
                 </h3>
                 <p className="text-xs md:text-sm text-gray-200 italic font-medium mt-0.5 opacity-90">
-                  European Strategic Partner
+                  {c.hero_partner_designation || "European Strategic Partner"}
                 </p>
               </div>
             </div>
@@ -87,11 +88,20 @@ const BioremediationHero = () => {
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-3.5 mb-4">
             <Link
-              to="/contact"
+              to={c.hero_cta1_link || "/contact"}
               className="px-6 py-3 rounded-lg bg-secondary text-primary font-bold hover:bg-white transition-all duration-300 shadow-lg shadow-secondary/10 text-sm md:text-base active:scale-95"
             >
-              Discuss Your Project
+              {c.hero_cta1_text || "Discuss Your Project"}
             </Link>
+
+            {c.hero_cta2_text && (
+              <Link
+                to={c.hero_cta2_link || "/contact"}
+                className="px-6 py-3 rounded-lg bg-white/5 text-white font-bold border border-white/15 hover:bg-white hover:text-primary transition-all duration-300 text-sm md:text-base backdrop-blur-sm active:scale-95"
+              >
+                {c.hero_cta2_text}
+              </Link>
+            )}
 
             {/* <Link
               to="/contact"

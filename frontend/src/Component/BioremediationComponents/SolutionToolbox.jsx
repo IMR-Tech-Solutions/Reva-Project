@@ -13,8 +13,17 @@ import {
   Network,
 } from "lucide-react";
 
-const SolutionToolbox = () => {
-  const natureOptions = [
+const SolutionToolbox = ({ data }) => {
+  const c = data?.content || {};
+  const apiNature = data?.nature_options;
+  const apiEngineered = data?.engineered_options;
+  
+  const iconMap = { Leaf, Waves, Sprout, Droplets, Filter, Settings, Layers, CircleDot, Network };
+  
+  const natureOptions = apiNature?.length ? apiNature.map(n => ({
+    icon: iconMap[n.icon_name] || Sprout,
+    text: n.title
+  })) : [
     { icon: Sprout, text: "Constructed wetlands" },
     { icon: Waves, text: "Free-water surface systems" },
     { icon: Droplets, text: "Subsurface flow systems" },
@@ -23,7 +32,10 @@ const SolutionToolbox = () => {
     { icon: Leaf, text: "Biopolishing stages" },
   ];
 
-  const engineeredOptions = [
+  const engineeredOptions = apiEngineered?.length ? apiEngineered.map(e => ({
+    icon: iconMap[e.icon_name] || Layers,
+    text: e.title
+  })) : [
     { icon: Layers, text: "Clarification / Lamella" },
     { icon: CircleDot, text: "DAF / Flotation" },
     { icon: Filter, text: "Activated Carbon polishing" },
@@ -52,15 +64,13 @@ const SolutionToolbox = () => {
           </div>
 
           <h2 className="text-3xl md:text-5xl font-black text-primary leading-tight mb-2">
-            Solution <span className="text-secondary">Toolbox</span>
+            {c.toolbox_heading || "Solution"} <span className="text-secondary">{c.toolbox_heading_highlight || "Toolbox"}</span>
           </h2>
 
           <div className="w-24 h-[5px] bg-secondary rounded-full mx-auto mb-3" />
 
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-            A practical mix of nature-based and engineered treatment options
-            selected according to site chemistry, performance targets and
-            project needs.
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed text-justify max-w-2xl mx-auto">
+            {c.toolbox_subtitle || "A practical mix of nature-based and engineered treatment options selected according to site chemistry, performance targets and project needs."}
           </p>
         </motion.div>
 
@@ -94,7 +104,7 @@ const SolutionToolbox = () => {
             <ShieldCheck className="w-5 h-5 text-secondary" />
           </div>
           <p className="text-primary font-semibold">
-            Right combination. Right performance. Sustainable results.
+            {c.toolbox_bottom_note || "Right combination. Right performance. Sustainable results."}
           </p>
           <span className="hidden md:block w-32 h-[1px] bg-secondary" />
         </motion.div>

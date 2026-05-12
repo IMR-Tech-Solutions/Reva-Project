@@ -2,8 +2,20 @@ import React from "react";
 import { motion } from "framer-motion";
 import { SearchCheck, Microscope, Settings, ShieldCheck, Leaf, Target } from "lucide-react";
 
-const RevaApproach = () => {
-  const steps = [
+const RevaApproach = ({ data }) => {
+  const c = data?.content || {};
+  const apiSteps = data?.approach_steps;
+  const apiHighlights = data?.approach_highlights;
+  
+  const iconMap = { SearchCheck, Microscope, Settings, ShieldCheck, Leaf, Target };
+  
+  const steps = apiSteps?.length ? apiSteps.map(s => ({
+    number: s.number,
+    icon: iconMap[s.icon_name] || SearchCheck,
+    title: s.title,
+    desc: s.description,
+    image: s.image
+  })) : [
     {
       number: "01",
       icon: SearchCheck,
@@ -27,6 +39,18 @@ const RevaApproach = () => {
     },
   ];
 
+  const highlights = apiHighlights?.length ? apiHighlights.map(h => ({
+    icon: iconMap[h.icon_name] || ShieldCheck,
+    title: h.title,
+    sub: h.description
+  })) : [
+    { icon: ShieldCheck, title: "Science-Led Decisions", sub: "Data-driven at every step" },
+    { icon: Leaf, title: "Sustainable Outcomes", sub: "Nature-based. Future-ready." },
+    { icon: Target, title: "Performance Assured", sub: "Measured. Monitored. Delivered." }
+  ];
+
+  const API_BASE = import.meta.env.VITE_API_URL;
+
   return (
     <section className="relative py-8 md:py-12 bg-white overflow-hidden">
       <div className="container relative z-10 mx-auto px-4 md:px-10 lg:px-16">
@@ -36,15 +60,15 @@ const RevaApproach = () => {
             <div className="flex items-center gap-3 mb-4">
               <span className="w-8 h-[2px] bg-secondary" />
               <span className="text-secondary text-[11px] font-bold uppercase tracking-[0.2em]">
-                Our Approach
+                {c.approach_section_label || "Our Approach"}
               </span>
             </div>
             <h2 className="text-4xl md:text-6xl font-black leading-tight mb-2">
-              <span className="text-primary">REVA</span>{" "}
-              <span className="text-secondary uppercase">Approach</span>
+              <span className="text-primary">{c.approach_heading1 || "REVA"}</span>{" "}
+              <span className="text-secondary uppercase">{c.approach_heading2 || "Approach"}</span>
             </h2>
             <p className="text-gray-400 text-lg md:text-xl font-medium mb-4">
-              Simple Project Logic
+              {c.approach_subtitle || "Simple Project Logic"}
             </p>
             <div className="flex items-center">
               <Leaf className="w-6 h-6 text-secondary/60 rotate-45" />
@@ -52,9 +76,8 @@ const RevaApproach = () => {
           </div>
 
           <div className="lg:max-w-sm lg:border-l border-gray-100 lg:pl-10">
-            <p className="text-gray-500 text-sm md:text-base leading-relaxed font-medium">
-              A science-led, results-driven process designed to deliver
-              reliable, sustainable outcomes at every stage.
+            <p className="text-gray-500 text-sm md:text-base leading-relaxed font-medium text-justify">
+              {c.approach_side_description || "A science-led, results-driven process designed to deliver reliable, sustainable outcomes at every stage."}
             </p>
           </div>
         </div>
@@ -101,7 +124,7 @@ const RevaApproach = () => {
                       {step.title}
                     </h3>
                     <p className="text-gray-500 text-[12px] md:text-[15px] leading-relaxed max-w-xl">
-                      {step.desc.split(/(clear, measurable performance targets|de-risking performance|long-term reliability and compliance)/).map((part, i) => 
+                      {apiSteps?.length ? step.desc : step.desc.split(/(clear, measurable performance targets|de-risking performance|long-term reliability and compliance)/).map((part, i) => 
                         /(clear, measurable performance targets|de-risking performance|long-term reliability and compliance)/.test(part) ? 
                         <strong key={i} className="text-gray-800 font-bold">{part}</strong> : part
                       )}
@@ -111,7 +134,7 @@ const RevaApproach = () => {
                   {/* Right Image Area */}
                   <div className="hidden lg:block w-[30%] relative overflow-hidden">
                     <img
-                      src={step.image}
+                      src={step.image ? (step.image.startsWith('http') ? step.image : `${API_BASE}${step.image}`) : ""}
                       alt={step.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       onError={(e) => {
@@ -132,11 +155,7 @@ const RevaApproach = () => {
         <div className="mt-12 max-w-5xl mx-auto">
           <div className="rounded-full border border-secondary/20 bg-white shadow-sm p-4 md:p-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6 px-4 md:px-8">
-              {[
-                { icon: ShieldCheck, title: "Science-Led Decisions", sub: "Data-driven at every step" },
-                { icon: Leaf, title: "Sustainable Outcomes", sub: "Nature-based. Future-ready." },
-                { icon: Target, title: "Performance Assured", sub: "Measured. Monitored. Delivered." }
-              ].map((item, idx) => (
+              {highlights.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-4 group">
                   <div className="w-10 h-10 rounded-full bg-secondary/5 flex items-center justify-center shrink-0 group-hover:bg-secondary transition-colors">
                     <item.icon className="w-5 h-5 text-secondary group-hover:text-white transition-colors" />
