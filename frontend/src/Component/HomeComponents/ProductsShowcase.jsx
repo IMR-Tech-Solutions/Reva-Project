@@ -182,12 +182,12 @@ const ProcessEngineeringProducts = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl font-black text-secondary">
+                  {/* <span className="text-3xl font-black text-secondary">
                     {products[activeIndex].counter}
                   </span>
                   <span className="text-white font-semibold">
                     {products[activeIndex].metric}
-                  </span>
+                  </span> */}
                 </div>
               </div>
 

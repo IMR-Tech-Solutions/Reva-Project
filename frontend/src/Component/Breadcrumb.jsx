@@ -55,7 +55,7 @@ const Breadcrumb = ({ title: customTitle }) => {
     '/iset':'ISET Technologies',
     '/evaporate':'REVAP Technology',
     '/resin':'Resin Manufacturing Plant',
-    '/bioremediation': 'Bioremediation @ REVA',
+    '/technology/bioremediation': 'Bioremediation',
   };
 
   // Get title from mapping or auto-format

@@ -141,7 +141,7 @@ const Header = () => {
             {/* LOGO */}
             <Link to="/" className="relative z-10">
               <img
-                src="./logo11.png"
+                src="/logo11.png"
                 alt="REVA"
                 className={`transition-all duration-400 ${isScrolled || !isHomePage
                   ? "h-12 lg:h-14"
@@ -170,12 +170,7 @@ const Header = () => {
                 active={location.pathname === "/services"}
                 isTransparent={!isScrolled && isHomePage}
               />
-              <NavLink
-                text="Bioremediation"
-                href="/bioremediation"
-                active={location.pathname === "/bioremediation"}
-                isTransparent={!isScrolled && isHomePage}
-              />
+
               <TechnologiesDropdown
                 active={location.pathname.startsWith("/technology")}
                 isTransparent={!isScrolled && isHomePage}
@@ -322,14 +317,7 @@ const Header = () => {
               />
             </div>
 
-            <div className="border-t border-white/20 mt-2 pt-2">
-              <MobileNavLink
-                text="Bioremediation"
-                href="/bioremediation"
-                active={location.pathname === "/bioremediation"}
-                onClick={() => setMobileMenuOpen(false)}
-              />
-            </div>
+
 
             {/* Technologies */}
             <div className="border-t border-white/20 mt-2 pt-2">
@@ -342,6 +330,11 @@ const Header = () => {
               </button>
               {mobileTechOpen && (
                 <div className="pl-4 mt-2 space-y-1 max-h-64 overflow-y-auto">
+                  <MobileDropdownItem
+                    label="Bioremediation"
+                    href="/technology/bioremediation"
+                    onClick={() => setMobileMenuOpen(false)}
+                  />
                   {dynamicTechnologies.map((tech) => (
                     <MobileDropdownItem
                       key={tech.id}
@@ -456,8 +449,9 @@ const TechnologiesDropdown = ({ active, isTransparent, technologies = [] }) => {
         Technologies
         <FiChevronDown className="text-sm transition-transform duration-200 group-hover:-rotate-180" />
       </button>
-      <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[500px] bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible max-h-96 overflow-y-auto border border-gray-200 transition-all duration-200 z-50">
+      <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[500px] bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible max-h-[85vh] overflow-y-auto scrollbar-hide border border-gray-200 transition-all duration-200 z-50">
         <div className="grid grid-cols-2 p-2">
+          <DropdownItem label="Bioremediation" href="/technology/bioremediation" />
           {technologies.length > 0 ? (
             technologies.map((tech) => (
               <DropdownItem key={tech.id} label={tech.title} href={`/technology/${tech.slug}`} />
@@ -486,14 +480,14 @@ const ProductsDropdown = ({ active, isTransparent, products = [] }) => {
         Products
         <FiChevronDown className="text-sm transition-transform duration-200 group-hover:-rotate-180" />
       </button>
-      <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible max-h-96 overflow-y-auto border border-gray-200 transition-all duration-200 z-50">
-        <div className="py-2">
+      <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[500px] bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible max-h-[85vh] overflow-y-auto scrollbar-hide border border-gray-200 transition-all duration-200 z-50">
+        <div className="grid grid-cols-2 p-2">
           {products.length > 0 ? (
             products.map((product) => (
               <DropdownItem key={product.id} label={product.title} href={`/product${product.path}`} />
             ))
           ) : (
-            <div className="p-4 text-center text-gray-500 text-sm italic">
+            <div className="col-span-2 p-4 text-center text-gray-500 text-sm italic">
               No products found
             </div>
           )}

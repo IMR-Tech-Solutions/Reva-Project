@@ -18,7 +18,7 @@ const Footer = () => {
       { name: "About Us", href: "/about" },
       // { name: "News", href: "/news" },
       { name: "Services", href: "/services" },
-      { name: "Bioremediation", href: "/bioremediation" },
+
       { name: "Career", href: "/career" },
       { name: "Contact Us", href: "/contact" },
     ],
@@ -29,9 +29,10 @@ const Footer = () => {
       { name: "Procurement", href: "/services/procurement" },
       { name: "EPC Project Management", href: "/services/basic" },
       { name: "Manufacturing & Site Services", href: "/services/site" },
-      { name: "Bioremediation @ REVA", href: "/bioremediation" },
+
     ],
     technologies: [
+      { name: "Bioremediation", href: "/technology/bioremediation" },
       { name: "Amine System", href: "/amine" },
       { name: "Bio-gas Upgradation", href: "/biogas" },
       { name: "Crude Distillation Unit", href: "/crude-distillation" },
@@ -59,7 +60,8 @@ const Footer = () => {
       try {
         const data = await getAllTechnologies(0, 6);
         if (data && data.length > 0) {
-          setTechLinks(data.map(t => ({ name: t.title, href: `/technology/${t.slug}` })));
+          const apiTechs = data.map(t => ({ name: t.title, href: `/technology/${t.slug}` }));
+          setTechLinks([{ name: "Bioremediation", href: "/technology/bioremediation" }, ...apiTechs]);
         }
       } catch (err) {
         console.error("Failed to load footer technologies:", err);
@@ -117,7 +119,7 @@ const Footer = () => {
       {/* Main Content */}
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-4 md:py-6 relative z-10">
         {/* Top Section */}
-        <div className="flex flex-wrap lg:flex-nowrap gap-x-6 gap-y-6 mb-4">
+        <div className="flex flex-wrap lg:flex-nowrap gap-x-2 gap-y-6 mb-4">
           {/* Logo & Company Info Column */}
           <div className="w-full lg:w-[28%] shrink-0 flex flex-col">
             <div className="mb-0">
@@ -175,7 +177,7 @@ const Footer = () => {
           </div>
 
           {/* Links Sections Grid */}
-          <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6">
+          <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-x-0 gap-y-6">
             {/* Company */}
             <div className="group">
               <div className="flex items-center gap-2 mb-2">
