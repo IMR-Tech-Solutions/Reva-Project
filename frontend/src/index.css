@@ -21,4 +21,28 @@ html, body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Custom Scrollbar for Open Positions */
+  .custom-scrollbar {
+    -webkit-overflow-scrolling: touch; /* Momentum scroll for iOS */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #2F3F8F; /* Primary color */
+    border-radius: 10px;
+    border: 1px solid #f1f1f1;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #F4B400; /* Secondary color */
+  }
 }

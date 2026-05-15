@@ -6,14 +6,19 @@ import os
 from dotenv import load_dotenv
 import logging
 
-load_dotenv()
+# Load environment variables with absolute path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Gmail SMTP Configuration
 GMAIL_ADDRESS = os.getenv("GMAIL_ADDRESS", "reedhigohel563@gmail.com")
-GMAIL_PASSWORD = os.getenv("GMAIL_PASSWORD", "pdzv yhuv oxgk xidu")
+GMAIL_PASSWORD = os.getenv("GMAIL_PASSWORD", "mhqm zwqp dcrw xmjm")
+if GMAIL_PASSWORD:
+    GMAIL_PASSWORD = GMAIL_PASSWORD.replace(" ", "")  # Ensure no spaces in App Password
+
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "reedhigohel563@gmail.com")
 
 SMTP_SERVER = "smtp.gmail.com"
@@ -65,6 +70,11 @@ def send_email(to_email: str, subject: str, body: str, is_html: bool = False) ->
         print(f"✓ Email sent successfully to {to_email}")
         return True
         
+    except smtplib.SMTPAuthenticationError:
+        error_msg = "❌ SMTP Authentication failed. Please check GMAIL_ADDRESS and GMAIL_PASSWORD (App Password)."
+        logger.error(error_msg)
+        print(error_msg)
+        return False
     except Exception as e:
         logger.error(f"❌ Failed to send email to {to_email}: {str(e)}")
         print(f"❌ Email error to {to_email}: {str(e)}")

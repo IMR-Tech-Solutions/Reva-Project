@@ -32,6 +32,35 @@ const Career = () => {
     const [isNotRobot, setIsNotRobot] = useState(false);
     const recaptchaRef = useRef(null);
     const [captchaVerified, setCaptchaVerified] = useState(false);
+    const [errors, setErrors] = useState({});
+
+  const validateField = (name, value) => {
+    let error = "";
+    switch (name) {
+      case "name":
+        if (!value.trim()) error = "Full name is required";
+        else if (value.trim().length < 3) error = "Name must be at least 3 characters";
+        break;
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value.trim()) error = "Email is required";
+        else if (!emailRegex.test(value)) error = "Invalid email format";
+        break;
+      case "phone":
+        if (!value.trim()) error = "Phone number is required";
+        else if (!/^\d{10}$/.test(value.trim())) error = "Phone number must be exactly 10 digits (numbers only)";
+        break;
+      case "position":
+        if (!value.trim()) error = "Position is required";
+        break;
+      case "experience":
+        if (!value) error = "Experience level is required";
+        break;
+      default:
+        break;
+    }
+    return error;
+  };
   // Fetch career data from backend
   useEffect(() => {
     const fetchPositions = async () => {
@@ -72,14 +101,43 @@ const Career = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Prevent non-numeric input for phone
+    if (name === "phone" && value !== "" && !/^\d+$/.test(value)) {
+      return;
+    }
+    // Limit phone to 10 digits
+    if (name === "phone" && value.length > 10) {
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
+    const error = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: error }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      const allowedTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+      if (!allowedTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, resume: "Only PDF, DOC, and DOCX files are allowed" }));
+        setFormData(prev => ({ ...prev, resume: null }));
+        setFileName("");
+        return;
+      }
+      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, resume: "File size must be less than 5MB" }));
+        setFormData(prev => ({ ...prev, resume: null }));
+        setFileName("");
+        return;
+      }
+
       setFormData((prev) => ({ ...prev, resume: file }));
       setFileName(file.name);
+      setErrors(prev => ({ ...prev, resume: "" }));
     }
   };
 
@@ -91,8 +149,21 @@ const Career = () => {
     }
 
     // Validate form
-    if (!formData.name || !formData.email || !formData.phone || !formData.position || !formData.experience) {
-      toast.error("Please fill in all required fields");
+    const newErrors = {};
+    Object.keys(formData).forEach(key => {
+      if (key !== 'resume') {
+        const error = validateField(key, formData[key]);
+        if (error) newErrors[key] = error;
+      }
+    });
+
+    if (!formData.resume) {
+      newErrors.resume = "Resume is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Please fix the errors in the form before submitting");
       return;
     }
 
@@ -120,6 +191,9 @@ const Career = () => {
         name: "", email: "", phone: "", position: "", experience: "", resume: null,
       });
       setFileName("");
+      setErrors({});
+      setCaptchaVerified(false);
+      recaptchaRef.current.reset();
 
       // Scroll to top
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -303,7 +377,8 @@ const Career = () => {
           </motion.div>
 
           {/* Job Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="max-h-[1600px] md:max-h-[1100px] lg:max-h-[580px] overflow-y-auto scroll-smooth custom-scrollbar pr-2 snap-y snap-mandatory overscroll-contain scroll-pt-2">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-4">
             {loading ? (
               <div className="col-span-full flex justify-center items-center py-12">
                 <div className="text-center">
@@ -323,14 +398,14 @@ const Career = () => {
               </div>
             ) : (
               positions.map((job, index) => (
-              <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className="group"
-              >
+                <motion.div
+                  key={job.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  className={`group ${index % 3 === 0 ? 'snap-start snap-always' : ''}`}
+                >
                 <motion.div
                   whileHover={{ y: -8 }}
                   className="relative h-full flex flex-col rounded-2xl border border-gray-200
@@ -486,6 +561,7 @@ const Career = () => {
                 </motion.div>
               </motion.div>
             )))}
+            </div>
           </div>
         </div>
       </section>
@@ -621,11 +697,9 @@ const Career = () => {
                               onFocus={() => setFocusedInput("experience")}
                               onBlur={() => setFocusedInput(null)}
                               required
-                              className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
-                                         rounded-xl focus:border-secondary focus:outline-none
-                                         focus:ring-4 focus:ring-secondary/10
-                                         transition-all duration-300 appearance-none
-                                         bg-white cursor-pointer">
+                               className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-secondary/10 transition-all duration-300 appearance-none bg-white cursor-pointer ${
+                                 errors.experience ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                               }`}>
                         <option value="">Select experience level</option>
                         <option value="0-1">0-1 years (Fresher)</option>
                         <option value="1-3">1-3 years</option>
@@ -636,6 +710,9 @@ const Career = () => {
                       <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2
                                                 text-gray-400 pointer-events-none" />
                     </div>
+                    {errors.experience && (
+                      <p className="mt-1 text-xs text-red-500 font-medium pl-2">{errors.experience}</p>
+                    )}
                   </div>
 
                   {/* Resume */}
@@ -652,17 +729,22 @@ const Career = () => {
                                        border-2 border-dashed rounded-xl cursor-pointer
                                        transition-all duration-300
                                        ${fileName
-                                         ? "border-secondary bg-secondary/5"
-                                         : "border-gray-300 hover:border-secondary hover:bg-gray-50"}`}>
+                                          ? "border-secondary bg-secondary/5"
+                                          : errors.resume 
+                                            ? "border-red-500 bg-red-50"
+                                            : "border-gray-300 hover:border-secondary hover:bg-gray-50"}`}>
                       <span className="flex items-center gap-3 text-gray-700 font-semibold text-sm">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center
-                                         ${fileName ? "bg-secondary text-white" : "bg-gray-100 text-gray-400"}`}>
+                                         ${fileName ? "bg-secondary text-white" : errors.resume ? "bg-red-500 text-white" : "bg-gray-100 text-gray-400"}`}>
                           <FiUpload className="text-lg" />
                         </div>
                         {fileName || "Choose file (PDF, DOC, DOCX)"}
                       </span>
                       <span className="text-xs text-gray-400 font-medium shrink-0">Max 5MB</span>
                     </label>
+                    {errors.resume && (
+                      <p className="mt-1 text-xs text-red-500 font-medium pl-2">{errors.resume}</p>
+                    )}
                   </div>
 
                   
@@ -679,14 +761,14 @@ const Career = () => {
                   {/* Submit */}
                   <motion.button
                     type="submit"
-                    disabled={submitting}
-                    whileHover={{ scale: submitting ? 1 : 1.02 }}
-                    whileTap={{ scale: submitting ? 1 : 0.98 }}
+                    disabled={submitting || Object.values(errors).some(err => err)}
+                    whileHover={{ scale: (submitting || Object.values(errors).some(err => err)) ? 1 : 1.02 }}
+                    whileTap={{ scale: (submitting || Object.values(errors).some(err => err)) ? 1 : 0.98 }}
                     className={`w-full bg-secondary text-white font-bold py-4 rounded-xl
                                shadow-xl hover:shadow-secondary/30
                                transition-all duration-300 text-base
-                               ${submitting 
-                                 ? "opacity-70 cursor-not-allowed bg-secondary/70" 
+                               ${(submitting || Object.values(errors).some(err => err))
+                                 ? "opacity-70 cursor-not-allowed bg-secondary/70 shadow-none" 
                                  : "hover:bg-secondary/90"}`}
                   >
                     {submitting ? (

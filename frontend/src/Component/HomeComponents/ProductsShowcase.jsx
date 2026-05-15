@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-import { getAllProducts } from "../../services/productsApi";
+import { getProductHomeCards } from "../../services/productsApi";
 
 const ProcessEngineeringProducts = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -11,11 +11,10 @@ const ProcessEngineeringProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts();
+        const data = await getProductHomeCards();
         if (data && data.length > 0) {
           // Map dynamic data to the structure expected by the component
-          // Limit to first 3 as requested
-          const mappedProducts = data.slice(0, 3).map((p) => {
+          const mappedProducts = data.map((p) => {
             let imageUrl = "./distillation-column.jpg";
             if (p.img) {
               if (p.img.startsWith("http")) {
@@ -197,6 +196,7 @@ const ProcessEngineeringProducts = () => {
                   src={products[activeIndex].image}
                   alt={products[activeIndex].title}
                   className="w-full h-[300px] lg:h-[400px] object-cover rounded-2xl border border-white/20 shadow-xl"
+                  loading="lazy"
                 />
               </div>
             </motion.div>

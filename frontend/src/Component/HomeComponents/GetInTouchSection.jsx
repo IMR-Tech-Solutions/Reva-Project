@@ -21,7 +21,38 @@ const GetInTouchSection = () => {
   };
 
   const [formData, setFormData] = useState(initialFormState);
+  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+
+  const validateField = (name, value) => {
+    let error = "";
+    switch (name) {
+      case "full_name":
+        if (!value.trim()) error = "Full name is required";
+        else if (value.trim().length < 3) error = "Name must be at least 3 characters";
+        break;
+      case "email":
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value.trim()) error = "Email is required";
+        else if (!emailRegex.test(value)) error = "Invalid email format";
+        break;
+      case "phone":
+        if (value.trim() && !/^\d{10}$/.test(value.trim())) {
+          error = "Phone number must be exactly 10 digits (numbers only)";
+        }
+        break;
+      case "message_body":
+        if (!value.trim()) error = "Message is required";
+        else if (value.trim().length < 10) error = "Message must be at least 10 characters";
+        break;
+      case "project_type":
+        if (!value) error = "Please select a project type";
+        break;
+      default:
+        break;
+    }
+    return error;
+  };
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -37,7 +68,21 @@ const GetInTouchSection = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Prevent non-numeric input for phone
+    if (name === "phone" && value !== "" && !/^\d+$/.test(value)) {
+      return;
+    }
+    // Limit phone to 10 digits
+    if (name === "phone" && value.length > 10) {
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
+    
+    // Real-time validation
+    const error = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: error }));
   };
 
   //   const handleSubmit = async (e) => {
@@ -66,6 +111,19 @@ const GetInTouchSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Final validation check
+    const newErrors = {};
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Please fix the errors in the form before submitting.");
+      return;
+    }
+
     if (!captchaVerified) {
       alert("Please complete the CAPTCHA verification.");
       return;
@@ -77,6 +135,7 @@ const GetInTouchSection = () => {
       await submitContactMessage(formData);
       toast.success("Message sent successfully! We will get back to you soon.");
       setFormData(initialFormState);
+      setErrors({});
       recaptchaRef.current.reset();
       setCaptchaVerified(false);
     } catch (error) {
@@ -289,8 +348,13 @@ const GetInTouchSection = () => {
                     onChange={handleInputChange}
                     placeholder="John Doe"
                     required
-                    className="w-full px-4 py-3.5 rounded-lg bg-white border-2 border-gray-200 text-sm placeholder-gray-400 focus:border-secondary focus:outline-none transition-colors"
+                    className={`w-full px-4 py-3.5 rounded-lg bg-white border-2 text-sm placeholder-gray-400 focus:outline-none transition-colors ${
+                      errors.full_name ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                    }`}
                   />
+                  {errors.full_name && (
+                    <p className="mt-1 text-xs text-red-500 font-medium">{errors.full_name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-primary uppercase tracking-[0.18em] mb-2">
@@ -319,8 +383,13 @@ const GetInTouchSection = () => {
                     onChange={handleInputChange}
                     placeholder="john@company.com"
                     required
-                    className="w-full px-4 py-3.5 rounded-lg bg-white border-2 border-gray-200 text-sm placeholder-gray-400 focus:border-secondary focus:outline-none transition-colors"
+                    className={`w-full px-4 py-3.5 rounded-lg bg-white border-2 text-sm placeholder-gray-400 focus:outline-none transition-colors ${
+                      errors.email ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                    }`}
                   />
+                  {errors.email && (
+                    <p className="mt-1 text-xs text-red-500 font-medium">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-primary uppercase tracking-[0.18em] mb-2">
@@ -332,8 +401,13 @@ const GetInTouchSection = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+91 98765 43210"
-                    className="w-full px-4 py-3.5 rounded-lg bg-white border-2 border-gray-200 text-sm placeholder-gray-400 focus:border-secondary focus:outline-none transition-colors"
+                    className={`w-full px-4 py-3.5 rounded-lg bg-white border-2 text-sm placeholder-gray-400 focus:outline-none transition-colors ${
+                      errors.phone ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                    }`}
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-xs text-red-500 font-medium">{errors.phone}</p>
+                  )}
                 </div>
               </div>
 
@@ -346,7 +420,9 @@ const GetInTouchSection = () => {
                   value={formData.project_type}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3.5 rounded-lg bg-white border-2 border-gray-200 text-sm text-gray-700 focus:border-secondary focus:outline-none transition-colors appearance-none cursor-pointer"
+                  className={`w-full px-4 py-3.5 rounded-lg bg-white border-2 text-sm text-gray-700 focus:outline-none transition-colors appearance-none cursor-pointer ${
+                    errors.project_type ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                  }`}
                 >
                   <option value="">Select project type</option>
                   <option value="EPCC / Full Project Delivery">EPCC / Full Project Delivery</option>
@@ -357,6 +433,9 @@ const GetInTouchSection = () => {
                   <option value="Plant Revamp / Upgrade">Plant Revamp / Upgrade</option>
                   <option value="General Inquiry">General Inquiry</option>
                 </select>
+                {errors.project_type && (
+                  <p className="mt-1 text-xs text-red-500 font-medium">{errors.project_type}</p>
+                )}
               </div>
 
               <div>
@@ -370,8 +449,13 @@ const GetInTouchSection = () => {
                   onChange={handleInputChange}
                   placeholder="Describe your process requirements, plant capacity, industry, and any specific technical needs..."
                   required
-                  className="w-full px-4 py-3.5 rounded-lg bg-white border-2 border-gray-200 text-sm placeholder-gray-400 focus:border-secondary focus:outline-none resize-vertical transition-colors"
+                  className={`w-full px-4 py-3.5 rounded-lg bg-white border-2 text-sm placeholder-gray-400 focus:outline-none resize-vertical transition-colors ${
+                    errors.message_body ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                  }`}
                 />
+                {errors.message_body && (
+                  <p className="mt-1 text-xs text-red-500 font-medium">{errors.message_body}</p>
+                )}
               </div>
 
               {/* I am not a Robot */}
@@ -387,8 +471,8 @@ const GetInTouchSection = () => {
               {/* Submit Button - unchanged */}
               <button
                 type="submit"
-                disabled={submitting}
-                className="group w-full py-4 bg-secondary text-white font-bold text-sm rounded-lg hover:bg-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 uppercase tracking-[0.18em] flex items-center justify-center gap-3 disabled:opacity-50"
+                disabled={submitting || Object.values(errors).some(err => err)}
+                className="group w-full py-4 bg-secondary text-white font-bold text-sm rounded-lg hover:bg-secondary/90 shadow-md hover:shadow-lg transition-all duration-300 uppercase tracking-[0.18em] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? "Sending..." : "Send Message"}
                 {!submitting && (

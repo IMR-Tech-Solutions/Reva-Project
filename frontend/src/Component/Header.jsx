@@ -5,11 +5,11 @@ import {
   FiX,
   FiArrowUp,
 } from "react-icons/fi";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { searchData } from "../data/searchData";
-import { getAllTechnologies } from "../services/technologiesApi";
-import { getAllProducts } from "../services/productsApi";
+import { getTechnologiesList } from "../services/technologiesApi";
+import { getProductsList } from "../services/productsApi";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -54,7 +54,7 @@ const Header = () => {
   useEffect(() => {
     const fetchTechs = async () => {
       try {
-        const data = await getAllTechnologies(0, 50);
+        const data = await getTechnologiesList();
         setDynamicTechnologies(data);
       } catch (err) {
         console.error("Failed to fetch technologies for header:", err);
@@ -62,7 +62,7 @@ const Header = () => {
     };
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts(0, 50);
+        const data = await getProductsList();
         setDynamicProducts(data);
       } catch (err) {
         console.error("Failed to fetch products for header:", err);
@@ -437,7 +437,7 @@ const NavLink = ({ text, href, active, isTransparent }) => (
 
 
 /* TECHNOLOGIES DROPDOWN */
-const TechnologiesDropdown = ({ active, isTransparent, technologies = [] }) => {
+const TechnologiesDropdown = React.memo(({ active, isTransparent, technologies = [] }) => {
   return (
     <div className="relative group">
       <button
@@ -465,10 +465,10 @@ const TechnologiesDropdown = ({ active, isTransparent, technologies = [] }) => {
       </div>
     </div>
   );
-};
+});
 
 /* PRODUCTS DROPDOWN */
-const ProductsDropdown = ({ active, isTransparent, products = [] }) => {
+const ProductsDropdown = React.memo(({ active, isTransparent, products = [] }) => {
   return (
     <div className="relative group">
       <button
@@ -495,7 +495,7 @@ const ProductsDropdown = ({ active, isTransparent, products = [] }) => {
       </div>
     </div>
   );
-};
+});
 
 /* DROPDOWN ITEM */
 const DropdownItem = ({ label, href }) => (

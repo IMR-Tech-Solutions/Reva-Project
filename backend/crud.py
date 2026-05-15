@@ -66,8 +66,20 @@ def get_all_services(db: Session):
     return db.query(models.Service).order_by(models.Service.display_order.asc()).all()
 
 def get_active_services(db: Session):
-    """Public: active services only"""
-    return db.query(models.Service).filter(models.Service.is_active == True).order_by(models.Service.display_order.asc()).all()
+    """Public: active services only (optimized to fetch only card fields)"""
+    return db.query(
+        models.Service.id,
+        models.Service.title,
+        models.Service.slug,
+        models.Service.tagline,
+        models.Service.description,
+        models.Service.icon_name,
+        models.Service.number,
+        models.Service.href,
+        models.Service.tags,
+        models.Service.is_active,
+        models.Service.display_order
+    ).filter(models.Service.is_active == True).order_by(models.Service.display_order.asc()).all()
 
 def get_service_by_slug(db: Session, slug: str):
     """Get single service with all sections and items"""
@@ -175,6 +187,20 @@ def delete_item(db: Session, item_id: int):
 def get_products(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Product).offset(skip).limit(limit).all()
 
+def get_products_list(db: Session):
+    return db.query(models.Product.id, models.Product.title, models.Product.path).all()
+
+def get_product_home_cards(db: Session, limit: int = 3):
+    return db.query(
+        models.Product.id,
+        models.Product.title,
+        models.Product.path,
+        models.Product.herosub,
+        models.Product.paragraph1,
+        models.Product.img,
+        models.Product.features
+    ).limit(limit).all()
+
 def get_product_by_path(db: Session, path: str):
     return db.query(models.Product).filter(models.Product.path == path).first()
 
@@ -236,6 +262,9 @@ def get_messages(db: Session, skip: int = 0, limit: int = 100):
 # Technologies
 def get_technologies(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Technology).offset(skip).limit(limit).all()
+
+def get_technologies_list(db: Session):
+    return db.query(models.Technology.id, models.Technology.title, models.Technology.slug).all()
 
 def get_technology_by_slug(db: Session, slug: str):
     return db.query(models.Technology).filter(models.Technology.slug == slug).first()

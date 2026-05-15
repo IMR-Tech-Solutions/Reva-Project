@@ -133,6 +133,24 @@ class Product(ProductBase):
     class Config:
         from_attributes = True
 
+class ProductLink(BaseModel):
+    id: int
+    title: str
+    path: str
+    class Config:
+        from_attributes = True
+
+class ProductHomeCard(BaseModel):
+    id: int
+    title: str
+    path: str
+    herosub: Optional[str] = None
+    paragraph1: Optional[str] = None
+    img: Optional[str] = None
+    features: List[FeatureBase] = []
+    class Config:
+        from_attributes = True
+
 # News Schemas
 class NewsBase(BaseModel):
     image: Optional[str] = None
@@ -238,6 +256,13 @@ class TechnologyCreate(TechnologyBase):
 
 class Technology(TechnologyBase):
     id: int
+    class Config:
+        from_attributes = True
+
+class TechnologyLink(BaseModel):
+    id: int
+    title: str
+    slug: str
     class Config:
         from_attributes = True
 

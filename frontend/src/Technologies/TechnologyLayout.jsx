@@ -71,6 +71,7 @@ const TechnologyLayout = ({
                     src={img?.startsWith('http') || img?.startsWith('data:') ? img : `${import.meta.env.VITE_API_URL}${img}`}
                     alt={herotitle}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   {/* Subtle top overlay for text readability if needed later */}
                   <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />

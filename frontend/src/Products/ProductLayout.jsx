@@ -93,7 +93,8 @@ const ProductLayout = ({
                               h-[280px] sm:h-[360px] lg:h-[440px]
                               border border-white/10 shadow-2xl mb-8">
                 <img src={img} alt={herotitle}
-                   className="w-full h-full object-cover" />
+                   className="w-full h-full object-cover"
+                   loading="lazy" />
                 <div className="absolute inset-0 bg-primary/20" />
               </div>
 
@@ -308,6 +309,7 @@ const ProductLayout = ({
                             src={rtype.image} 
                             alt={rtype.title} 
                             className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="text-gray-300 text-sm font-semibold relative z-10 flex flex-col items-center gap-2">

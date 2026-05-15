@@ -474,6 +474,14 @@ def download_resume(application_id: int, db: Session = Depends(get_db)):
 def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_products(db, skip=skip, limit=limit)
 
+@api_router.get("/products/list", response_model=List[schemas.ProductLink])
+def read_products_list(db: Session = Depends(get_db)):
+    return crud.get_products_list(db)
+
+@api_router.get("/products/home", response_model=List[schemas.ProductHomeCard])
+def read_products_home(db: Session = Depends(get_db)):
+    return crud.get_product_home_cards(db, limit=3)
+
 @api_router.get("/products/{product_id}", response_model=schemas.Product)
 def read_product(product_id: int, db: Session = Depends(get_db)):
     db_product = crud.get_product(db, product_id=product_id)
@@ -518,6 +526,10 @@ def delete_product(product_id: int, db: Session = Depends(get_db), current_user:
 @api_router.get("/technologies", response_model=List[schemas.Technology])
 def read_technologies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_technologies(db, skip=skip, limit=limit)
+
+@api_router.get("/technologies/list", response_model=List[schemas.TechnologyLink])
+def read_technologies_list(db: Session = Depends(get_db)):
+    return crud.get_technologies_list(db)
 
 @api_router.get("/technologies/{tech_id}", response_model=schemas.Technology)
 def read_technology(tech_id: int, db: Session = Depends(get_db)):

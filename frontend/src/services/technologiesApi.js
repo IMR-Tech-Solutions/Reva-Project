@@ -2,12 +2,39 @@ import authService from "../api/authService";
 
 const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
+let technologiesCache = null;
+let technologiesListCache = null;
+
+const clearTechnologiesCache = () => {
+  technologiesCache = null;
+  technologiesListCache = null;
+};
+
 export const getAllTechnologies = async (skip = 0, limit = 100) => {
+  // Use cache for default list
+  if (technologiesCache && skip === 0 && limit === 100) return technologiesCache;
+
   const response = await fetch(`${API_BASE_URL}/technologies?skip=${skip}&limit=${limit}`, {
     headers: { ...authService.getAuthHeader() }
   });
   if (!response.ok) throw new Error("Failed to fetch technologies");
-  return response.json();
+  const data = await response.json();
+
+  if (skip === 0 && limit === 100) technologiesCache = data;
+  return data;
+};
+
+export const getTechnologiesList = async () => {
+  if (technologiesListCache) return technologiesListCache;
+
+  const response = await fetch(`${API_BASE_URL}/technologies/list`, {
+    headers: { ...authService.getAuthHeader() }
+  });
+  if (!response.ok) throw new Error("Failed to fetch technologies list");
+  const data = await response.json();
+
+  technologiesListCache = data;
+  return data;
 };
 
 export const getTechnologyById = async (id) => {
@@ -36,6 +63,7 @@ export const createTechnology = async (techData) => {
     body: JSON.stringify(techData),
   });
   if (!response.ok) throw new Error("Failed to create technology");
+  clearTechnologiesCache();
   return response.json();
 };
 
@@ -49,6 +77,7 @@ export const updateTechnology = async (id, techData) => {
     body: JSON.stringify(techData),
   });
   if (!response.ok) throw new Error("Failed to update technology");
+  clearTechnologiesCache();
   return response.json();
 };
 
@@ -58,6 +87,7 @@ export const deleteTechnology = async (id) => {
     headers: { ...authService.getAuthHeader() },
   });
   if (!response.ok) throw new Error("Failed to delete technology");
+  clearTechnologiesCache();
   return response.json();
 };
 

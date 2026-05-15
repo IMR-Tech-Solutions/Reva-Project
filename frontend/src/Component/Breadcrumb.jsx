@@ -107,13 +107,16 @@ const Breadcrumb = ({ title: customTitle }) => {
     serviceDetailPaths.some(path => location.pathname.toLowerCase().includes(path.toLowerCase()));
 
   return (
-    <section className="relative w-full h-[300px] md:h-[400px] lg:h-[450px] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/bgbg2.jpg')",
-        }}
+    <section className="relative w-full h-[250px] md:h-[250px] lg:h-[350px] flex items-center justify-center overflow-hidden">
+      {/* Background Image Optimized */}
+      <div className="absolute inset-0 bg-primary/20" /> {/* Base color while loading */}
+      <img
+        src="/bgbg2.jpg"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+        style={{ opacity: 0 }}
+        onLoad={(e) => (e.currentTarget.style.opacity = "1")}
+        loading="lazy"
       />
       
       {/* Dark Overlay */}

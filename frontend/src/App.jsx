@@ -23,6 +23,7 @@ import BasicEngineering from "./Pages/BasicEngineering";
 import ServicesSection from "./Pages/Services";
 import NewsDetail from "./Component/NewsComponents/NewsDetail";
 import Bioremediation from "./Pages/Bioremediation";
+import DynamicServiceDetail from "./Pages/DynamicServiceDetail";
 
 // Admin Components
 import AdminLayout from "./admin/Layout/AdminLayout";
@@ -68,6 +69,7 @@ const App = () => {
             <Route path="/services/procurement" element={<Procurement />} />
             <Route path="/services/project" element={<Project />} />
             <Route path="/services/site" element={<Site />} />
+            <Route path="/services/:slug" element={<DynamicServiceDetail />} />
             <Route path="/technology/bioremediation" element={<Bioremediation />} />
 
 

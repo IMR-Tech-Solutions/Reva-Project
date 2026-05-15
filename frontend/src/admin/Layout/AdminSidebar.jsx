@@ -26,6 +26,7 @@ const AdminSidebar = ({ isOpen, toggleSidebar }) => {
     { name: "News", path: "/admin/news", icon: Newspaper },
     { name: "Work In Action", path: "/admin/work-in-action", icon: Layout },
     { name: "About Page", path: "/admin/about", icon: Info },
+    { name: "Services", path: "/admin/services", icon: Briefcase },
     { name: "What Sets Us Apart", path: "/admin/what-sets-us-apart", icon: Star },
     { name: "Technologies", path: "/admin/technologies", icon: Zap },
     { name: "Bioremediation", path: "/admin/bioremediation", icon: Leaf },
