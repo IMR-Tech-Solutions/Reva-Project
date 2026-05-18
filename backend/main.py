@@ -107,6 +107,47 @@ def validate_image_string(img_str: Optional[str]) -> None:
                 detail="Only JPG, PNG, and WEBP images are allowed."
             )
 
+# --- Hero Media Validation Helper ---
+MAX_IMAGE_SIZE = 10 * 1024 * 1024   # 10 MB
+MAX_VIDEO_SIZE = 100 * 1024 * 1024  # 100 MB
+
+async def validate_hero_media_file(file: Optional[UploadFile]) -> bytes:
+    """Validate file type and size for hero media uploads.
+    Returns the full file content as bytes after validation.
+    Raises HTTPException with a user-friendly message on violation."""
+    if not file or not file.filename:
+        return b""
+
+    ext = os.path.splitext(file.filename)[1].lower()
+    allowed_images = [".jpg", ".jpeg", ".png", ".webp"]
+    allowed_videos = [".mp4", ".webm"]
+
+    if ext not in allowed_images and ext not in allowed_videos:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Allowed images: JPG, JPEG, PNG, WEBP. Allowed videos: MP4, WEBM."
+        )
+
+    is_video = ext in allowed_videos
+
+    # Read file content to check size
+    content = await file.read()
+    file_size = len(content)
+
+    if is_video and file_size > MAX_VIDEO_SIZE:
+        size_mb = file_size / (1024 * 1024)
+        raise HTTPException(
+            status_code=413,
+            detail=f"Video file too large ({size_mb:.1f} MB). Maximum allowed size is 100 MB."
+        )
+    if not is_video and file_size > MAX_IMAGE_SIZE:
+        size_mb = file_size / (1024 * 1024)
+        raise HTTPException(
+            status_code=413,
+            detail=f"Image file too large ({size_mb:.1f} MB). Maximum allowed size is 10 MB."
+        )
+
+    return content
 # --- API Router Setup ---
 api_router = APIRouter()
 
@@ -946,18 +987,18 @@ async def create_home_hero_slide(
 ):
     media_url = ""
     if media_file and media_file.filename:
-        validate_image_file(media_file, allow_videos=True)
         import time
-        ext = os.path.splitext(media_file.filename)[1]
+        ext = os.path.splitext(media_file.filename)[1].lower()
+        content = await validate_hero_media_file(media_file)
         filename = f"hero_{int(time.time())}{ext}"
         file_path = HERO_UPLOADS_DIR / filename
         with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(media_file.file, buffer)
+            buffer.write(content)
         media_url = f"/api/uploads/hero/{filename}"
-        # Auto-detect media type if not provided or to ensure accuracy
-        if ext.lower() in [".mp4", ".webm", ".ogg"]:
+        # Auto-detect media type
+        if ext in [".mp4", ".webm"]:
             media_type = "video"
-        elif ext.lower() in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+        elif ext in [".jpg", ".jpeg", ".png", ".webp"]:
             media_type = "image"
     
     slide_data = schemas.HomeHeroSlideCreate(
@@ -988,17 +1029,17 @@ async def update_home_hero_slide(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     if media_file and media_file.filename:
-        validate_image_file(media_file, allow_videos=True)
         import time
-        ext = os.path.splitext(media_file.filename)[1]
+        ext = os.path.splitext(media_file.filename)[1].lower()
+        content = await validate_hero_media_file(media_file)
         filename = f"hero_{int(time.time())}{ext}"
         file_path = HERO_UPLOADS_DIR / filename
         with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(media_file.file, buffer)
+            buffer.write(content)
         media_url = f"/api/uploads/hero/{filename}"
-        if ext.lower() in [".mp4", ".webm", ".ogg"]:
+        if ext in [".mp4", ".webm"]:
             media_type = "video"
-        elif ext.lower() in [".jpg", ".jpeg", ".png", ".webp", ".gif"]:
+        elif ext in [".jpg", ".jpeg", ".png", ".webp"]:
             media_type = "image"
 
     slide_data = schemas.HomeHeroSlideCreate(

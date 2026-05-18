@@ -499,7 +499,11 @@ const api = {
       headers: { ...authService.getAuthHeader() },
       body: formData,
     });
-    if (!response.ok) throw new Error("Failed to create hero slide");
+    if (!response.ok) {
+      let errMsg = "Failed to create hero slide";
+      try { const data = await response.json(); errMsg = data.detail || errMsg; } catch (_) {}
+      throw new Error(errMsg);
+    }
     return response.json();
   },
 
@@ -516,7 +520,11 @@ const api = {
       headers: { ...authService.getAuthHeader() },
       body: formData,
     });
-    if (!response.ok) throw new Error("Failed to update hero slide");
+    if (!response.ok) {
+      let errMsg = "Failed to update hero slide";
+      try { const data = await response.json(); errMsg = data.detail || errMsg; } catch (_) {}
+      throw new Error(errMsg);
+    }
     return response.json();
   },
 

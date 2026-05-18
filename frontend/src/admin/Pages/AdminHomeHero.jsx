@@ -54,7 +54,9 @@ const AdminHomeHero = () => {
       setShowModal(false);
       fetchSlides();
     } catch (error) {
-      toast.error("Error saving slide");
+      // Show backend error message if available (e.g. file too large details)
+      const msg = error?.message || "Error saving slide";
+      toast.error(msg);
     } finally {
       setSaving(false);
     }
@@ -187,23 +189,48 @@ const AdminHomeHero = () => {
                     <div className="relative group">
                       <input 
                         type="file" 
-                        accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,.ogg"
+                        accept=".jpg,.jpeg,.png,.webp,.mp4,.webm"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (file) {
                             const isVideo = file.type.startsWith('video/');
+                            const MAX_IMAGE_SIZE = 10 * 1024 * 1024;  // 10 MB
+                            const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB
+
                             if (isVideo) {
+                              // Validate video format
+                              const ext = file.name.split('.').pop().toLowerCase();
+                              if (!['mp4', 'webm'].includes(ext)) {
+                                toast.error("Invalid video format. Only MP4 and WEBM are allowed.");
+                                e.target.value = "";
+                                return;
+                              }
+                              // Validate video size
+                              if (file.size > MAX_VIDEO_SIZE) {
+                                const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+                                toast.error(`Video is too large (${sizeMB} MB). Maximum allowed size is 100 MB.`);
+                                e.target.value = "";
+                                return;
+                              }
                               setCurrentSlide({ 
                                 ...currentSlide, 
                                 media_file: file, 
                                 media_type: 'video' 
                               });
                             } else {
+                              // Validate image format
                               const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
                               const fileExtension = file.name.split('.').pop().toLowerCase();
                               const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
                               if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
-                                toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                                toast.error("Invalid image format. Only JPG, JPEG, PNG and WEBP are allowed.");
+                                e.target.value = "";
+                                return;
+                              }
+                              // Validate image size
+                              if (file.size > MAX_IMAGE_SIZE) {
+                                const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+                                toast.error(`Image is too large (${sizeMB} MB). Maximum allowed size is 10 MB.`);
                                 e.target.value = "";
                                 return;
                               }
@@ -222,7 +249,9 @@ const AdminHomeHero = () => {
                           file:bg-primary file:text-white
                           hover:file:bg-blue-900 transition-all cursor-pointer" 
                       />
-                      <p className="mt-2 text-[10px] text-gray-400 font-medium">Recommended: High-quality MP4 videos or JPG/PNG images.</p>
+                      <p className="mt-2 text-[10px] text-gray-400 font-medium">
+                        Images: JPG, JPEG, PNG, WEBP (max 10 MB) &nbsp;|&nbsp; Videos: MP4, WEBM (max 100 MB)
+                      </p>
                     </div>
                   </div>
                 </div>
