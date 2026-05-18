@@ -65,6 +65,48 @@ TECHNOLOGIES_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 from fastapi.staticfiles import StaticFiles
 app.mount("/api/uploads", StaticFiles(directory=Path(__file__).parent / "uploads"), name="uploads")
 
+# --- Image Validation Helpers ---
+def validate_image_file(file: Optional[UploadFile], allow_videos: bool = False) -> None:
+    if not file or not file.filename:
+        return
+    ext = os.path.splitext(file.filename)[1].lower()
+    if allow_videos and ext in [".mp4", ".webm", ".ogg"]:
+        return
+    if ext not in [".jpg", ".jpeg", ".png", ".webp"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Only JPG, PNG, and WEBP images are allowed."
+        )
+
+def validate_image_string(img_str: Optional[str]) -> None:
+    if not img_str:
+        return
+    img_str = img_str.strip()
+    if img_str.startswith("data:"):
+        try:
+            header, _ = img_str.split(",", 1)
+            mime_part = header.split(";")[0]  # e.g. "data:image/png"
+            mime_type = mime_part.split(":")[1].lower()  # e.g. "image/png"
+            if mime_type not in ["image/jpeg", "image/jpg", "image/png", "image/webp"]:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Only JPG, PNG, and WEBP images are allowed."
+                )
+        except Exception as e:
+            if isinstance(e, HTTPException):
+                raise e
+            raise HTTPException(
+                status_code=400,
+                detail="Only JPG, PNG, and WEBP images are allowed."
+            )
+    else:
+        ext = os.path.splitext(img_str)[1].lower()
+        if ext and ext not in [".jpg", ".jpeg", ".png", ".webp"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Only JPG, PNG, and WEBP images are allowed."
+            )
+
 # --- API Router Setup ---
 api_router = APIRouter()
 
@@ -139,6 +181,7 @@ def read_news(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @api_router.post("/news", response_model=schemas.News)
 def create_news_article(news: schemas.NewsCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(news.image)
     return crud.create_news(db=db, news=news)
 
 @api_router.get("/news/{news_id}", response_model=schemas.News)
@@ -157,6 +200,7 @@ def read_news_article_by_slug(slug: str, db: Session = Depends(get_db)):
 
 @api_router.put("/news/{news_id}", response_model=schemas.News)
 def update_news_article(news_id: int, news: schemas.NewsCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(news.image)
     db_news = crud.update_news(db=db, news_id=news_id, news=news)
     if not db_news:
         raise HTTPException(status_code=404, detail="News article not found")
@@ -369,6 +413,7 @@ async def update_career_content(
     
     # Handle Image Upload
     if hero_file and hero_file.filename:
+        validate_image_file(hero_file)
         ext = os.path.splitext(hero_file.filename)[1]
         filename = f"career_hero_{int(time.time())}{ext}"
         file_path = CAREER_UPLOADS_DIR / filename
@@ -506,10 +551,20 @@ def read_product_by_path(path: str, db: Session = Depends(get_db)):
 
 @api_router.post("/products", response_model=schemas.Product)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(product.img)
+    if product.reactor_types:
+        for reactor in product.reactor_types:
+            if isinstance(reactor, dict) and "image" in reactor:
+                validate_image_string(reactor["image"])
     return crud.create_product(db=db, product=product)
 
 @api_router.put("/products/{product_id}", response_model=schemas.Product)
 def update_product(product_id: int, product: schemas.ProductCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(product.img)
+    if product.reactor_types:
+        for reactor in product.reactor_types:
+            if isinstance(reactor, dict) and "image" in reactor:
+                validate_image_string(reactor["image"])
     db_product = crud.update_product(db=db, product_id=product_id, product=product)
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -547,10 +602,12 @@ def read_technology_by_slug(slug: str, db: Session = Depends(get_db)):
 
 @api_router.post("/technologies", response_model=schemas.Technology)
 def create_technology(tech: schemas.TechnologyCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(tech.img)
     return crud.create_technology(db=db, tech=tech)
 
 @api_router.put("/technologies/{tech_id}", response_model=schemas.Technology)
 def update_technology(tech_id: int, tech: schemas.TechnologyCreate, db: Session = Depends(get_db), current_user: models.AdminUser = Depends(get_current_active_admin)):
+    validate_image_string(tech.img)
     db_tech = crud.update_technology(db=db, tech_id=tech_id, tech=tech)
     if not db_tech:
         raise HTTPException(status_code=404, detail="Technology not found")
@@ -673,6 +730,10 @@ async def update_about_content(
     import time
     
     # Handle Hero Main Image
+    validate_image_file(hero_main_file)
+    validate_image_file(hero_sub_file)
+    validate_image_file(why_us_file)
+
     if hero_main_file and hero_main_file.filename:
         ext = os.path.splitext(hero_main_file.filename)[1]
         filename = f"about_hero_main_{int(time.time())}{ext}"
@@ -775,6 +836,7 @@ async def create_team_member(
 ):
     image_filename = None
     if image and image.filename:
+        validate_image_file(image)
         ext = os.path.splitext(image.filename)[1]
         image_filename = f"team_{name.replace(' ', '_')}_{int(os.path.getmtime(os.getcwd()) if os.name != 'nt' else 0)}{ext}"
         # A more robust filename
@@ -810,6 +872,7 @@ async def update_team_member(
     
     image_filename = member.image
     if image and image.filename:
+        validate_image_file(image)
         import time
         ext = os.path.splitext(image.filename)[1]
         new_filename = f"team_{int(time.time())}{ext}"
@@ -883,6 +946,7 @@ async def create_home_hero_slide(
 ):
     media_url = ""
     if media_file and media_file.filename:
+        validate_image_file(media_file, allow_videos=True)
         import time
         ext = os.path.splitext(media_file.filename)[1]
         filename = f"hero_{int(time.time())}{ext}"
@@ -924,6 +988,7 @@ async def update_home_hero_slide(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     if media_file and media_file.filename:
+        validate_image_file(media_file, allow_videos=True)
         import time
         ext = os.path.splitext(media_file.filename)[1]
         filename = f"hero_{int(time.time())}{ext}"
@@ -986,6 +1051,9 @@ async def update_home_about_content(
     import time
     
     # Handle Primary Image Upload
+    validate_image_file(main_file)
+    validate_image_file(sub_file)
+
     if main_file and main_file.filename:
         ext = os.path.splitext(main_file.filename)[1]
         filename = f"about_main_{int(time.time())}{ext}"
@@ -1050,6 +1118,7 @@ async def update_strategic_advice(
 
     # Handle Image Upload
     if strategic_file and strategic_file.filename:
+        validate_image_file(strategic_file)
         ext = os.path.splitext(strategic_file.filename)[1]
         filename = f"about_strategic_{int(time.time())}{ext}"
         file_path = ABOUT_UPLOADS_DIR / filename
@@ -1211,6 +1280,7 @@ async def upload_service_image(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     """Upload an image for use in services (hero, section, etc.)"""
+    validate_image_file(image)
     import time
     ext = os.path.splitext(image.filename)[1]
     filename = f"service_{int(time.time())}{ext}"
@@ -1226,6 +1296,7 @@ async def upload_technology_image(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     """Upload an image for use in technologies"""
+    validate_image_file(image)
     import time
     ext = os.path.splitext(image.filename)[1]
     filename = f"tech_{int(time.time())}{ext}"
@@ -1450,6 +1521,10 @@ async def update_bioremediation_content(
     import time
 
     # Handle image uploads
+    validate_image_file(hero_bg_file)
+    validate_image_file(what_image_file)
+    validate_image_file(europe_profile_file)
+
     if hero_bg_file and hero_bg_file.filename:
         ext = os.path.splitext(hero_bg_file.filename)[1]
         filename = f"bio_hero_{int(time.time())}{ext}"
@@ -1506,6 +1581,7 @@ async def upload_bioremediation_image(
     current_user: models.AdminUser = Depends(get_current_active_admin)
 ):
     """Upload an image for use in bioremediation sections."""
+    validate_image_file(image)
     import time
     ext = os.path.splitext(image.filename)[1]
     filename = f"bio_{int(time.time())}{ext}"

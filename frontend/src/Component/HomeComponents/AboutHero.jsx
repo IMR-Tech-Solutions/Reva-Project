@@ -149,7 +149,7 @@ const AboutHero = () => {
             </motion.div>
 
             {/* Heading */}
-            <motion.h1
+            <motion.h2
               variants={itemVariants}
               className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-primary leading-[1.15] mb-6"
             >
@@ -157,7 +157,7 @@ const AboutHero = () => {
               <span className="block mt-2 text-gray-700">
                 {content.sub_heading}
               </span>
-            </motion.h1>
+            </motion.h2>
 
             {/* Description */}
           <motion.p

@@ -16,7 +16,7 @@ const AdminSettings = () => {
     contact_phone: "",
     address: "",
     facebook: "",
-    twitter: "",
+    whatsapp: "",
     linkedin: "",
     instagram: ""
   });
@@ -53,8 +53,25 @@ const AdminSettings = () => {
     }
   };
 
+  const [whatsappError, setWhatsappError] = useState("");
+
+  const validateWhatsapp = (num) => {
+    const digits = num.replace(/\D/g, "");
+    if (num === "") return "";
+    if (!/^\d+$/.test(digits)) return "Only digits are allowed (no spaces, dashes, or +).";
+    if (digits.length < 7 || digits.length > 15) return "Enter 7–15 digits (e.g. 919999999999 for India).";
+    return "";
+  };
+
   const handleSettingsSave = async (e) => {
     e.preventDefault();
+    // Block save if WhatsApp number is invalid
+    const waErr = validateWhatsapp(settings.whatsapp || "");
+    if (waErr) {
+      setWhatsappError(waErr);
+      toast.error("Please fix the WhatsApp number before saving.");
+      return;
+    }
     try {
       setSaving(true);
       await api.updateSettings(settings);
@@ -229,18 +246,72 @@ const AdminSettings = () => {
                 </div>
 
                 <div className="space-y-4">
-                  {['facebook', 'twitter', 'linkedin', 'instagram'].map(platform => (
-                    <div key={platform}>
-                      <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1 capitalize">{platform}</label>
-                      <input 
-                        type="url" 
-                        value={settings[platform] || ""} 
-                        onChange={(e) => setSettings({...settings, [platform]: e.target.value})}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-300"
-                        placeholder={`https://${platform}.com/...`}
-                      />
-                    </div>
-                  ))}
+                  {/* Facebook */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Facebook</label>
+                    <input
+                      type="url"
+                      value={settings.facebook || ""}
+                      onChange={(e) => setSettings({...settings, facebook: e.target.value})}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-300"
+                      placeholder="https://facebook.com/..."
+                    />
+                  </div>
+
+                  {/* WhatsApp */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">
+                      WhatsApp Number
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.whatsapp || ""}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^\d]/g, ""); // strip non-digits
+                        setSettings({...settings, whatsapp: val});
+                        setWhatsappError(validateWhatsapp(val));
+                      }}
+                      className={`w-full px-4 py-3 bg-gray-50 border rounded-xl focus:ring-2 outline-none transition-all placeholder:text-gray-300 ${
+                        whatsappError
+                          ? "border-red-400 focus:ring-red-100 focus:border-red-400"
+                          : "border-gray-200 focus:ring-primary/20 focus:border-primary"
+                      }`}
+                      placeholder="e.g. 919999999999 (country code + number)"
+                      maxLength={15}
+                    />
+                    {whatsappError && (
+                      <p className="mt-1 text-xs text-red-500 font-medium ml-1">{whatsappError}</p>
+                    )}
+                    {!whatsappError && settings.whatsapp && (
+                      <p className="mt-1 text-xs text-green-600 font-medium ml-1">
+                        Link preview: https://wa.me/{settings.whatsapp}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* LinkedIn */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">LinkedIn</label>
+                    <input
+                      type="url"
+                      value={settings.linkedin || ""}
+                      onChange={(e) => setSettings({...settings, linkedin: e.target.value})}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-300"
+                      placeholder="https://linkedin.com/..."
+                    />
+                  </div>
+
+                  {/* Instagram */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Instagram</label>
+                    <input
+                      type="url"
+                      value={settings.instagram || ""}
+                      onChange={(e) => setSettings({...settings, instagram: e.target.value})}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-gray-300"
+                      placeholder="https://instagram.com/..."
+                    />
+                  </div>
                 </div>
               </div>
             </div>

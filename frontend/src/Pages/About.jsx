@@ -45,8 +45,8 @@ const About = () => {
             <MissionValues content={content} values={values} />
             <Team content={content} team={team} />
             <WhyChooseUs content={content} differentiators={differentiators} />
-            <GlobalPresenceSection/>
-            
+            <GlobalPresenceSection />
+
             {/* <TestimonialsSection testimonials={testimonials} /> */}
         </div>
     );

@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import api from '../../api/api';
 
-const industries = [
+const defaultImages = [
+  './industry1.jpg',
+  './industry2.jpg',
+  './industry3.jpg',
+  './industry4.jpg',
+  '/hero1.png',
+  '/hero3.png'
+];
+
+const defaultTags = [
+  'De-Risk First',
+  'Engineering Foundation',
+  'Execution-Ready',
+  'Right Quality. Right Time.',
+  'On-Time. On-Budget.',
+  'Concept to Handover'
+];
+
+const fallbackIndustries = [
   {
     id: 1,
     title: 'Feasibility & Pilot Plant Study',
@@ -79,6 +98,41 @@ const headingVariants = {
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 
 const IndustriesSection = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await api.getActiveServices();
+        if (data?.length) {
+          setServices(
+            data.map((s, index) => ({
+              id: s.id,
+              title: s.title,
+              description: s.description,
+              link: s.href
+                ? (s.href.startsWith('/') && !s.href.startsWith('/services')
+                  ? `/services${s.href}`
+                  : s.href)
+                : `/services/${s.slug}`,
+              tag: s.tagline || defaultTags[index % defaultTags.length],
+              image: s.hero_image && !s.hero_image.startsWith('.') ? s.hero_image : defaultImages[index % defaultImages.length],
+            }))
+          );
+        } else {
+          setServices(fallbackIndustries);
+        }
+      } catch (err) {
+        console.error("Failed to fetch active services for Home page:", err);
+        setServices(fallbackIndustries);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
   return (
     <section className="w-full bg-gray-50 py-8 md:py-12">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12">
@@ -129,72 +183,80 @@ const IndustriesSection = () => {
         </div>
 
         {/* ── Cards Grid ─────────────────────────────────────── */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"
-        >
-          {industries.map((industry, index) => (
-            <motion.div
-              key={industry.id}
-              variants={cardVariants}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="group"
-            >
-              <Link
-                to={industry.link}
-                className="relative h-[280px] sm:h-[300px] rounded-2xl overflow-hidden flex flex-col bg-primary shadow-md hover:shadow-xl transition-all duration-400 border border-transparent hover:border-secondary/30 block"
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            {Array(6).fill(0).map((_, i) => (
+              <div key={i} className="h-[280px] sm:h-[300px] bg-white border border-gray-200 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.05 }}
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"
+          >
+            {services.map((industry, index) => (
+              <motion.div
+                key={industry.id}
+                variants={cardVariants}
+                whileHover={{ y: -6, transition: { duration: 0.3 } }}
+                className="group"
               >
-                {/* Background Image */}
-                <div className="absolute inset-0">
-                  <img
-                    src={industry.image}
-                    alt={industry.title}
-                    className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105 brightness-50 group-hover:brightness-60"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/20 to-transparent" />
-                </div>
-
-                {/* Number badge */}
-                <div className="absolute top-4 left-4 z-10 w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shadow-md">
-                  <span className="text-primary text-xs font-black">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-
-                {/* Tag pill */}
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="px-2.5 py-1 bg-black/30 backdrop-blur-sm border border-white/15 text-white text-xs font-semibold rounded-full">
-                    {industry.tag}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div className="relative mt-auto p-5 z-10 flex flex-col gap-2">
-                  <h3 className="text-base sm:text-lg font-bold text-white leading-snug group-hover:text-secondary transition-colors duration-300">
-                    {industry.title}
-                  </h3>
-
-                  <div className="w-6 h-[2px] bg-secondary rounded-full group-hover:w-10 transition-all duration-400" />
-
-                  <p className="text-xs text-gray-300 leading-relaxed line-clamp-2">
-                    {industry.description}
-                  </p>
-
-                  {/* CTA */}
-                  <div className="flex items-center gap-1.5 text-secondary font-bold text-xs mt-0.5 group-hover:gap-2.5 transition-all duration-300">
-                    <span>Explore Service</span>
+                <Link
+                  to={industry.link}
+                  className="relative h-[280px] sm:h-[300px] rounded-2xl overflow-hidden flex flex-col bg-primary shadow-md hover:shadow-xl transition-all duration-400 border border-transparent hover:border-secondary/30 block"
+                >
+                  {/* Background Image */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={industry.image}
+                      alt={industry.title}
+                      className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105 brightness-50 group-hover:brightness-60"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/20 to-transparent" />
                   </div>
-                </div>
 
-                {/* Bottom accent bar */}
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-secondary to-secondary/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+                  {/* Number badge */}
+                  <div className="absolute top-4 left-4 z-10 w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shadow-md">
+                    <span className="text-primary text-xs font-black">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+
+                  {/* Tag pill */}
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="px-2.5 py-1 bg-black/30 backdrop-blur-sm border border-white/15 text-white text-xs font-semibold rounded-full">
+                      {industry.tag}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="relative mt-auto p-5 z-10 flex flex-col gap-2">
+                    <h3 className="text-base sm:text-lg font-bold text-white leading-snug group-hover:text-secondary transition-colors duration-300">
+                      {industry.title}
+                    </h3>
+
+                    <div className="w-6 h-[2px] bg-secondary rounded-full group-hover:w-10 transition-all duration-400" />
+
+                    <p className="text-xs text-gray-300 leading-relaxed line-clamp-2">
+                      {industry.description}
+                    </p>
+
+                    {/* CTA */}
+                    <div className="flex items-center gap-1.5 text-secondary font-bold text-xs mt-0.5 group-hover:gap-2.5 transition-all duration-300">
+                      <span>Explore Service</span>
+                    </div>
+                  </div>
+
+                  {/* Bottom accent bar */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-secondary to-secondary/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         {/* ── View All CTA ───────────────────────────────────── */}
         <motion.div

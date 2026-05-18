@@ -187,16 +187,32 @@ const AdminHomeHero = () => {
                     <div className="relative group">
                       <input 
                         type="file" 
-                        accept="image/*,video/*"
+                        accept=".jpg,.jpeg,.png,.webp,.mp4,.webm,.ogg"
                         onChange={(e) => {
-                          const file = e.target.files[0];
+                          const file = e.target.files?.[0];
                           if (file) {
                             const isVideo = file.type.startsWith('video/');
-                            setCurrentSlide({ 
-                              ...currentSlide, 
-                              media_file: file, 
-                              media_type: isVideo ? 'video' : 'image' 
-                            });
+                            if (isVideo) {
+                              setCurrentSlide({ 
+                                ...currentSlide, 
+                                media_file: file, 
+                                media_type: 'video' 
+                              });
+                            } else {
+                              const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                              const fileExtension = file.name.split('.').pop().toLowerCase();
+                              const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                              if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                                toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                                e.target.value = "";
+                                return;
+                              }
+                              setCurrentSlide({ 
+                                ...currentSlide, 
+                                media_file: file, 
+                                media_type: 'image' 
+                              });
+                            }
                           }
                         }}
                         className="block w-full text-sm text-gray-500

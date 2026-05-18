@@ -325,9 +325,10 @@ class SiteSettings(Base):
     contact_phone = Column(String(255))
     address = Column(Text)
     facebook = Column(String(500))
-    twitter = Column(String(500))
+    twitter = Column(String(500))  # kept for backward-compat, no longer shown in admin UI
     linkedin = Column(String(500))
     instagram = Column(String(500))
+    whatsapp = Column(String(20))  # E.164 digits only, e.g. 919999999999
 
 # =====================================================================
 # WHAT SETS US APART — About Page Section

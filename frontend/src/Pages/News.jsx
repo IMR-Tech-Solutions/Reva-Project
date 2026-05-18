@@ -6,9 +6,9 @@ const News = () => {
   return (
     <>
       <Breadcrumb />
-      
-     <NewsPage />
-     
+
+      <NewsPage />
+
     </>
   )
 }

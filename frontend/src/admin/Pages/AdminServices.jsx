@@ -155,6 +155,14 @@ const SectionEditor = ({ section, serviceId, onRefresh }) => {
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+      e.target.value = "";
+      return;
+    }
     try {
       const result = await api.uploadServiceImage(file);
       setForm({ ...form, image: result.url });
@@ -228,7 +236,7 @@ const SectionEditor = ({ section, serviceId, onRefresh }) => {
                   <label className="block text-xs font-bold text-gray-600 mb-1">Image</label>
                   <div className="flex gap-2">
                     <input name="image" value={form.image} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary" placeholder="/api/uploads/..." />
-                    <label className="bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-gray-300 transition-colors cursor-pointer flex items-center gap-1"><Upload size={14} />Upload<input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" /></label>
+                    <label className="bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-gray-300 transition-colors cursor-pointer flex items-center gap-1"><Upload size={14} />Upload<input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={handleImageUpload} className="hidden" /></label>
                   </div>
                 </div>
               </div>
@@ -432,6 +440,14 @@ const AdminServices = () => {
   const handleImageUpload = async (e, field) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+      e.target.value = "";
+      return;
+    }
     try {
       const result = await api.uploadServiceImage(file);
       setForm({ ...form, [field]: result.url });
@@ -478,7 +494,7 @@ const AdminServices = () => {
         <input name={name} value={form[name]} onChange={handleChange} className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary" placeholder="/api/uploads/services/..." />
         <label className="bg-secondary text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-secondary/90 transition-colors cursor-pointer flex items-center gap-1 flex-shrink-0">
           <Upload size={14} />Upload
-          <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, name)} className="hidden" />
+          <input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={(e) => handleImageUpload(e, name)} className="hidden" />
         </label>
       </div>
       {form[name] && (

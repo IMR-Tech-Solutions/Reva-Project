@@ -575,13 +575,23 @@ const AdminAbout = () => {
                       </div>
                       <input
                         type="file"
-                        accept="image/*"
-                        onChange={(e) =>
+                        accept=".jpg,.jpeg,.png,.webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                          const fileExtension = file.name.split('.').pop().toLowerCase();
+                          const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                          if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                            toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                            e.target.value = "";
+                            return;
+                          }
                           setContent({
                             ...content,
-                            hero_main_file: e.target.files[0],
-                          })
-                        }
+                            hero_main_file: file,
+                          });
+                        }}
                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       />
                     </div>
@@ -613,13 +623,23 @@ const AdminAbout = () => {
                       </div>
                       <input
                         type="file"
-                        accept="image/*"
-                        onChange={(e) =>
+                        accept=".jpg,.jpeg,.png,.webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                          const fileExtension = file.name.split('.').pop().toLowerCase();
+                          const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                          if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                            toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                            e.target.value = "";
+                            return;
+                          }
                           setContent({
                             ...content,
-                            hero_sub_file: e.target.files[0],
-                          })
-                        }
+                            hero_sub_file: file,
+                          });
+                        }}
                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       />
                     </div>
@@ -1015,13 +1035,23 @@ const AdminAbout = () => {
                       </div>
                       <input
                         type="file"
-                        accept="image/*"
-                        onChange={(e) =>
+                        accept=".jpg,.jpeg,.png,.webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+                          const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                          const fileExtension = file.name.split('.').pop().toLowerCase();
+                          const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                          if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                            toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                            e.target.value = "";
+                            return;
+                          }
                           setContent({
                             ...content,
-                            why_us_file: e.target.files[0],
-                          })
-                        }
+                            why_us_file: file,
+                          });
+                        }}
                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       />
                     </div>
@@ -1314,8 +1344,20 @@ const AdminAbout = () => {
                   </div>
                   <input
                     type="file"
-                    accept="image/*"
-                    onChange={(e) => setMemberFile(e.target.files[0])}
+                    accept=".jpg,.jpeg,.png,.webp"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                      const fileExtension = file.name.split('.').pop().toLowerCase();
+                      const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                        toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                        e.target.value = "";
+                        return;
+                      }
+                      setMemberFile(file);
+                    }}
                     className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20"
                   />
                 </div>

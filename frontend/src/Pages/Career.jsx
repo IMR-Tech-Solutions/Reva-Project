@@ -29,10 +29,10 @@ const Career = () => {
   const [contactSettings, setContactSettings] = useState(null);
   const [careerContent, setCareerContent] = useState(null);
 
-    const [isNotRobot, setIsNotRobot] = useState(false);
-    const recaptchaRef = useRef(null);
-    const [captchaVerified, setCaptchaVerified] = useState(false);
-    const [errors, setErrors] = useState({});
+  const [isNotRobot, setIsNotRobot] = useState(false);
+  const recaptchaRef = useRef(null);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const validateField = (name, value) => {
     let error = "";
@@ -101,7 +101,7 @@ const Career = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Prevent non-numeric input for phone
     if (name === "phone" && value !== "" && !/^\d+$/.test(value)) {
       return;
@@ -179,7 +179,7 @@ const Career = () => {
       };
 
       await api.submitApplication(applicationData);
-      
+
       // Success notification
       toast.success("Thank you for applying! We'll review your application soon.", {
         duration: 4000,
@@ -241,7 +241,7 @@ const Career = () => {
                               tracking-wider rounded-lg mb-5 sm:mb-6">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 {careerContent?.hero_subtitle || "Careers at REVA"}
               </div>
@@ -274,7 +274,7 @@ const Career = () => {
                   View Open Positions
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-                          d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                   </svg>
                 </motion.button>
                 <span className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider font-medium">
@@ -290,7 +290,7 @@ const Career = () => {
                   { label: "Locations", value: "Pune · Mumbai" },
                 ]).map((spec, i) => (
                   <div key={i}
-                       className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
                     <p className="text-gray-500 uppercase tracking-wide text-[10px] mb-1">
                       {spec.label}
                     </p>
@@ -351,7 +351,7 @@ const Career = () => {
 
       {/* ── OPEN POSITIONS ── */}
       <section id="openings-section"
-               className="py-8 md:py-12 bg-gradient-to-b from-gray-100 to-background">
+        className="py-8 md:py-12 bg-gradient-to-b from-gray-100 to-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-16">
 
           <motion.div
@@ -379,188 +379,188 @@ const Career = () => {
           {/* Job Cards */}
           <div className="max-h-[1600px] md:max-h-[1100px] lg:max-h-[580px] overflow-y-auto scroll-smooth custom-scrollbar pr-2 snap-y snap-mandatory overscroll-contain scroll-pt-2">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-4">
-            {loading ? (
-              <div className="col-span-full flex justify-center items-center py-12">
-                <div className="text-center">
-                  <div className="inline-flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-secondary animate-spin" />
+              {loading ? (
+                <div className="col-span-full flex justify-center items-center py-12">
+                  <div className="text-center">
+                    <div className="inline-flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-secondary animate-spin" />
+                    </div>
+                    <p className="text-gray-600 font-medium">Loading positions...</p>
                   </div>
-                  <p className="text-gray-600 font-medium">Loading positions...</p>
                 </div>
-              </div>
-            ) : positions.length === 0 ? (
-              <div className="col-span-full flex justify-center items-center py-12">
-                <div className="text-center bg-gray-50 p-8 rounded-xl border border-gray-200">
-                  <FiBriefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-600 font-medium">No positions available at the moment</p>
-                  <p className="text-sm text-gray-500 mt-1">Please check back later for opportunities</p>
+              ) : positions.length === 0 ? (
+                <div className="col-span-full flex justify-center items-center py-12">
+                  <div className="text-center bg-gray-50 p-8 rounded-xl border border-gray-200">
+                    <FiBriefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                    <p className="text-gray-600 font-medium">No positions available at the moment</p>
+                    <p className="text-sm text-gray-500 mt-1">Please check back later for opportunities</p>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              positions.map((job, index) => (
-                <motion.div
-                  key={job.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className={`group ${index % 3 === 0 ? 'snap-start snap-always' : ''}`}
-                >
-                <motion.div
-                  whileHover={{ y: -8 }}
-                  className="relative h-full flex flex-col rounded-2xl border border-gray-200
+              ) : (
+                positions.map((job, index) => (
+                  <motion.div
+                    key={job.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                    className={`group ${index % 3 === 0 ? 'snap-start snap-always' : ''}`}
+                  >
+                    <motion.div
+                      whileHover={{ y: -8 }}
+                      className="relative h-full flex flex-col rounded-2xl border border-gray-200
                              bg-white hover:border-secondary/70 transition-all duration-300
                              overflow-hidden shadow-sm hover:shadow-xl"
-                >
-                  {/* Top accent */}
-                  <div className="absolute top-0 left-0 right-0 h-1
+                    >
+                      {/* Top accent */}
+                      <div className="absolute top-0 left-0 right-0 h-1
                                   bg-gradient-to-r from-primary via-secondary to-primary" />
 
-                  {/* Header */}
-                  <div className="p-6 pb-5 flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-xl bg-gray-100 border border-gray-200
+                      {/* Header */}
+                      <div className="p-6 pb-5 flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 rounded-xl bg-gray-100 border border-gray-200
                                       flex items-center justify-center
                                       group-hover:border-secondary group-hover:bg-secondary/10
                                       transition-colors">
-                        <FiBriefcase className="text-lg text-secondary" />
-                      </div>
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-black text-primary leading-snug">
-                          {job.title}
-                        </h3>
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-[0.16em]">
-                          {job.department}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 bg-primary text-white text-[11px]
+                            <FiBriefcase className="text-lg text-secondary" />
+                          </div>
+                          <div className="space-y-1">
+                            <h3 className="text-lg font-black text-primary leading-snug">
+                              {job.title}
+                            </h3>
+                            <p className="text-xs font-semibold text-gray-500 uppercase tracking-[0.16em]">
+                              {job.department}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="px-3 py-1 bg-primary text-white text-[11px]
                                      font-semibold rounded-lg uppercase tracking-[0.16em]
                                      shadow-sm shrink-0">
-                      {job.type}
-                    </span>
-                  </div>
-
-                  {/* Meta */}
-                  <div className="px-6 py-3 border-y border-gray-100 bg-gray-50">
-                    <div className="flex items-center justify-between gap-4 text-xs text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-gray-200
-                                        flex items-center justify-center">
-                          <HiOutlineLocationMarker className="text-secondary text-sm" />
-                        </div>
-                        <span className="font-medium">{job.location}</span>
+                          {job.type}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-white border border-gray-200
+
+                      {/* Meta */}
+                      <div className="px-6 py-3 border-y border-gray-100 bg-gray-50">
+                        <div className="flex items-center justify-between gap-4 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-lg bg-white border border-gray-200
                                         flex items-center justify-center">
-                          <FiClock className="text-secondary text-sm" />
+                              <HiOutlineLocationMarker className="text-secondary text-sm" />
+                            </div>
+                            <span className="font-medium">{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-lg bg-white border border-gray-200
+                                        flex items-center justify-center">
+                              <FiClock className="text-secondary text-sm" />
+                            </div>
+                            <span className="font-medium">{job.experience}</span>
+                          </div>
                         </div>
-                        <span className="font-medium">{job.experience}</span>
                       </div>
-                    </div>
-                  </div>
 
-                  {/* Description */}
-                  <div className="px-6 pt-4 pb-3 flex-1">
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
-                      {job.description}
-                    </p>
-                  </div>
+                      {/* Description */}
+                      <div className="px-6 pt-4 pb-3 flex-1">
+                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
+                          {job.description}
+                        </p>
+                      </div>
 
-                  {/* Skills */}
-                  <div className="px-6 pb-4">
-                    <p className="text-[10px] font-bold text-gray-500 uppercase
+                      {/* Skills */}
+                      <div className="px-6 pb-4">
+                        <p className="text-[10px] font-bold text-gray-500 uppercase
                                    tracking-[0.2em] mb-2">
-                      Key Skills
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {job.skills.slice(0, 3).map((skill, idx) => (
-                        <span key={idx}
+                          Key Skills
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {job.skills.slice(0, 3).map((skill, idx) => (
+                            <span key={idx}
                               className="px-2.5 py-1 bg-gray-100 text-[11px] text-primary
                                          font-semibold rounded-lg border border-gray-200">
-                          {skill}
-                        </span>
-                      ))}
-                      {job.skills.length > 3 && (
-                        <span className="px-2.5 py-1 bg-secondary/10 text-[11px] text-secondary
+                              {skill}
+                            </span>
+                          ))}
+                          {job.skills.length > 3 && (
+                            <span className="px-2.5 py-1 bg-secondary/10 text-[11px] text-secondary
                                          font-semibold rounded-lg border border-secondary/40">
-                          +{job.skills.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                              +{job.skills.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
 
-                  {/* Actions */}
-                  <div className="px-6 pt-3 pb-5 border-t border-gray-100 bg-gray-50">
-                    <div className="flex gap-3">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() =>
-                          setSelectedJob(selectedJob?.id === job.id ? null : job)
-                        }
-                        className="flex-1 py-2.5 px-3 border border-gray-200 text-primary
+                      {/* Actions */}
+                      <div className="px-6 pt-3 pb-5 border-t border-gray-100 bg-gray-50">
+                        <div className="flex gap-3">
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() =>
+                              setSelectedJob(selectedJob?.id === job.id ? null : job)
+                            }
+                            className="flex-1 py-2.5 px-3 border border-gray-200 text-primary
                                    font-bold text-xs rounded-xl hover:border-secondary
                                    hover:text-secondary hover:bg-secondary/5 transition-all"
-                      >
-                        {selectedJob?.id === job.id ? "Hide Details" : "View Details"}
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => handleApplyClick(job.title)}
-                        className="flex-1 py-2.5 px-3 bg-secondary text-white font-bold
+                          >
+                            {selectedJob?.id === job.id ? "Hide Details" : "View Details"}
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleApplyClick(job.title)}
+                            className="flex-1 py-2.5 px-3 bg-secondary text-white font-bold
                                    text-xs rounded-xl hover:bg-secondary/90
                                    shadow-md shadow-secondary/30 transition-all"
-                      >
-                        Apply Now
-                      </motion.button>
-                    </div>
-                  </div>
+                          >
+                            Apply Now
+                          </motion.button>
+                        </div>
+                      </div>
 
-                  {/* ── Expanded Details — fixed, scoped per card ── */}
-                  <AnimatePresence initial={false}>
-                    {selectedJob?.id === job.id && (
-                      <motion.div
-                        key={`detail-${job.id}`}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-5 pt-4 border-t border-gray-100 bg-white">
-                          <h4 className="text-xs font-black text-primary mb-3
+                      {/* ── Expanded Details — fixed, scoped per card ── */}
+                      <AnimatePresence initial={false}>
+                        {selectedJob?.id === job.id && (
+                          <motion.div
+                            key={`detail-${job.id}`}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-6 pb-5 pt-4 border-t border-gray-100 bg-white">
+                              <h4 className="text-xs font-black text-primary mb-3
                                          uppercase tracking-[0.18em]">
-                            Key Responsibilities
-                          </h4>
-                          <ul className="space-y-2.5">
-                            {job.responsibilities.map((resp, idx) => (
-                              <motion.li
-                                key={idx}
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.06 }}
-                                className="flex items-start gap-2 text-xs text-gray-600"
-                              >
-                                <div className="mt-0.5 w-4 h-4 rounded-full
+                                Key Responsibilities
+                              </h4>
+                              <ul className="space-y-2.5">
+                                {job.responsibilities.map((resp, idx) => (
+                                  <motion.li
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.06 }}
+                                    className="flex items-start gap-2 text-xs text-gray-600"
+                                  >
+                                    <div className="mt-0.5 w-4 h-4 rounded-full
                                                 border border-secondary/70
                                                 flex items-center justify-center flex-shrink-0">
-                                  <FiCheck className="text-secondary text-[9px]" />
-                                </div>
-                                <span className="leading-relaxed">{resp}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                                      <FiCheck className="text-secondary text-[9px]" />
+                                    </div>
+                                    <span className="leading-relaxed">{resp}</span>
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
 
-                </motion.div>
-              </motion.div>
-            )))}
+                    </motion.div>
+                  </motion.div>
+                )))}
             </div>
           </div>
         </div>
@@ -605,11 +605,11 @@ const Career = () => {
                                           transition-colors duration-300
                                           ${focusedInput === "name" ? "text-secondary" : "text-gray-400"}`} />
                       <input type="text" name="name" value={formData.name}
-                             onChange={handleChange}
-                             onFocus={() => setFocusedInput("name")}
-                             onBlur={() => setFocusedInput(null)}
-                             required placeholder="Enter your full name"
-                             className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
+                        onChange={handleChange}
+                        onFocus={() => setFocusedInput("name")}
+                        onBlur={() => setFocusedInput(null)}
+                        required placeholder="Enter your full name"
+                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
                                         rounded-xl focus:border-secondary focus:outline-none
                                         focus:ring-4 focus:ring-secondary/10
                                         transition-all duration-300 bg-white" />
@@ -627,11 +627,11 @@ const Career = () => {
                                           transition-colors duration-300
                                           ${focusedInput === "email" ? "text-secondary" : "text-gray-400"}`} />
                       <input type="email" name="email" value={formData.email}
-                             onChange={handleChange}
-                             onFocus={() => setFocusedInput("email")}
-                             onBlur={() => setFocusedInput(null)}
-                             required placeholder="your.email@example.com"
-                             className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
+                        onChange={handleChange}
+                        onFocus={() => setFocusedInput("email")}
+                        onBlur={() => setFocusedInput(null)}
+                        required placeholder="your.email@example.com"
+                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
                                         rounded-xl focus:border-secondary focus:outline-none
                                         focus:ring-4 focus:ring-secondary/10
                                         transition-all duration-300 bg-white" />
@@ -649,11 +649,11 @@ const Career = () => {
                                            transition-colors duration-300
                                            ${focusedInput === "phone" ? "text-secondary" : "text-gray-400"}`} />
                       <input type="tel" name="phone" value={formData.phone}
-                             onChange={handleChange}
-                             onFocus={() => setFocusedInput("phone")}
-                             onBlur={() => setFocusedInput(null)}
-                             required placeholder="+91 98765 43210"
-                             className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
+                        onChange={handleChange}
+                        onFocus={() => setFocusedInput("phone")}
+                        onBlur={() => setFocusedInput(null)}
+                        required placeholder="+91 98765 43210"
+                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
                                         rounded-xl focus:border-secondary focus:outline-none
                                         focus:ring-4 focus:ring-secondary/10
                                         transition-all duration-300 bg-white" />
@@ -671,11 +671,11 @@ const Career = () => {
                                                transition-colors duration-300
                                                ${focusedInput === "position" ? "text-secondary" : "text-gray-400"}`} />
                       <input type="text" name="position" value={formData.position}
-                             onChange={handleChange}
-                             onFocus={() => setFocusedInput("position")}
-                             onBlur={() => setFocusedInput(null)}
-                             required placeholder="e.g., Process Engineer"
-                             className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
+                        onChange={handleChange}
+                        onFocus={() => setFocusedInput("position")}
+                        onBlur={() => setFocusedInput(null)}
+                        required placeholder="e.g., Process Engineer"
+                        className="w-full pl-12 pr-4 py-4 border-2 border-gray-200
                                         rounded-xl focus:border-secondary focus:outline-none
                                         focus:ring-4 focus:ring-secondary/10
                                         transition-all duration-300 bg-white" />
@@ -693,13 +693,12 @@ const Career = () => {
                                                 transition-colors duration-300
                                                 ${focusedInput === "experience" ? "text-secondary" : "text-gray-400"}`} />
                       <select name="experience" value={formData.experience}
-                              onChange={handleChange}
-                              onFocus={() => setFocusedInput("experience")}
-                              onBlur={() => setFocusedInput(null)}
-                              required
-                               className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-secondary/10 transition-all duration-300 appearance-none bg-white cursor-pointer ${
-                                 errors.experience ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
-                               }`}>
+                        onChange={handleChange}
+                        onFocus={() => setFocusedInput("experience")}
+                        onBlur={() => setFocusedInput(null)}
+                        required
+                        className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-secondary/10 transition-all duration-300 appearance-none bg-white cursor-pointer ${errors.experience ? "border-red-500 focus:border-red-500" : "border-gray-200 focus:border-secondary"
+                          }`}>
                         <option value="">Select experience level</option>
                         <option value="0-1">0-1 years (Fresher)</option>
                         <option value="1-3">1-3 years</option>
@@ -722,17 +721,17 @@ const Career = () => {
                       Upload Resume *
                     </label>
                     <input type="file" id="resume" name="resume"
-                           onChange={handleFileChange}
-                           accept=".pdf,.doc,.docx" className="hidden" />
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx" className="hidden" />
                     <label htmlFor="resume"
-                           className={`flex items-center justify-between w-full px-6 py-5
+                      className={`flex items-center justify-between w-full px-6 py-5
                                        border-2 border-dashed rounded-xl cursor-pointer
                                        transition-all duration-300
                                        ${fileName
-                                          ? "border-secondary bg-secondary/5"
-                                          : errors.resume 
-                                            ? "border-red-500 bg-red-50"
-                                            : "border-gray-300 hover:border-secondary hover:bg-gray-50"}`}>
+                          ? "border-secondary bg-secondary/5"
+                          : errors.resume
+                            ? "border-red-500 bg-red-50"
+                            : "border-gray-300 hover:border-secondary hover:bg-gray-50"}`}>
                       <span className="flex items-center gap-3 text-gray-700 font-semibold text-sm">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center
                                          ${fileName ? "bg-secondary text-white" : errors.resume ? "bg-red-500 text-white" : "bg-gray-100 text-gray-400"}`}>
@@ -747,16 +746,16 @@ const Career = () => {
                     )}
                   </div>
 
-                  
-              {/* I am not a Robot */}
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={`${import.meta.env.VITE_SITE_KEY}`}
-                onChange={(token) => {
-                  if (token) setCaptchaVerified(true);
-                }}
-                onExpired={() => setCaptchaVerified(false)}
-              />
+
+                  {/* I am not a Robot */}
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={`${import.meta.env.VITE_SITE_KEY}`}
+                    onChange={(token) => {
+                      if (token) setCaptchaVerified(true);
+                    }}
+                    onExpired={() => setCaptchaVerified(false)}
+                  />
 
                   {/* Submit */}
                   <motion.button
@@ -768,8 +767,8 @@ const Career = () => {
                                shadow-xl hover:shadow-secondary/30
                                transition-all duration-300 text-base
                                ${(submitting || Object.values(errors).some(err => err))
-                                 ? "opacity-70 cursor-not-allowed bg-secondary/70 shadow-none" 
-                                 : "hover:bg-secondary/90"}`}
+                        ? "opacity-70 cursor-not-allowed bg-secondary/70 shadow-none"
+                        : "hover:bg-secondary/90"}`}
                   >
                     {submitting ? (
                       <span className="flex items-center justify-center gap-2">

@@ -68,7 +68,7 @@ const ServiceSkeleton = () => (
 
 const ServiceCard = React.memo(({ service }) => {
   const IconComponent = iconMap[service.icon_name] || FlaskConical;
-  
+
   return (
     <motion.div
       variants={cardVariants}
@@ -126,10 +126,10 @@ const ServiceCard = React.memo(({ service }) => {
         {/* CTA link */}
         <Link
           to={
-            service.href 
-              ? (service.href.startsWith('/') && !service.href.startsWith('/services') 
-                  ? `/services${service.href}` 
-                  : service.href)
+            service.href
+              ? (service.href.startsWith('/') && !service.href.startsWith('/services')
+                ? `/services${service.href}`
+                : service.href)
               : `/services/${service.slug}`
           }
           className="inline-flex items-center gap-2 text-primary text-xs font-black uppercase tracking-widest transition-all duration-300 hover:gap-3 hover:text-secondary"
@@ -179,9 +179,9 @@ const ServicesSection = () => {
                 What We Do
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary mb-4">
               Our <span className="text-secondary">Services</span>
-            </h2>
+            </h1>
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl text-justify">
               Six integrated service capabilities spanning the full project
               lifecycle — from feasibility and engineering through procurement,
@@ -196,7 +196,7 @@ const ServicesSection = () => {
             animate="visible"
             className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {loading 
+            {loading
               ? Array(6).fill(0).map((_, i) => <ServiceSkeleton key={i} />)
               : services.map((service) => <ServiceCard key={service.id} service={service} />)
             }

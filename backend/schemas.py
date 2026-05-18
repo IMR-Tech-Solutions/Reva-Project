@@ -564,6 +564,7 @@ class SiteSettingsBase(BaseModel):
     twitter: Optional[str] = None
     linkedin: Optional[str] = None
     instagram: Optional[str] = None
+    whatsapp: Optional[str] = None  # E.164 digits, e.g. 919999999999
 
 class SiteSettingsCreate(SiteSettingsBase):
     pass

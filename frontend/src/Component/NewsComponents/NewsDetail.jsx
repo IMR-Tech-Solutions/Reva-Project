@@ -23,7 +23,7 @@ const NewsDetail = () => {
         // Fetch related articles
         const allData = await getAllNews(0, 10);
         setRelatedArticles(allData.filter(a => a.slug !== slug).slice(0, 3));
-        
+
         setError(null);
       } catch (err) {
         console.error('Error fetching article:', err);
@@ -105,7 +105,7 @@ const NewsDetail = () => {
                   {article.short_description}
                 </p>
 
-                <div 
+                <div
                   className="prose prose-sm sm:prose-base max-w-none text-gray-600 text-justify"
                   dangerouslySetInnerHTML={{ __html: article.detailed_description }}
                 />
@@ -156,7 +156,7 @@ const NewsDetail = () => {
                   Article Info
                 </h4>
                 <div className="space-y-3">
-                   {[
+                  {[
                     { label: "Category", value: article.category || "General" },
                     { label: "Published", value: article.published_date },
                   ].map((item) => (
@@ -173,27 +173,27 @@ const NewsDetail = () => {
                 <h4 className="text-sm font-black text-primary uppercase tracking-wider mb-4">
                   More Articles
                 </h4>
-                 <div className="space-y-4">
+                <div className="space-y-4">
                   {relatedArticles.map((related) => (
-                      <Link
-                        key={related.id}
-                        to={`/news/${related.slug}`}
-                        className="group flex items-start gap-3"
-                      >
-                        <img
-                          src={related.image}
-                          alt={related.title}
-                          className="w-14 h-14 rounded-xl object-cover shrink-0"
-                        />
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold text-primary leading-snug line-clamp-2
+                    <Link
+                      key={related.id}
+                      to={`/news/${related.slug}`}
+                      className="group flex items-start gap-3"
+                    >
+                      <img
+                        src={related.image}
+                        alt={related.title}
+                        className="w-14 h-14 rounded-xl object-cover shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-primary leading-snug line-clamp-2
                                          group-hover:text-secondary transition-colors duration-300">
-                            {related.title}
-                          </p>
-                          <p className="text-[11px] text-gray-400 mt-1">{related.published_date}</p>
-                        </div>
-                      </Link>
-                    ))}
+                          {related.title}
+                        </p>
+                        <p className="text-[11px] text-gray-400 mt-1">{related.published_date}</p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
 

@@ -25,7 +25,7 @@ export const getAllTechnologies = async (skip = 0, limit = 100) => {
 };
 
 export const getTechnologiesList = async () => {
-  if (technologiesListCache) return technologiesListCache;
+  // if (technologiesListCache) return technologiesListCache;
 
   const response = await fetch(`${API_BASE_URL}/technologies/list`, {
     headers: { ...authService.getAuthHeader() }
@@ -33,7 +33,7 @@ export const getTechnologiesList = async () => {
   if (!response.ok) throw new Error("Failed to fetch technologies list");
   const data = await response.json();
 
-  technologiesListCache = data;
+  // technologiesListCache = data;
   return data;
 };
 

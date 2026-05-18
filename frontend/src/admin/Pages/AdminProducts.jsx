@@ -62,6 +62,14 @@ const AdminProducts = () => {
     if (type === "file") {
       if (files && files[0]) {
         const file = files[0];
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+          toast.error("Only JPG, PNG, and WEBP images are allowed.");
+          e.target.value = "";
+          return;
+        }
         const reader = new FileReader();
         reader.onload = (event) => {
           setFormData({ ...formData, [name]: event.target.result });
@@ -131,6 +139,14 @@ const AdminProducts = () => {
     const files = e.target.files;
     if (files && files[0]) {
       const file = files[0];
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+      const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+        toast.error("Only JPG, PNG, and WEBP images are allowed.");
+        e.target.value = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (event) => {
         handleReactorTypeChange(index, "image", event.target.result);
@@ -334,7 +350,7 @@ const AdminProducts = () => {
                     <input
                       type="file"
                       name="img"
-                      accept="image/*"
+                      accept=".jpg,.jpeg,.png,.webp"
                       onChange={handleFormChange}
                       disabled={submitting}
                       className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20"
@@ -533,7 +549,7 @@ const AdminProducts = () => {
                                 <label className="block text-xs font-semibold text-gray-700 mb-1">Image</label>
                                 <input 
                                   type="file"
-                                  accept="image/*"
+                                  accept=".jpg,.jpeg,.png,.webp"
                                   onChange={(e) => handleReactorImageChange(idx, e)}
                                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:border-secondary bg-white"
                                 />

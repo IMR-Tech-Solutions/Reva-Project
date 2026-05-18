@@ -176,8 +176,20 @@ const AdminStrategicAdvice = () => {
                 )}
                 <input 
                   type="file" 
-                  accept="image/*" 
-                  onChange={(e) => setStrategicContent({ ...strategicContent, strategic_file: e.target.files[0] })} 
+                  accept=".jpg,.jpeg,.png,.webp" 
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+                      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+                      e.target.value = "";
+                      return;
+                    }
+                    setStrategicContent({ ...strategicContent, strategic_file: file });
+                  }} 
                   className="absolute inset-0 opacity-0 cursor-pointer z-10" 
                 />
               </div>

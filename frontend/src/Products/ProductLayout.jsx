@@ -46,7 +46,7 @@ const ProductLayout = ({
                                  text-xs font-bold uppercase tracking-widest rounded-full">
                   {herosub}
                 </span>
-                
+
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white
@@ -57,7 +57,7 @@ const ProductLayout = ({
               <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-3 text-justify">{paragraph1}</p>
               <p className="text-white/60 text-sm sm:text-base leading-relaxed mb-8 text-justify">{paragraph2}</p>
 
-             
+
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
@@ -93,8 +93,8 @@ const ProductLayout = ({
                               h-[280px] sm:h-[360px] lg:h-[440px]
                               border border-white/10 shadow-2xl mb-8">
                 <img src={img} alt={herotitle}
-                   className="w-full h-full object-cover"
-                   loading="lazy" />
+                  className="w-full h-full object-cover"
+                  loading="lazy" />
                 <div className="absolute inset-0 bg-primary/20" />
               </div>
 
@@ -113,7 +113,7 @@ const ProductLayout = ({
                   ))}
                 </div>
               )}
-              
+
             </motion.div>
           </div>
         </div>
@@ -196,7 +196,7 @@ const ProductLayout = ({
                 </p>
 
                 {/* Arrow */}
-                
+
               </motion.div>
             ))}
           </div>
@@ -263,7 +263,7 @@ const ProductLayout = ({
       {reactor_types && reactor_types.length > 0 && (
         <section className="py-10 sm:py-12 bg-gray-50/50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-12">
-            
+
             {/* Header section matched to theme */}
             <div className="mb-14">
               <span className="inline-flex items-center gap-2 px-4 py-1.5
@@ -296,7 +296,7 @@ const ProductLayout = ({
                     <div className="relative pt-4 px-4">
                       {/* Theme offset shadow */}
                       <div className={`absolute top-0 right-0 w-[calc(100%-16px)] h-[calc(100%-16px)] rounded-3xl translate-x-3 -translate-y-3 ${shadowColor} z-0 transition-transform duration-500 group-hover:translate-x-4 group-hover:-translate-y-4`} />
-                      
+
                       {/* Main bordered box */}
                       <div className="relative z-10 bg-white border border-gray-100 shadow-sm rounded-2xl aspect-square overflow-hidden flex items-center justify-center group-hover:shadow-xl group-hover:border-primary/10 transition-all duration-500">
                         {rtype.is_important && (
@@ -305,9 +305,9 @@ const ProductLayout = ({
                           </div>
                         )}
                         {rtype.image ? (
-                          <img 
-                            src={rtype.image} 
-                            alt={rtype.title} 
+                          <img
+                            src={rtype.image}
+                            alt={rtype.title}
                             className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                           />
@@ -318,13 +318,13 @@ const ProductLayout = ({
                         )}
                       </div>
                     </div>
-                    
+
                     {/* Content Container */}
                     <div className="mt-8 px-2">
                       <h3 className="text-xl font-bold text-primary mb-3 leading-tight group-hover:text-secondary transition-colors duration-300">
                         {rtype.title}
                       </h3>
-                      
+
                       <p className="text-sm text-gray-500 leading-relaxed text-justify">
                         {rtype.description}
                       </p>

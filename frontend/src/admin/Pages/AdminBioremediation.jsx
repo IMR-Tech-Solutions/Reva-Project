@@ -71,6 +71,14 @@ const AdminBioremediation = () => {
   const handleFileChange = (fileKey, imageField, e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+      e.target.value = "";
+      return;
+    }
     setFiles(prev => ({ ...prev, [fileKey]: file }));
     const reader = new FileReader();
     reader.onloadend = () => setPreviews(prev => ({ ...prev, [imageField]: reader.result }));
@@ -125,6 +133,14 @@ const AdminBioremediation = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+      e.target.value = "";
+      return;
+    }
     try {
       const result = await bioremediationApi.uploadImage(file);
       setItemForm(prev => ({ ...prev, image: result.url }));
@@ -255,7 +271,7 @@ const AdminBioremediation = () => {
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 tracking-widest">{FIELD_LABELS[imgField] || imgField}</label>
                   <div className="flex items-start gap-4">
                     <div className="flex-1">
-                      <input type="file" accept="image/*" onChange={(e) => handleFileChange(section.fileKey, imgField, e)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/5 file:text-primary file:font-bold hover:file:bg-primary/10 file:cursor-pointer" />
+                      <input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={(e) => handleFileChange(section.fileKey, imgField, e)} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-primary/5 file:text-primary file:font-bold hover:file:bg-primary/10 file:cursor-pointer" />
                       {content[imgField] && <p className="text-xs text-gray-400 mt-1 truncate">Current: {content[imgField]}</p>}
                     </div>
                     {(previews[imgField] || content[imgField]) && (
@@ -329,7 +345,7 @@ const AdminBioremediation = () => {
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1.5 tracking-widest">Image</label>
                   <div className="flex items-center gap-3">
-                    <input type="file" accept="image/*" onChange={handleImageUpload} className="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary/5 file:text-primary file:font-bold hover:file:bg-primary/10 file:cursor-pointer" />
+                    <input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={handleImageUpload} className="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary/5 file:text-primary file:font-bold hover:file:bg-primary/10 file:cursor-pointer" />
                     {itemForm.image && <img src={getImageUrl(itemForm.image)} alt="" className="w-14 h-14 rounded-lg object-cover border border-gray-200" onError={e => e.currentTarget.style.display='none'} />}
                   </div>
                   {itemForm.image && <p className="text-xs text-gray-400 mt-1 truncate">{itemForm.image}</p>}

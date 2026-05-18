@@ -6,9 +6,9 @@ import ContactMapSection from '../Component/ContactComponents/ContactMapSection'
 const Contact = () => {
   return (
     <>
-        <Breadcrumb />
-        <GetInTouchSection />
-        <ContactMapSection />
+      <Breadcrumb />
+      <GetInTouchSection />
+      <ContactMapSection />
     </>
   )
 }

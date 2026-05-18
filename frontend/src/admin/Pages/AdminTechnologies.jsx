@@ -51,6 +51,15 @@ const TechnologyForm = ({ formData, setFormData, submitting }) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, and WEBP images are allowed.");
+      e.target.value = "";
+      return;
+    }
+
     try {
       setUploading(true);
       const res = await uploadTechnologyImage(file);
@@ -120,7 +129,7 @@ const TechnologyForm = ({ formData, setFormData, submitting }) => {
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <div className="flex-1 w-full relative">
                 <input 
-                    type="file" accept="image/*"
+                    type="file" accept=".jpg,.jpeg,.png,.webp"
                     onChange={handleImageUpload}
                     disabled={submitting || uploading}
                     className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-secondary file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 cursor-pointer"

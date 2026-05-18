@@ -71,6 +71,14 @@ const AdminNews = () => {
     if (type === "file") {
       if (files && files[0]) {
         const file = files[0];
+        const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(file.type)) {
+          toast.error("Only JPG, PNG, and WEBP images are allowed.");
+          e.target.value = "";
+          return;
+        }
         const reader = new FileReader();
         reader.onload = (event) => {
           setFormData({ ...formData, [name]: event.target.result });
@@ -323,7 +331,7 @@ const AdminNews = () => {
                     <input
                       type="file"
                       name="image"
-                      accept="image/*"
+                      accept=".jpg,.jpeg,.png,.webp"
                       onChange={handleFormChange}
                       disabled={submitting}
                       className="col-span-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 w-full disabled:bg-gray-100"

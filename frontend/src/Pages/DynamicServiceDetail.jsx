@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { 
-  ArrowRight, 
-  FlaskConical, 
-  GitBranch, 
-  Layers, 
-  SlidersHorizontal, 
-  FileText, 
-  ShieldCheck, 
-  Search, 
-  BarChart3, 
-  Rocket, 
-  Shield, 
-  FileCheck, 
-  Clipboard, 
-  Microscope, 
+import {
+  ArrowRight,
+  FlaskConical,
+  GitBranch,
+  Layers,
+  SlidersHorizontal,
+  FileText,
+  ShieldCheck,
+  Search,
+  BarChart3,
+  Rocket,
+  Shield,
+  FileCheck,
+  Clipboard,
+  Microscope,
   CheckCircle,
   GitMerge,
   Clock,
@@ -33,9 +33,9 @@ import api from "../api/api";
 
 // ─── ICON MAPPING ───────────────────────────────────────────────────────────
 const iconMap = {
-  FlaskConical, GitBranch, Layers, SlidersHorizontal, FileText, 
-  ShieldCheck, Search, BarChart3, Rocket, Shield, FileCheck, 
-  Clipboard, Microscope, CheckCircle, GitMerge, Clock, 
+  FlaskConical, GitBranch, Layers, SlidersHorizontal, FileText,
+  ShieldCheck, Search, BarChart3, Rocket, Shield, FileCheck,
+  Clipboard, Microscope, CheckCircle, GitMerge, Clock,
   Headphones, Compass, Layout, Settings, Building, Zap, Box
 };
 
@@ -391,10 +391,10 @@ const DynamicServiceDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <motion.div 
-          animate={{ rotate: 360 }} 
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }} 
-          className="w-12 h-12 border-4 border-secondary border-t-transparent rounded-full" 
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-secondary border-t-transparent rounded-full"
         />
       </div>
     );
@@ -419,7 +419,7 @@ const DynamicServiceDetail = () => {
   return (
     <div className="bg-white scroll-smooth overflow-x-hidden">
       <Breadcrumb />
-      
+
       {/* Hero Section */}
       <ProcessHero service={service} />
 
@@ -427,7 +427,7 @@ const DynamicServiceDetail = () => {
       {sections.length > 0 ? (
         sections.map((section) => {
           const key = (section.section_key || "").toLowerCase();
-          
+
           // Route to appropriate renderer based on key or content
           if (["coverage", "scope", "disciplines", "features", "grid"].includes(key)) {
             return <GridSection key={section.id} section={section} />;
@@ -441,7 +441,7 @@ const DynamicServiceDetail = () => {
           if (["cta", "contact_banner", "action"].includes(key)) {
             return <CTASection key={section.id} section={section} />;
           }
-          
+
           // Fallback logic
           if (section.items && section.items.length > 0) {
             return <GridSection key={section.id} section={section} />;
@@ -449,7 +449,7 @@ const DynamicServiceDetail = () => {
           if (section.description || section.title) {
             return <ContentSection key={section.id} section={section} />;
           }
-          
+
           return null;
         })
       ) : (
