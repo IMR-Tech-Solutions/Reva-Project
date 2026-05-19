@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/services/BasicEngineering",
+      "destination": "/services/basic-engineering",
+      "statusCode": 308
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",

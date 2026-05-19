@@ -14,7 +14,7 @@ import Site from "./Pages/Site";
 
 import Privacy from "./Pages/Privacy";
 import Terms from "./Pages/Terms";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Feasibility from "./Pages/Feasibility";
 import TechnologyDetail from "./Technologies/TechnologyDetail";
 import ProductDetail from "./Products/ProductDetail";
@@ -62,7 +62,8 @@ const App = () => {
             <Route path="/news/:slug" element={<NewsDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/services" element={<ServicesSection />} />
-            <Route path="/services/BasicEngineering" element={<BasicEngineering />} />
+            <Route path="/services/basic-engineering" element={<BasicEngineering />} />
+            <Route path="/services/BasicEngineering" element={<Navigate to="/services/basic-engineering" replace />} />
             <Route path="/services/feasibility" element={<Feasibility />} />
             <Route path="/services/basic" element={<Basic />} />
             <Route path="/services/detailed" element={<Detailed />} />

@@ -9,6 +9,7 @@ import WhyChooseUs from "../Component/AboutComponents/WhyChooseUs";
 // import TestimonialsSection from "../Component/HomeComponents/TestimonialsSection";
 import aboutApi from "../services/aboutApi";
 import GlobalPresenceSection from "../Component/HomeComponents/GlobalPresenceSection";
+import SEO from "../Component/SEO";
 
 const About = () => {
     const [data, setData] = useState(null);
@@ -39,6 +40,11 @@ const About = () => {
 
     return (
         <div className="bg-white overflow-hidden">
+            <SEO 
+                title="About Us - Industry-Leading Engineering & Turnkey Systems"
+                description="Learn about REVA Process Technologies - our vision, mission, engineering milestones, and dedicated team of specialists delivering premium EPCC and process solutions."
+                keywords="about REVA, chemical engineering company, turnkey process plants, process skid design, REVA leadership"
+            />
             <Breadcrumb />
             <HeroAbout content={content} />
             <WhatSetsUsApart />

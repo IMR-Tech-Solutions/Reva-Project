@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Breadcrumb from '../Component/Breadcrumb';
 import api from '../api/api';
 import { Link } from 'react-router-dom';
+import SEO from '../Component/SEO';
 
 const Terms = () => {
   const [content, setContent] = useState(null);
@@ -32,6 +33,11 @@ const Terms = () => {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Terms & Conditions"
+        description="Review the Terms & Conditions of REVA Process Technologies. General and specific terms governing the use of our services, website, and commercial project contracts."
+        keywords="terms and conditions, legal agreement, REVA terms, contract terms"
+      />
       <Breadcrumb />
       
       {/* Hero Section */}

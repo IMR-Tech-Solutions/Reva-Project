@@ -30,6 +30,7 @@ import {
 import Breadcrumb from "../Component/Breadcrumb";
 import ProcessHero from "../Component/ProcessServiceComponents/ProcessHero";
 import api from "../api/api";
+import SEO from "../Component/SEO";
 
 // ─── ICON MAPPING ───────────────────────────────────────────────────────────
 const iconMap = {
@@ -416,8 +417,26 @@ const DynamicServiceDetail = () => {
   const sections = service.sections || [];
   const getSection = (key) => sections.find((s) => s.section_key === key);
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": service.title,
+    "description": service.description || service.tagline || "",
+    "provider": {
+      "@type": "Organization",
+      "name": "REVA Process Technologies",
+      "url": "https://revaprocess.in"
+    }
+  };
+
   return (
     <div className="bg-white scroll-smooth overflow-x-hidden">
+      <SEO 
+        title={service.title}
+        description={service.description || service.tagline || `Learn about REVA's professional ${service.title} services.`}
+        keywords={`${service.title}, process engineering service, industrial manufacturing`}
+        schema={serviceSchema}
+      />
       <Breadcrumb />
 
       {/* Hero Section */}

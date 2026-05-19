@@ -1,9 +1,6 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://revaprocess.com/sitemap.xml
+Sitemap: https://revaprocess.in/sitemap.xml
 
-# Disallow admin pages to keep them out of search results
 Disallow: /admin/
-Disallow: /admin/*

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Breadcrumb from '../Component/Breadcrumb';
 import api from '../api/api';
+import SEO from '../Component/SEO';
 
 const Privacy = () => {
   const [content, setContent] = useState(null);
@@ -31,6 +32,11 @@ const Privacy = () => {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Privacy Policy"
+        description="Review the Privacy Policy of REVA Process Technologies. Understand how we collect, store, protect, and handle user and business information."
+        keywords="privacy policy, data protection, data privacy REVA, corporate compliance"
+      />
       <Breadcrumb />
       
       {/* Hero Section */}

@@ -16,7 +16,7 @@ const Breadcrumb = ({ title: customTitle }) => {
     // Services (from Header dropdown)
     '/services': 'Our Services',
     '/services/feasibility': 'Feasibility & Pilot Plant Study',
-    '/services/BasicEngineering': 'Basic Engineering',
+    '/services/basic-engineering': 'Basic Engineering',
     '/services/detailed': 'Detailed Engineering',
     '/services/procurement': 'Procurement',
     '/services/basic': 'EPC Project Management',
@@ -96,7 +96,7 @@ const Breadcrumb = ({ title: customTitle }) => {
     : 'Home');
 
   const serviceDetailPaths = [
-    '/services/feasibility', '/services/BasicEngineering', '/services/detailed', '/services/procurement', '/services/basic', '/services/site', '/services/project'
+    '/services/feasibility', '/services/basic-engineering', '/services/detailed', '/services/procurement', '/services/basic', '/services/site', '/services/project'
   ];
 
   const isTechnologyPage = location.pathname.toLowerCase().startsWith('/technology/');
@@ -111,7 +111,7 @@ const Breadcrumb = ({ title: customTitle }) => {
       {/* Background Image Optimized */}
       <div className="absolute inset-0 bg-primary/20" /> {/* Base color while loading */}
       <img
-        src="/bgbg2.jpg"
+        src="/bgbg2.webp"
         alt=""
         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
         style={{ opacity: 0 }}

@@ -14,6 +14,7 @@ import api, { API_BASE_URL } from "../api/api";
 import { getContactSettings } from "../services/contactApi";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef } from "react";
+import SEO from "../Component/SEO";
 
 const Career = () => {
   const [positions, setPositions] = useState([]);
@@ -217,6 +218,11 @@ const Career = () => {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Careers - Join Our Process Engineering & EPCCM Teams"
+        description="Explore engineering careers, project management positions, and internships at REVA Process Technologies. Work on major international chemical and industrial projects."
+        keywords="process engineering careers, chemical plant designer jobs, EPCC jobs Pune, mechanical designer vacancy, careers at REVA"
+      />
 
       {/* Breadcrumb */}
       <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b border-gray-200">

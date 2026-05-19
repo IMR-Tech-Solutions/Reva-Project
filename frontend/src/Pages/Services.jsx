@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../Component/Breadcrumb";
 import api from "../api/api";
+import SEO from "../Component/SEO";
 import {
   FlaskConical,
   Layers,
@@ -161,6 +162,11 @@ const ServicesSection = () => {
 
   return (
     <>
+      <SEO 
+        title="Our Engineering & Process Services"
+        description="REVA Process Technologies delivers six core engineering and manufacturing services: Feasibility Studies, Basic Engineering, Detailed Engineering, Procurement, EPC Management, and Manufacturing & Site Services."
+        keywords="feasibility study, basic engineering, process detailed engineering, procurement services, EPC management, skid manufacturing, Pune"
+      />
       <Breadcrumb />
       <section className="bg-gray-50 py-12 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-16">

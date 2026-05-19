@@ -49,7 +49,7 @@ export const searchData = [
   {
     title: "Basic Engineering",
     description: "Simulation-backed basic engineering covering design basis, PFDs, heat & mass balances, equipment sizing, P&IDs, and HAZID — complete Basic Engineering Package (BEP) ready for detailed engineering.",
-    url: "/services/BasicEngineering",
+    url: "/services/basic-engineering",
     keywords: [
       "basic engineering", "PFD", "P&ID", "heat mass balance", "equipment sizing",
       "design basis", "BEP", "HAZID", "process simulation", "HYSYS", "aspen plus"
@@ -107,7 +107,7 @@ export const searchData = [
   {
     title: "Amine System",
     description: "Amine gas treating systems for H2S and CO2 removal from natural gas and refinery off-gases — MEA, DEA, MDEA-based configurations.",
-    url: "/amine",
+    url: "/technology/amine",
     keywords: [
       "amine system", "gas treating", "H2S removal", "CO2 removal",
       "sweetening", "scrubbing", "MEA", "DEA", "MDEA", "acid gas"
@@ -116,7 +116,7 @@ export const searchData = [
   {
     title: "Bio-gas Upgradation System",
     description: "Advanced biogas upgrading technology for biomethane production and purification — pressure swing adsorption, water scrubbing, and membrane-based systems.",
-    url: "/biogas",
+    url: "/technology/biogas",
     keywords: [
       "biogas", "biomethane", "upgrading", "purification", "CBG",
       "renewable energy", "PSA", "membrane", "water scrubbing"
@@ -125,7 +125,7 @@ export const searchData = [
   {
     title: "Crude Distillation Unit",
     description: "Atmospheric and vacuum distillation units (ADU/VDU) for crude oil refining and fractionation.",
-    url: "/crude-distillation",
+    url: "/technology/crude-distillation",
     keywords: [
       "crude distillation", "ADU", "VDU", "atmospheric distillation",
       "vacuum distillation", "refining", "fractionation", "petroleum", "crude oil"
@@ -134,7 +134,7 @@ export const searchData = [
   {
     title: "Environmental Assessment Studies",
     description: "Comprehensive environmental impact assessments (EIA) and regulatory compliance studies for process plant projects.",
-    url: "/environmental",
+    url: "/technology/environmental",
     keywords: [
       "environmental assessment", "EIA", "environmental impact",
       "compliance", "regulatory", "pollution control", "sustainability"
@@ -143,7 +143,7 @@ export const searchData = [
   {
     title: "Engineering Assistance for Project Permits",
     description: "Technical support for obtaining statutory approvals, regulatory clearances, and project permits for process plant installations.",
-    url: "/permits",
+    url: "/technology/permits",
     keywords: [
       "permits", "statutory approvals", "regulatory clearances",
       "compliance", "factory act", "PCB", "PESO", "IBR", "fire NOC"
@@ -152,7 +152,7 @@ export const searchData = [
   {
     title: "Flue Gas Scrubbers",
     description: "Flue gas and caustic scrubbers for emission control, VOC removal, HCl/SO2 absorption, and air pollution reduction.",
-    url: "/flue-gas",
+    url: "/technology/flue-gas",
     keywords: [
       "flue gas scrubber", "caustic scrubber", "emission control",
       "VOC removal", "HCl removal", "SO2 removal", "air pollution", "packed scrubber"
@@ -161,7 +161,7 @@ export const searchData = [
   {
     title: "Fly Ash Disposal",
     description: "Safe and compliant fly ash management, handling, and disposal solutions for thermal power and industrial plants.",
-    url: "/fly-ash",
+    url: "/technology/fly-ash",
     keywords: [
       "fly ash", "ash disposal", "ash handling", "waste management",
       "bottom ash", "thermal power", "environmental compliance"
@@ -170,7 +170,7 @@ export const searchData = [
   {
     title: "Hazardous Chemical Treatment",
     description: "Safe treatment, neutralization, and disposal of hazardous chemicals and industrial waste streams.",
-    url: "/hazardous",
+    url: "/technology/hazardous",
     keywords: [
       "hazardous chemical", "chemical treatment", "neutralization",
       "industrial waste", "effluent", "safety", "hazardous waste"
@@ -179,7 +179,7 @@ export const searchData = [
   {
     title: "Hydrotreatment",
     description: "Catalytic hydrotreatment processes for fuel quality improvement, sulfur removal, and olefin saturation in petroleum fractions.",
-    url: "/hydrotreatment",
+    url: "/technology/hydrotreatment",
     keywords: [
       "hydrotreatment", "hydrotreating", "desulfurization", "HDS",
       "catalyst", "fuel quality", "petroleum", "diesel", "naphtha"
@@ -188,7 +188,7 @@ export const searchData = [
   {
     title: "ISET Technologies",
     description: "Innovative Sulfur Extraction Technology for hydrogen sulfide removal and sulfur recovery from process streams.",
-    url: "/iset",
+    url: "/technology/iset",
     keywords: [
       "ISET", "sulfur extraction", "H2S removal", "sulfur recovery",
       "hydrogen sulfide", "innovative", "gas treating"
@@ -197,7 +197,7 @@ export const searchData = [
   {
     title: "Multi Effect Evaporation System",
     description: "Energy-efficient multi-effect evaporation (MEE) systems for concentration, water recovery, and zero liquid discharge (ZLD) applications.",
-    url: "/evaporate",
+    url: "/technology/evaporate",
     keywords: [
       "multi effect evaporation", "MEE", "evaporator", "ZLD",
       "zero liquid discharge", "water recovery", "concentration", "REVAP"
@@ -206,7 +206,7 @@ export const searchData = [
   {
     title: "Resin Manufacturing Plant",
     description: "Complete plant design and engineering for phenol-formaldehyde, urea-formaldehyde, and specialty resin manufacturing.",
-    url: "/resin",
+    url: "/technology/resin",
     keywords: [
       "resin manufacturing", "phenol formaldehyde", "urea formaldehyde",
       "polymer", "resin plant", "production", "specialty resin"
@@ -215,7 +215,7 @@ export const searchData = [
   {
     title: "Solvent Extraction",
     description: "Advanced solvent extraction systems for liquid-liquid separation, metal recovery, and purification processes.",
-    url: "/solvent",
+    url: "/technology/solvent",
     keywords: [
       "solvent extraction", "liquid liquid extraction", "separation",
       "purification", "metal recovery", "SX", "mixer settler"
@@ -224,7 +224,7 @@ export const searchData = [
   {
     title: "Tank Farm Engineering",
     description: "Complete tank farm design, engineering, and installation services — storage terminals, dyke design, piping, and fire protection.",
-    url: "/tank-farm",
+    url: "/technology/tank-farm",
     keywords: [
       "tank farm", "storage terminal", "bulk storage", "API 650",
       "dyke", "bund", "fire protection", "tank engineering"
@@ -233,7 +233,7 @@ export const searchData = [
   {
     title: "Used Oil Re-refining",
     description: "Used lube oil re-refining and pyrolysis oil refining technology for sustainable oil recycling and base oil recovery.",
-    url: "/oil-refining",
+    url: "/technology/oil-refining",
     keywords: [
       "used oil", "re-refining", "lube oil", "pyrolysis oil",
       "oil recycling", "base oil", "waste oil", "distillation"
@@ -242,7 +242,7 @@ export const searchData = [
   {
     title: "Waste Water & Sewage Treatment",
     description: "Industrial effluent treatment plants (ETP), sewage treatment plants (STP), and zero liquid discharge (ZLD) system design and installation.",
-    url: "/wastewater",
+    url: "/technology/wastewater",
     keywords: [
       "wastewater treatment", "ETP", "STP", "sewage treatment",
       "effluent", "ZLD", "zero liquid discharge", "water treatment", "industrial"
@@ -254,7 +254,7 @@ export const searchData = [
   {
     title: "Boilers",
     description: "High-efficiency industrial boilers for steam generation and process heating — fire tube, water tube, and waste heat recovery configurations.",
-    url: "/boilers",
+    url: "/product/boilers",
     keywords: [
       "boiler", "steam boiler", "industrial boiler", "fire tube",
       "water tube", "waste heat recovery", "IBR", "steam generation"
@@ -263,7 +263,7 @@ export const searchData = [
   {
     title: "Basket Filters",
     description: "Industrial basket filters and duplex strainers for efficient solid-liquid separation in process pipelines.",
-    url: "/basket-filters",
+    url: "/product/basket-filters",
     keywords: [
       "basket filter", "strainer", "duplex strainer", "Y strainer",
       "filtration", "solid liquid separation", "pipeline filter"
@@ -272,7 +272,7 @@ export const searchData = [
   {
     title: "Distillation Column",
     description: "Custom-designed distillation columns — tray columns, packed columns, and vacuum columns — for precise separation and fractionation.",
-    url: "/distillation-column",
+    url: "/product/distillation-column",
     keywords: [
       "distillation column", "tray column", "packed column", "vacuum column",
       "separation", "fractionation", "tower", "rectification"
@@ -281,7 +281,7 @@ export const searchData = [
   {
     title: "Column Internals",
     description: "High-performance column internals — sieve trays, valve trays, structured packing, random packing, and liquid distributors.",
-    url: "/column-internals",
+    url: "/product/column-internals",
     keywords: [
       "column internals", "sieve tray", "valve tray", "structured packing",
       "random packing", "liquid distributor", "demister", "mist eliminator"
@@ -290,7 +290,7 @@ export const searchData = [
   {
     title: "Hoppers, Bins & Silos",
     description: "Reliable bulk material storage solutions — hoppers, bins, silos, and bulk handling equipment for solids and powders.",
-    url: "/hopper-bins-silos",
+    url: "/product/hopper-bins-silos",
     keywords: [
       "hopper", "bins", "silos", "bulk material storage",
       "powder storage", "solids handling", "silo design"
@@ -299,7 +299,7 @@ export const searchData = [
   {
     title: "Heat Exchangers",
     description: "TEMA-compliant shell and tube heat exchangers, air coolers, and spiral heat exchangers for process heating and cooling duties.",
-    url: "/heat-exchangers",
+    url: "/product/heat-exchangers",
     keywords: [
       "heat exchanger", "shell and tube", "TEMA", "air cooler",
       "spiral heat exchanger", "heat transfer", "cooler", "condenser", "reboiler"
@@ -308,7 +308,7 @@ export const searchData = [
   {
     title: "Pressure Vessels",
     description: "ASME Section VIII-certified pressure vessels — separators, accumulators, flash drums, and process vessels for critical applications.",
-    url: "/pressure-vessels",
+    url: "/product/pressure-vessels",
     keywords: [
       "pressure vessel", "ASME", "separator", "accumulator",
       "flash drum", "knock out drum", "process vessel", "IBR"
@@ -317,7 +317,7 @@ export const searchData = [
   {
     title: "Prefabricated Piping & Piping Spools",
     description: "Shop-fabricated piping spools and modular piping systems for efficient site installation and reduced construction time.",
-    url: "/prefab-piping",
+    url: "/product/prefab-piping",
     keywords: [
       "prefabricated piping", "piping spools", "pipe fabrication",
       "modular piping", "CS piping", "SS piping", "alloy piping"
@@ -326,7 +326,7 @@ export const searchData = [
   {
     title: "Process Module Skids",
     description: "Integrated packaged process systems and skid-mounted equipment — factory-tested and ready for plug-and-play site installation.",
-    url: "/process-skids",
+    url: "/product/process-skids",
     keywords: [
       "process skid", "packaged system", "modular", "skid mounted",
       "plug and play", "skid package", "factory tested"
@@ -335,7 +335,7 @@ export const searchData = [
   {
     title: "Reactors",
     description: "Industrial process reactors — fixed bed, stirred tank, tubular, and catalytic reactors for chemical and petrochemical applications.",
-    url: "/reactors",
+    url: "/product/reactors",
     keywords: [
       "reactor", "chemical reactor", "fixed bed reactor", "CSTR",
       "catalytic reactor", "tubular reactor", "process reactor"
@@ -344,7 +344,7 @@ export const searchData = [
   {
     title: "Scrubbers",
     description: "Packed bed and spray scrubbers for gas-liquid contacting, emission control, and industrial pollution reduction.",
-    url: "/scrubbers",
+    url: "/product/scrubbers",
     keywords: [
       "scrubber", "packed bed scrubber", "spray scrubber",
       "gas scrubber", "emission control", "pollution control", "wet scrubber"
@@ -353,7 +353,7 @@ export const searchData = [
   {
     title: "Structural Construction",
     description: "Industrial structural steel fabrication, erection, and installation — platforms, pipe racks, equipment structures, and buildings.",
-    url: "/structural-construction",
+    url: "/product/structural-construction",
     keywords: [
       "structural steel", "fabrication", "erection", "pipe rack",
       "platform", "equipment structure", "industrial building", "construction"
@@ -362,7 +362,7 @@ export const searchData = [
   {
     title: "Storage Tanks",
     description: "API 650 and IS 803-compliant storage tanks for petroleum products, chemicals, water, and bulk liquid storage.",
-    url: "/storage-tanks",
+    url: "/product/storage-tanks",
     keywords: [
       "storage tank", "API 650", "IS 803", "fixed roof tank",
       "floating roof tank", "chemical tank", "water tank", "bulk liquid"

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import api from '../../api/api';
 
 const defaultImages = [
-  './industry1.jpg',
-  './industry2.jpg',
+  './hero1.png',
+  './bgbg2.jpg',
   './industry3.jpg',
-  './industry4.jpg',
-  '/hero1.png',
-  '/hero3.png'
+  './maintenance.png',
+  '/epc.png',
+  '/manufacturing.png'
 ];
 
 const defaultTags = [
@@ -37,7 +37,7 @@ const fallbackIndustries = [
     description:
       'Design basis, PFDs, heat & mass balances, equipment sizing, P&IDs, and HAZID — complete BEP ready for detailed engineering.',
     image: './industry2.jpg',
-    link: '/services/BasicEngineering',
+    link: '/services/basic-engineering',
     tag: 'Engineering Foundation',
   },
   {

@@ -118,15 +118,15 @@ const HeroHomeSection = () => {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source 
-              src={getMediaSource(currentSlide.media_url) || "./vid11.mp4"} 
-              type="video/mp4" 
+            <source
+              src={getMediaSource(currentSlide.media_url) || "./vid11.mp4"}
+              type="video/mp4"
             />
           </video>
         )}
 
         {/* Professional Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-primary/30 to-transparent" />
       </div>
 
       {/* Changing Text Content */}
@@ -212,11 +212,10 @@ const HeroHomeSection = () => {
             <button
               key={i}
               onClick={() => handleDotClick(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === current
+              className={`h-2 rounded-full transition-all duration-300 ${i === current
                   ? "w-10 bg-secondary"
                   : "w-2 bg-white/60 hover:bg-white"
-              }`}
+                }`}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}

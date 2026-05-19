@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TechnologyLayout from "./TechnologyLayout";
 import { getTechnologyBySlug } from "../services/technologiesApi";
+import SEO from "../Component/SEO";
 
 const TechnologyDetail = () => {
   const { slug } = useParams();
@@ -53,18 +54,38 @@ const TechnologyDetail = () => {
     );
   }
 
+  const techSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": technology.title,
+    "description": technology.herosub || technology.paragraph1 || "",
+    "provider": {
+      "@type": "Organization",
+      "name": "REVA Process Technologies",
+      "url": "https://revaprocess.in"
+    }
+  };
+
   return (
-    <TechnologyLayout
-      title={technology.title}
-      herotitle={technology.herotitle}
-      herosub={technology.herosub}
-      paragraph1={technology.paragraph1}
-      paragraph2={technology.paragraph2}
-      img={technology.img}
-      keysubheading={technology.keysubheading}
-      features={technology.features}
-      stats={technology.stats}
-    />
+    <>
+      <SEO 
+        title={`${technology.title} Technology`}
+        description={technology.herosub || technology.paragraph1 || `Learn about REVA's advanced ${technology.title} process technology solutions.`}
+        keywords={`${technology.title}, process technology, industrial engineering, chemical process`}
+        schema={techSchema}
+      />
+      <TechnologyLayout
+        title={technology.title}
+        herotitle={technology.herotitle}
+        herosub={technology.herosub}
+        paragraph1={technology.paragraph1}
+        paragraph2={technology.paragraph2}
+        img={technology.img}
+        keysubheading={technology.keysubheading}
+        features={technology.features}
+        stats={technology.stats}
+      />
+    </>
   );
 };
 

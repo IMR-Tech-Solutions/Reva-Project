@@ -18,7 +18,7 @@ const ProcessHero = ({ service }) => {
     return path;
   };
 
-  const heroImage = getImageUrl(service.hero_image) || "./process.png";
+  const heroImage = getImageUrl(service.hero_image) || "./process.webp";
 
   return (
     <section className="relative text-white overflow-hidden min-h-screen lg:h-[90vh] flex items-center py-12 md:py-16 lg:py-8">

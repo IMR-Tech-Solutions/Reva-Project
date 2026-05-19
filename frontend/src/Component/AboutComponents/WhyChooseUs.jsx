@@ -78,9 +78,10 @@ const WhyChooseUs = ({ content, differentiators }) => {
           >
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl h-full min-h-[400px] sm:min-h-[500px]">
               <img
-                src={getImageUrl(content.why_us_image, "./why-choose-us.jpg")}
+                src={getImageUrl(content.why_us_image, "./why-choose-us.webp")}
                 alt="Reva Process Technologies site execution"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
 
               {/* Gradient overlay */}

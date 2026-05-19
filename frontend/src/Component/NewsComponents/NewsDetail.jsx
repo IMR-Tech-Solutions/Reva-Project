@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FiArrowLeft, FiClock, FiArrowRight, FiHome } from "react-icons/fi";
 import { getNewsBySlug, getAllNews } from "../../services/newsApi";
 import Breadcrumb from "../Breadcrumb";
+import SEO from "../SEO";
 
 const NewsDetail = () => {
   const { slug } = useParams();
@@ -72,8 +73,30 @@ const NewsDetail = () => {
     );
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": article.title,
+    "image": [
+      article.image ? (article.image.startsWith("http") ? article.image : `https://revaprocess.in${article.image}`) : "https://revaprocess.in/logo.png"
+    ],
+    "datePublished": article.published_date || new Date().toISOString(),
+    "description": article.short_description || "",
+    "author": [{
+      "@type": "Organization",
+      "name": "REVA Process Technologies",
+      "url": "https://revaprocess.in"
+    }]
+  };
+
   return (
     <div className="bg-background min-h-screen">
+      <SEO 
+        title={article.title}
+        description={article.short_description || `Read the latest article about ${article.title} from REVA Process Technologies.`}
+        keywords={`REVA process, news article, chemical engineering, ${article.category || "blog"}`}
+        schema={articleSchema}
+      />
       <Breadcrumb title={article.title} />
 
 

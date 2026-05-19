@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ProductLayout from "./ProductLayout";
 import { getProductByPath } from "../services/productsApi";
+import SEO from "../Component/SEO";
 
 const ProductDetail = () => {
   const { path } = useParams();
@@ -53,20 +54,40 @@ const ProductDetail = () => {
     );
   }
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "image": product.img ? (product.img.startsWith("http") ? product.img : `https://revaprocess.in${product.img}`) : "https://revaprocess.in/logo.png",
+    "description": product.herosub || product.paragraph1 || "",
+    "brand": {
+      "@type": "Brand",
+      "name": "REVA"
+    }
+  };
+
   return (
-    <ProductLayout
-      title={product.title}
-      herotitle={product.herotitle}
-      herosub={product.herosub}
-      paragraph1={product.paragraph1}
-      paragraph2={product.paragraph2}
-      img={product.img}
-      keysubheading={product.keysubheading}
-      features={product.features}
-      applications={product.applications}
-      reactor_types={product.reactor_types}
-      stats={product.stats}
-    />
+    <>
+      <SEO 
+        title={`${product.title} - High-Quality Process Equipment`}
+        description={product.herosub || product.paragraph1 || `High-performance industrial ${product.title} manufactured by REVA Process Technologies.`}
+        keywords={`${product.title}, industrial equipment, process product, REVA manufacturing`}
+        schema={productSchema}
+      />
+      <ProductLayout
+        title={product.title}
+        herotitle={product.herotitle}
+        herosub={product.herosub}
+        paragraph1={product.paragraph1}
+        paragraph2={product.paragraph2}
+        img={product.img}
+        keysubheading={product.keysubheading}
+        features={product.features}
+        applications={product.applications}
+        reactor_types={product.reactor_types}
+        stats={product.stats}
+      />
+    </>
   );
 };
 

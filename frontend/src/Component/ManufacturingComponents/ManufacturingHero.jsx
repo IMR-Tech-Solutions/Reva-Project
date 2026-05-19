@@ -144,7 +144,7 @@ const ManufacturingHero = () => {
             className="relative group"
           >
             <img
-              src="./manufacturing.png"
+              src="./manufacturing.webp"
               alt="Reva Detailed Engineering – P&IDs, 3D Modeling and Multi-Discipline Design"
               className="w-full h-[300px] sm:h-[400px] md:h-[480px] lg:h-[560px] object-cover rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl"
             />

@@ -19,7 +19,7 @@ GMAIL_PASSWORD = os.getenv("GMAIL_PASSWORD", "mhqm zwqp dcrw xmjm")
 if GMAIL_PASSWORD:
     GMAIL_PASSWORD = GMAIL_PASSWORD.replace(" ", "")  # Ensure no spaces in App Password
 
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "reedhigohel563@gmail.com")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "info@revaprocess.in")
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
@@ -94,7 +94,7 @@ We'll be in touch within the next 2-3 weeks with an update on your application s
 
 Best regards,
 REVA Recruitment Team
-reedhigohel563@gmail.com"""
+info@revaprocess.in"""
     
     return send_email(user_email, subject, body)
 
@@ -139,7 +139,7 @@ Thank you for your interest in joining REVA!
 
 Best regards,
 REVA Recruitment Team
-reedhigohel563@gmail.com"""
+info@revaprocess.in"""
     
     print(f"📧 [APPROVAL EMAIL] Subject: {subject}")
     result = send_email(user_email, subject, body)
@@ -164,7 +164,7 @@ We wish you all the best in your career endeavors!
 
 Best regards,
 REVA Recruitment Team
-reedhigohel563@gmail.com"""
+info@revaprocess.in"""
     
     print(f"📧 [REJECTION EMAIL] Subject: {subject}")
     result = send_email(user_email, subject, body)

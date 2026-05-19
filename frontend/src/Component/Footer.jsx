@@ -28,7 +28,7 @@ const Footer = () => {
     ],
     services: [
       { name: "Feasibility Study", href: "/services/feasibility" },
-      { name: "Basic Engineering", href: "/services/BasicEngineering" },
+      { name: "Basic Engineering", href: "/services/basic-engineering" },
       { name: "Detailed Engineering", href: "/services/detailed" },
       { name: "Procurement", href: "/services/procurement" },
       { name: "EPC Management", href: "/services/basic" },
